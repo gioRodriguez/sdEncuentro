@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+.home-icon {
+	background: url("img/home.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.exit-icon {
+	background: url("img/exit.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.settings-icon {
+	background: url("img/settings.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+footer {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
