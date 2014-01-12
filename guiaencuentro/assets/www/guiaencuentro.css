@@ -21,6 +21,13 @@
 	background-size: cover;
 }
 
+.back-icon {
+	background: url("img/back.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
 footer {
 	position: absolute;
 	bottom: 0px;

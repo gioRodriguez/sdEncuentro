@@ -2,7 +2,7 @@
  * Home Controller
  */
 
-define([ 'sdEncuentro' ], function(sdEncuentro) {
+define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 
 	var textViewerController = function($scope, navigationService) {
 		$scope.back = function(path, type) {
@@ -10,6 +10,6 @@ define([ 'sdEncuentro' ], function(sdEncuentro) {
 		};
 	};
 
-	sdEncuentro.controller('TextViewerController', [ '$scope',
+	guiaEncuentroApp.controller('TextViewerController', [ '$scope',
 			'navigationService', textViewerController ]);
 })

@@ -2,7 +2,7 @@
  * Home Controller
  */
 
-define([ 'sdEncuentro' ], function(sdEncuentro) {
+define([ 'guiaEncuentroApp', 'settingsController' ], function(guiaEncuentroApp) {
 
 	var homeController = function($scope, navigationService) {
 		$scope.slidePage = function(path, type) {
@@ -10,6 +10,6 @@ define([ 'sdEncuentro' ], function(sdEncuentro) {
 		};
 	};
 
-	sdEncuentro.controller('HomeController', [ '$scope', 'navigationService',
-			homeController ]);
+	guiaEncuentroApp.controller('HomeController', [ '$scope',
+			'navigationService', homeController ]);
 })

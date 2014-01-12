@@ -1,7 +1,7 @@
 /**
  * UI services
  */
-define([ 'sdEncuentro' ], function(sdEncuentro) {
+define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 	var navService = function($navigate) {
 		var navFactory = {};
 		navFactory.slidePage = function(path, type) {
@@ -12,7 +12,7 @@ define([ 'sdEncuentro' ], function(sdEncuentro) {
 			$navigate.back();
 		};
 		return navFactory;
-	}
+	};
 
-	sdEncuentro.factory('navigationService', navService);
+	guiaEncuentroApp.factory('navigationService', ['$navigate', navService]);
 });

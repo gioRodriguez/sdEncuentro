@@ -1,9 +1,12 @@
 <div class="topcoat-navigation-bar">
 	<div class="topcoat-navigation-bar__item center full">
-		<h1 class="topcoat-navigation-bar__title">{{ 'TITLE' | translate }}</h1>
+		<h1 class="topcoat-navigation-bar__title">{{ 'homeTitle' | translate }}</h1>
 	</div>
 </div>
 
+<div data-role="fieldcontain">
+	<input illyum-date-selector name="illyumDateSelector" class="illyumDateSelector topcoat-text-input" />
+</div>
 
 <footer>
 	<div class="topcoat-navigation-bar">
@@ -13,7 +16,7 @@
 			</a>
 		</div>
 		<div class="topcoat-navigation-bar__item right half">
-			<a class="topcoat-icon-button--large--quiet"> <span
+			<a class="topcoat-icon-button--large--quiet" ng-click="slidePage('/settings')"> <span
 				class="topcoat-icon--large settings-icon"></span>
 			</a>
 		</div>
