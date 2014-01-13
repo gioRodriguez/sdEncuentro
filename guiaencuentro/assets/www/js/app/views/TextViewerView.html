@@ -1,11 +1,75 @@
-<div class="topcoat-button-bar">
-	<div class="topcoat-button-bar__item">
-		<button class="topcoat-button-bar__button" ng-click="back()">One</button>
+<header>
+	<div class="topcoat-navigation-bar">
+		<div class="topcoat-navigation-bar__item center full">
+			<h1 class="topcoat-navigation-bar__title">Lectura</h1>
+		</div>
 	</div>
-	<div class="topcoat-button-bar__item">
-		<button class="topcoat-button-bar__button">Two</button>
+</header>
+
+<div style='font-size: {{fontSize}}' >Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. In a pretium orci, at cursus mi. Praesent
+	eu imperdiet ante. Praesent eget mauris sed purus rutrum malesuada
+	porttitor ac enim. Sed feugiat mi pulvinar, imperdiet nisi vitae,
+	vulputate justo. Proin blandit imperdiet mollis. Mauris quis nulla et
+	lectus bibendum elementum egestas dictum nulla. Duis sed risus
+	tincidunt, vulputate nisl nec, vestibulum velit. Vestibulum ultricies
+	velit ligula, vel semper tellus sagittis quis. Pellentesque varius vel
+	nunc sed malesuada. Cras porta blandit augue, sit amet pulvinar nibh
+	laoreet sit amet. Pellentesque urna ipsum, tempor vel consequat nec,
+	cursus vel felis. Donec mi mauris, tincidunt in commodo at, tincidunt
+	at tellus. Pellentesque fermentum adipiscing egestas. Proin vel metus
+	nulla. Phasellus et ornare metus. In varius eu est ut viverra. Morbi
+	scelerisque ultrices ipsum nec vestibulum. Nam vehicula euismod
+	bibendum. Nullam ultricies eu ante ut convallis. Integer lacinia justo
+	sed dui iaculis blandit. Aliquam elementum gravida odio, sit amet
+	viverra nisi. Vivamus eleifend purus at felis euismod, et auctor odio
+	congue. Praesent ac adipiscing massa. Mauris accumsan ante eu lorem
+	porttitor, in fermentum lectus vulputate. Quisque eu tristique massa,
+	vel egestas dui. Phasellus tincidunt, lacus quis commodo sollicitudin,
+	lorem tellus vehicula mauris, vel varius nibh est ac nunc. Etiam auctor
+	dui metus, vel semper justo tristique a. Aliquam condimentum libero
+	magna, non aliquam nunc aliquet sed. Pellentesque habitant morbi
+	tristique senectus et netus et malesuada fames ac turpis egestas. Ut
+	justo libero, bibendum sit amet porttitor id, semper ut eros. Nullam
+	nisi sapien, tempor eu dictum non, imperdiet sed eros. Nulla nec tellus
+	malesuada, semper quam et, interdum leo. In rhoncus adipiscing metus,
+	sit amet pulvinar dolor dignissim pulvinar. Vestibulum viverra faucibus
+	turpis, non ullamcorper ipsum rutrum eget. Morbi at vestibulum neque.
+	Donec eget sem non velit tristique suscipit ut at orci. Donec felis
+	dolor, pellentesque in imperdiet id, venenatis eget dui. Sed eget
+	convallis lorem. Pellentesque volutpat felis a urna luctus blandit
+	rutrum at velit. Duis porttitor commodo nisi, vestibulum ultricies leo.
+	Aliquam erat volutpat. Pellentesque id urna nunc. Cras in justo id enim
+	pulvinar sollicitudin eu id eros. Morbi vitae ornare urna, in dignissim
+	nunc. Mauris mattis lorem nec auctor hendrerit. Cras ac ullamcorper
+	massa, at luctus nibh. Vivamus gravida dapibus neque, non semper nibh
+	mollis sit amet. In nec tellus placerat purus sagittis dapibus
+	dignissim ac turpis. Mauris aliquam eros magna, non cursus dolor semper
+	sed.</div>
+
+<footer>
+	<div class="topcoat-navigation-bar">
+		<div class="topcoat-navigation-bar__item left quarter">
+			<button class="topcoat-icon-button--large--quiet">
+				<span class="topcoat-icon--large home-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left quarter">
+			<button class="topcoat-icon-button--large--quiet" ng-click="back()">
+				<span class="topcoat-icon--large back-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left quarter">
+			<button class="topcoat-icon-button--large--quiet"
+				ng-click="minFontSize()" ng-disabled="applyMinDisabled">
+				<span class="topcoat-icon--large magnifier-minus-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left quarter">
+			<button class="topcoat-icon-button--large--quiet"
+				ng-click="plusFontSize()" ng-disabled="applyPlusDisabled">
+				<span class="topcoat-icon--large magnifier-plus-icon"></span>
+			</button>
+		</div>
 	</div>
-	<div class="topcoat-button-bar__item">
-		<button class="topcoat-button-bar__button">Three</button>
-	</div>
-</div>
+</footer>

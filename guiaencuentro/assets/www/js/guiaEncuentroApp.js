@@ -30,15 +30,27 @@ define(function() {
 				// i18n
 				$translateProvider.translations('es', {
 					homeTitle : "Guia encuentro",
-					settingsTitle : "Opciones"
+					selectionDate : 'Fecha de lectura deseada:',
+					settingsTitle : 'Opciones',
+					goReading : 'Ir a lectura'
 				});
 
 				$translateProvider.translations('en', {
 					homeTitle : "Meet guie",
-					settingsTitle : "Settings"
+					selectionDate : 'Choise a date:',
+					settingsTitle : 'Settings',
+					goReading : 'Go to reading'
 				});
 
 				$translateProvider.preferredLanguage('es');
+			} ]);
+
+	guiaEncuentroApp.run([
+			'localStorageService',
+			'constantsService',
+			function(localStorageService, constantsService) {
+				localStorageService.set(constantsService.selectedDateKey,
+						new Date().toString(constantsService.dateFormat));
 			} ]);
 
 	guiaEncuentroApp.initialize = function() {

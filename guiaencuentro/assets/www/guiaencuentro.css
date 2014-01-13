@@ -7,6 +7,20 @@
 	background-size: cover;
 }
 
+.magnifier-minus-icon {
+	background: url("img/magnifier-minus.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.magnifier-plus-icon {
+	background: url("img/magnifier-plus.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
 .exit-icon {
 	background: url("img/exit.png") no-repeat;
 	-webkit-background-size: cover;
@@ -29,7 +43,10 @@
 }
 
 footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0px;
 	width: 100%;
+	left: 0px;
+	right: 0px;
+	z-index: 1000;
 }

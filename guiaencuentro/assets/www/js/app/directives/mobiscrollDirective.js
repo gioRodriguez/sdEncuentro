@@ -4,20 +4,42 @@
 
 define([ 'guiaEncuentroApp', 'zepto', 'mobiscrollDate' ], function(
 		guiaEncuentroApp, $) {
-	guiaEncuentroApp.directive('illyumDateSelector', [ '$timeout',
-			function($timeout) {
-				return {
-					link : function(scope, element, attrs) {
-						$timeout(function() {
-							var illyumDateSelector = $('.illyumDateSelector');
-							var curr = new Date().getFullYear();
-							illyumDateSelector.scroller({
-								preset : 'date',
-								dateOrder : 'd Dmmyy',
-								theme : 'ios'
-							});
+
+	var mobiscrollDirective = function($timeout, constantsService) {
+		var mobiscrollDirectiveFactory = {};
+		var mEmelent = null;
+		var mScope = null;
+		var mNgModel = null;
+		mobiscrollDirectiveFactory.run = function(scope, element, attrs,
+				ngModel) {
+			mEmelent = element;
+			mScope = scope;
+			mNgModel = ngModel;
+			$timeout(function() {
+				var illyumDateSelector = $('.illyumDateSelector');
+				var curr = new Date().getFullYear();
+				illyumDateSelector.scroller({
+					preset : 'date',
+					dateOrder : 'd Dmmyy',
+					theme : 'ios',
+					dateFormat : constantsService.dateFormat,
+					lang : 'es',
+					onSelect : function() {
+						mScope.$apply(function() {
+							mNgModel.$setViewValue(mEmelent.val());
 						});
 					}
-				};
-			} ]);
+				});
+			});
+		};
+
+		return {
+			require : '?ngModel',
+			link : mobiscrollDirectiveFactory.run
+		};
+	};
+
+	guiaEncuentroApp.directive('illyumDateSelector', [ '$timeout',
+			'constantsService', mobiscrollDirective ]);
+
 });

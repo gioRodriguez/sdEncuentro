@@ -12,16 +12,20 @@ require.config({
 		'mobiscrollCore' : 'js/lib/mobiscroll/js/mobiscroll.core.min',
 		'mobiscrollScroller' : 'js/lib/mobiscroll/js/mobiscroll.scroller.min',
 		'mobiscrollDate' : 'js/lib/mobiscroll/js/mobiscroll.datetime.min',
+		'mobiscrollEs' : 'js/lib/mobiscroll/js/i18n/mobiscroll.i18n.es.min',
 		'date-es' : 'js/lib/date/date-es-MX.min',
 
 		// directives
 		'dateSelectorDirective' : 'js/app/directives/mobiscrollDirective.min',
 
 		// services
-		'navigationService' : 'js/app/services/navigation-service.min',
+		'constantsService' : 'js/app/services/constantsService.min',
+		'navigationService' : 'js/app/services/navigationService.min',
+		'localStorageService' : 'js/app/services/localStgeService.min',
 
 		// controllers
 		'homeController' : 'js/app/controllers/HomeController.min',
+		'textViewerController' : 'js/app/controllers/TextViewerController.min',
 		'settingsController' : 'js/app/controllers/SettingsController.min'
 	},
 	shim : {
@@ -34,14 +38,18 @@ require.config({
 		'mobiscrollCore' : {
 			deps : [ 'mobiscrollZepto' ]
 		},
-		'mobiscrollDate' : {
+		'mobiscrollEs' : {
 			deps : [ 'mobiscrollScroller' ]
+		},
+		'mobiscrollDate' : {
+			deps : [ 'mobiscrollScroller', 'mobiscrollEs' ]
 		}
 	}
 });
 
-require([ 'guiaEncuentroApp', 'navigationService', 'dateSelectorDirective',
-		'homeController' ], function(guiaEncuentroApp) {
-	angular.bootstrap(document, [ 'guiaEncuentroApp' ]);
-	guiaEncuentroApp.initialize();
-});
+require([ 'guiaEncuentroApp', 'localStorageService', 'navigationService',
+		'dateSelectorDirective', 'homeController', 'constantsService' ],
+		function(guiaEncuentroApp) {
+			angular.bootstrap(document, [ 'guiaEncuentroApp' ]);
+			guiaEncuentroApp.initialize();
+		});
