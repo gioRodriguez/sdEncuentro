@@ -17,25 +17,33 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<widget xmlns     = "http://www.w3.org/ns/widgets"
-        id        = "io.cordova.helloCordova"
-        version   = "2.0.0">
-    <name>Hello Cordova</name>
+<widget
+    id="io.cordova.helloCordova"
+    version="2.0.0"
+    xmlns="http://www.w3.org/ns/widgets" >
+
+    <name>
+Hello Cordova
+    </name>
 
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
 
-    <author href="http://cordova.io" email="dev@cordova.apache.org">
+    <author
+        email="dev@cordova.apache.org"
+        href="http://cordova.io" >
         Apache Cordova Team
     </author>
 
-    <access origin="*"/>
+    <access origin="*" />
 
     <!-- <content src="http://mysite.com/myapp.html" /> for external pages -->
     <content src="index.html" />
 
-    <preference name="loglevel" value="DEBUG" />
+    <preference
+        name="loglevel"
+        value="DEBUG" />
     <!--
       <preference name="splashscreen" value="resourceName" />
       <preference name="backgroundColor" value="0xFFF" />
@@ -43,8 +51,24 @@
       <preference name="InAppBrowserStorageEnabled" value="true" />
       <preference name="disallowOverscroll" value="true" />
     -->
+    
+    <access origin="m.facebook.com" />
+    <access origin="graph.facebook.com" />
+    <access origin="api.facebook.com" />
+    <access origin="*.fbcdn.net" />
+    <access origin="*.akamaihd.net" />
+    
     <!-- This is required for native Android hooks -->
-    <feature name="App">
-        <param name="android-package" value="org.apache.cordova.App" />
+    <feature name="App" >
+        <param
+            name="android-package"
+            value="org.apache.cordova.App" />
     </feature>
+    
+    <feature name="org.apache.cordova.facebook.Connect" >
+        <param
+            name="android-package"
+            value="org.apache.cordova.facebook.ConnectPlugin" />
+    </feature>
+
 </widget>

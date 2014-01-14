@@ -2,11 +2,11 @@
  * Home Controller
  */
 
-define([ 'guiaEncuentroApp', 'scrollBarDirective', 'dataServices' ], function(
+define([ 'guiaEncuentroApp', 'scrollBarDirective', 'dataServices', 'cordovaServices' ], function(
 		guiaEncuentroApp) {
 
 	var textViewerController = function($scope, navigationService,
-			localStorageService, constantsService, dataServices) {
+			localStorageService, constantsService, dataServices, cordovaServices) {
 		var FONT_SIZES = [ 'xx-small', 'x-small', 'small', 'medium', 'large',
 				'x-large', 'xx-large' ];
 		var MAX_FONT_SIZE = FONT_SIZES.length;
@@ -17,9 +17,9 @@ define([ 'guiaEncuentroApp', 'scrollBarDirective', 'dataServices' ], function(
 		setFontSize(currentFontSize);
 
 		// load the selected text
-		var selectedDate = localStorageService
+		$scope.selectedDate = localStorageService
 				.get(constantsService.selectedDateKey);
-		dataServices.getTextByDate(selectedDate).done(function(data) {
+		dataServices.getTextByDate($scope.selectedDate).done(function(data) {
 			$scope.text = data;
 		}).fail(function(data) {
 			console.log('error: ' + data);
@@ -61,9 +61,29 @@ define([ 'guiaEncuentroApp', 'scrollBarDirective', 'dataServices' ], function(
 			}
 			$scope.applyMinDisabled = applyMinDisabled();
 		}
+
+		$scope.facebookPublish = function() {
+			require([ 'facebookService' ], function(FacebookService) {
+				var facebookService = new FacebookService();
+				var text = getTextForFacebookPublish();
+				facebookService.publish(text).done(function(response) {
+					if(!response.error){
+						cordovaServices.alert('Publicado en facebook :)', 'notificación', 'Aceptar');
+					}else{
+						cordovaServices.alert('Lo sentimos ocurrio un error al publicar :(', 'notificación', 'Aceptar');
+					}
+				});
+			});
+		};
+
+		function getTextForFacebookPublish() {
+			var header = $('.readHeader ul').text().trim() + '\n';
+			var read = $('.readContent').text().substring(0, 600) + "...";
+			return header + read;
+		}
 	};
 
 	guiaEncuentroApp.controller('TextViewerController', [ '$scope',
 			'navigationService', 'localStorageService', 'constantsService',
-			'dataServices', textViewerController ]);
+			'dataServices', 'cordovaServices', textViewerController ]);
 })

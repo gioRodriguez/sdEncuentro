@@ -6,7 +6,7 @@
 
 define(function() {
 	var guiaEncuentroApp = angular.module('guiaEncuentroApp', [ 'ngRoute',
-			'ngTouch', 'ajoslin.mobile-navigate', 'pascalprecht.translate' ]);
+			'ngTouch', 'ajoslin.mobile-navigate', 'pascalprecht.translate', 'ngSanitize' ]);
 
 	// routes config
 	guiaEncuentroApp.config([ '$routeProvider', '$translateProvider',
