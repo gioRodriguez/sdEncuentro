@@ -17,11 +17,13 @@ require.config({
 
 		// directives
 		'dateSelectorDirective' : 'js/app/directives/mobiscrollDirective.min',
+		'scrollBarDirective' : 'js/app/directives/scrollBarDirective',
 
 		// services
 		'constantsService' : 'js/app/services/constantsService.min',
 		'navigationService' : 'js/app/services/navigationService.min',
 		'localStorageService' : 'js/app/services/localStgeService.min',
+		'dataServices' : 'js/app/services/dataServices.min',
 
 		// controllers
 		'homeController' : 'js/app/controllers/HomeController.min',

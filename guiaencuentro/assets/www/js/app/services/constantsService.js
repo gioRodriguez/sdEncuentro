@@ -7,6 +7,7 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 
 		constantsFactory.selectedDateKey = 'selectedDate';
 		constantsFactory.dateFormat = 'yyyy-MMMM-dd';
+		constantsFactory.defaultFontSize = 2;
 
 		return constantsFactory;
 	};

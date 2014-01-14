@@ -2,14 +2,28 @@
  * Home Controller
  */
 
-define([ 'guiaEncuentroApp'], function(guiaEncuentroApp) {
+define([ 'guiaEncuentroApp', 'scrollBarDirective', 'dataServices' ], function(
+		guiaEncuentroApp) {
 
-	var textViewerController = function($scope, navigationService) {
+	var textViewerController = function($scope, navigationService,
+			localStorageService, constantsService, dataServices) {
 		var FONT_SIZES = [ 'xx-small', 'x-small', 'small', 'medium', 'large',
 				'x-large', 'xx-large' ];
 		var MAX_FONT_SIZE = FONT_SIZES.length;
-		var currentFontSize = 2;
-		setFontSize(FONT_SIZES[currentFontSize]);
+
+		var localFontSize = localStorageService.get('fontSize');
+		var currentFontSize = localFontSize != null ? localFontSize
+				: constantsService.defaultFontSize;
+		setFontSize(currentFontSize);
+
+		// load the selected text
+		var selectedDate = localStorageService
+				.get(constantsService.selectedDateKey);
+		dataServices.getTextByDate(selectedDate).done(function(data) {
+			$scope.text = data;
+		}).fail(function(data) {
+			console.log('error: ' + data);
+		});
 
 		$scope.applyPlusDisabled = applyPlusDisabled();
 		function applyPlusDisabled() {
@@ -25,15 +39,16 @@ define([ 'guiaEncuentroApp'], function(guiaEncuentroApp) {
 			navigationService.back();
 		};
 
-		function setFontSize(fontSize) {
-			$scope.fontSize = fontSize;
+		function setFontSize(currentFontSize) {
+			$scope.fontSize = FONT_SIZES[currentFontSize];
+			localStorageService.set('fontSize', currentFontSize);
 		}
 
 		$scope.plusFontSize = function() {
 			if (!applyPlusDisabled()) {
 				$scope.applyMinDisabled = false;
 				currentFontSize = currentFontSize + 1;
-				setFontSize(FONT_SIZES[currentFontSize]);
+				setFontSize(currentFontSize);
 			}
 			$scope.applyPlusDisabled = applyPlusDisabled();
 		}
@@ -42,12 +57,13 @@ define([ 'guiaEncuentroApp'], function(guiaEncuentroApp) {
 			if (!applyMinDisabled()) {
 				$scope.applyPlusDisabled = false;
 				currentFontSize = currentFontSize - 1;
-				setFontSize(FONT_SIZES[currentFontSize]);
+				setFontSize(currentFontSize);
 			}
 			$scope.applyMinDisabled = applyMinDisabled();
 		}
 	};
 
 	guiaEncuentroApp.controller('TextViewerController', [ '$scope',
-			'navigationService', textViewerController ]);
+			'navigationService', 'localStorageService', 'constantsService',
+			'dataServices', textViewerController ]);
 })

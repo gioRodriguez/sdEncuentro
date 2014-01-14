@@ -17,10 +17,9 @@ define([ 'guiaEncuentroApp', 'zepto', 'mobiscrollDate' ], function(
 			mNgModel = ngModel;
 			$timeout(function() {
 				var illyumDateSelector = $('.illyumDateSelector');
-				var curr = new Date().getFullYear();
-				illyumDateSelector.scroller({
+				var dateSelector = illyumDateSelector.scroller({
 					preset : 'date',
-					dateOrder : 'd Dmmyy',
+					dateOrder : 'ddMyy',					
 					theme : 'ios',
 					dateFormat : constantsService.dateFormat,
 					lang : 'es',
@@ -28,6 +27,9 @@ define([ 'guiaEncuentroApp', 'zepto', 'mobiscrollDate' ], function(
 						mScope.$apply(function() {
 							mNgModel.$setViewValue(mEmelent.val());
 						});
+					},
+					onBeforeShow: function(ints) {
+						ints.setDate(Date.parse(mEmelent.val()));
 					}
 				});
 			});
