@@ -7,6 +7,19 @@
 	</div>
 </header>
 
+<div class="content">
+
+	<label class="topcoat-radio-button"> {{'spanish' | translate}} <input
+		type="radio" name="topcoat" ng-model="preferredLanguage"
+		ng-change="language()" value="es">
+		<div class="topcoat-radio-button__checkmark"></div> <br>
+	</label> <label class="topcoat-radio-button"> {{'english' | translate}} <input
+		type="radio" name="topcoat" ng-model="preferredLanguage"
+		ng-change="language()" value="en">
+		<div class="topcoat-radio-button__checkmark"></div>
+	</label>
+</div>
+
 <footer>
 	<div class="topcoat-navigation-bar">
 		<div class="topcoat-navigation-bar__item left half">

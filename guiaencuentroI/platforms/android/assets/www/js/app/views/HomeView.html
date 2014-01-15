@@ -8,6 +8,9 @@
 </header>
 
 <div class="content">
+	<div class="welcome">
+	{{'welcome' | translate}}
+	</div>
 	<div data-role="fieldcontain">
 		<label for="illyumDateSelector">{{'selectionDate' |
 			translate}}</label> <input illyum-date-selector name="illyumDateSelector"
@@ -21,7 +24,7 @@
 <footer>
 	<div class="topcoat-navigation-bar">
 		<div class="topcoat-navigation-bar__item left half">
-			<button class="topcoat-icon-button--large--quiet">
+			<button class="topcoat-icon-button--large--quiet" ng-click="exit()">
 				<span class="topcoat-icon--large home-icon"></span>
 			</button>
 		</div>
