@@ -8,7 +8,7 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 		var cordovaServicesFactory = {};
 
 		cordovaServicesFactory.alert = function(message, title, buttonLabels) {
-			navigator.notification.alert(message, null, title, buttonName);
+			//navigator.notification.alert(message, null, title, buttonName);
 		};
 
 		return cordovaServicesFactory;

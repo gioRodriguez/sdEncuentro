@@ -5,7 +5,7 @@
 
 require.config({
 	paths : {
-		'guiaEncuentroApp' : 'js/guiaEncuentroApp',
+		'guiaEncuentroApp' : 'js/guiaEncuentroApp.min',
 		'jquery' : 'js/lib/jquery/jquery-1.10.2.min',
 		'zepto' : 'js/lib/zepto/zepto.min',
 		'mobiscrollZepto' : 'js/lib/mobiscroll/js/mobiscroll.zepto.min',
@@ -17,7 +17,7 @@ require.config({
 
 		// facebook
 		'facebookSdk' : 'js/lib/facebook/facebook-js-sdk.min',
-		'fabookPluginConnect' : 'js/lib/facebook/cdv-plugin-fb-connect',
+		'fabookPluginConnect' : 'js/lib/facebook/cdv-plugin-fb-connect.min',
 
 		// directives
 		'dateSelectorDirective' : 'js/app/directives/mobiscrollDirective.min',

@@ -60,20 +60,9 @@ define(function() {
 	function bindEvents() {
 		document.addEventListener('deviceready', onDeviceReady, false);
 	}
-
-	function alertDismissed() {
-	    // do something
-	}
 	
 	function onDeviceReady() {
 		FastClick.attach(document.body);
-		alert('onDeviceReady');
-		navigator.notification.alert(
-			    'You are the winner!',  // message
-			    alertDismissed,         // callback
-			    'Game Over',            // title
-			    'Done'                  // buttonName
-			);
 	}
 
 	return guiaEncuentroApp;

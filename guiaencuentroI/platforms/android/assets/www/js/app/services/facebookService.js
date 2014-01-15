@@ -53,7 +53,9 @@ define([ 'facebookSdk' ], function() {
 		}
 
 		facebookServiceFactory.logout = function() {
-			logout();
+			FB.logout(function(response) {
+			    window.location.reload();
+			  });
 		};
 
 		return facebookServiceFactory;
