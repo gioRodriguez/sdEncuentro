@@ -7,7 +7,7 @@ require.config({
 	paths : {
 		'guiaEncuentroApp' : 'js/guiaEncuentroApp.min',
 		'jquery' : 'js/lib/jquery/jquery-1.10.2.min',
-		'zepto' : 'js/lib/zepto/zepto.min',
+		'zepto' : 'js/lib/zepto/zepto',
 		'mobiscrollZepto' : 'js/lib/mobiscroll/js/mobiscroll.zepto.min',
 		'mobiscrollCore' : 'js/lib/mobiscroll/js/mobiscroll.core.min',
 		'mobiscrollScroller' : 'js/lib/mobiscroll/js/mobiscroll.scroller.min',
@@ -28,13 +28,13 @@ require.config({
 		'scrollBarDirective' : 'js/app/directives/scrollBarDirective',
 
 		// services
-		'twitterService' : 'js/app/services/twitterService.min',
+		'twitterService' : 'js/app/services/twitterService',
 		'facebookService' : 'js/app/services/facebookService.min',
 		'constantsService' : 'js/app/services/constantsService',
 		'navigationService' : 'js/app/services/navigationService.min',
 		'localStorageService' : 'js/app/services/localStgeService.min',
 		'dataServices' : 'js/app/services/dataServices.min',
-		'cordovaServices' : 'js/app/services/cordovaServices.min',
+		'cordovaServices' : 'js/app/services/cordovaServices',
 
 		// controllers
 		'homeController' : 'js/app/controllers/HomeController.min',

@@ -98,14 +98,14 @@ define(
 
 				$scope.twitterPublish = function() {
 					require([ 'twitterService' ], function(TwitterService) {
-						var twitterService = new TwitterService();
+						var twitterService = new TwitterService(cordovaServices, localStorageService);
 						twitterService.publish();
 					});
 				};
 
 				function getTextForFacebookPublish() {
 					var header = $('.readHeader ul').text().replace('/\r?\n/g',
-							'').replace('\n', '').replace('\n\r', '').trim()
+							'').trim()
 							+ '\n';
 					var read = $('.readContent').text().substring(0, 600)
 							+ "...";

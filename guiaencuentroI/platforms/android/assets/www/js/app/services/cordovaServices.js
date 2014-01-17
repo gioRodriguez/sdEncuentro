@@ -18,6 +18,10 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 		cordovaServicesFactory.exitApp = function() {
 			navigator.app.exitApp();
 		};
+		
+		cordovaServicesFactory.openBrowser = function(url) {
+			return window.open(url, '_blank', 'location=no');
+		};
 
 		return cordovaServicesFactory;
 	};

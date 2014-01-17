@@ -22,6 +22,8 @@ GuiaEncuentro
     <access origin="api.facebook.com" />
     <access origin="*.fbcdn.net" />
     <access origin="*.akamaihd.net" />
+    <access origin="*.twitter.com" />
+    
     <feature name="org.apache.cordova.facebook.Connect">
         <param name="android-package" value="org.apache.cordova.facebook.ConnectPlugin" />
     </feature>
