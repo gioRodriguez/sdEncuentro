@@ -5,7 +5,7 @@
 
 require.config({
 	paths : {
-		'guiaEncuentroApp' : 'js/guiaEncuentroApp.min',
+		'guiaEncuentroApp' : 'js/guiaEncuentroApp',
 		'jquery' : 'js/lib/jquery/jquery-1.10.2.min',
 		'zepto' : 'js/lib/zepto/zepto',
 		'mobiscrollZepto' : 'js/lib/mobiscroll/js/mobiscroll.zepto.min',

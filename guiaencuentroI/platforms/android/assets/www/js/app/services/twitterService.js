@@ -2,100 +2,173 @@
  * twitter service
  */
 
-define([ 'codebird', 'cordovaServices' ], function(Codebird) {
-	var twitterService = function(cordovaServices, localStorageService) {
-		var twitterServiceFactory = {};
-		var cb = new Codebird;
-		var aouthOoptions = { 
+define(['codebird'], function(Codebird) {
+	var twitterService = function(cordovaServices, localStorageService, $translate) {
+		var twitterServiceFactory = {};		
+		var oauthOptions = { 
 	            consumerKey: 'xnBHedrb9KkhgokvnZMmg',
 	            consumerSecret: '6sDkd3ZEP1CRInrQunNfnqWfGKB4CKBsgmnEDPxWBBA',
 	            callbackUrl: 'https://www.facebook.com/guiatwittertest3' };
-		cb.setConsumerKey("xnBHedrb9KkhgokvnZMmg",
-				"6sDkd3ZEP1CRInrQunNfnqWfGKB4CKBsgmnEDPxWBBA");
-		var requestParams = null;
-		twitterServiceFactory.publish = function() {
-			cb.__call("oauth_requestToken", {
-				oauth_callback : "https://www.facebook.com/guiatwittertest3"
-			}, function(reply) {
-				// stores it
-				cb.setToken(reply.oauth_token, reply.oauth_token_secret);
-				
-				var oauth_token = reply.oauth_token;
-				var oauth_token_secret = reply.oauth_token_secret;
-				console.log('oauth_token: ' + reply.oauth_token);
-				console.log('oauth_token_secret: ' + reply.oauth_token_secret);
-				
-				// gets the authorize screen URL
-				cb.__call("oauth_authorize", {}, function(auth_url) {
+		var oauth = OAuth(oauthOptions);				
+		var authUrl = '';
+		twitterServiceFactory.publish = function(text) {				
+			verifyCredentials().then(function(){ return publishTweet(text) }, function(){ loginTwitter().then(function(){return publishTweet(text)})});			
+		}
+		
+		function loginTwitter() {		
+			console.log('loginTwitter called 3');
+			var cb = new Codebird;
+			cb.setConsumerKey(oauthOptions.consumerKey, oauthOptions.consumerSecret);			
+			return getOAuthAppToken(cb).then(function(cb, reply){return getOAuthUserToken(cb, reply);}).then(function(url){return manageBrowser(url);});
+		}
+		
+		function getOAuthAppToken(cb){
+			console.log('getOAuthAppToken called 4');
+			var getOAuthAppToken = new $.Deferred();
+			cb.__call("oauth_requestToken", { oauth_callback : oauthOptions.callbackUrl }, function(reply) {
+				if(reply.httpstatus == 200){
 					
-					console.log('auth_url: ' + auth_url);
-					
-					var browser = cordovaServices.openBrowser(auth_url);
-					browser.addEventListener('loadstart', function(event) {
-						console.log('page loaded: ' + event.url);
-						var currentUrl = event.url;
-						
-						//user cancels the request
-						if(currentUrl.indexOf('https://www.facebook.com/guiatwittertest3/?denied') >= 0 ){
-							browser.close();
-						}
-						
-						if (currentUrl === "http://www.your-apps-homepage.com/") {
-		                    $('#oauthStatus').html('<span style="color:red;">User declined access</span>');
-		                    return;
-		                }
-						
-						if(currentUrl.indexOf('https://www.facebook.com/guiatwittertest3?') >= 0){
-							var index, verifier = '';            
-		                    var params = currentUrl.substr(currentUrl.indexOf('?') + 1);
-		                    
-		                    params = params.split('&');
-		                    for (var i = 0; i < params.length; i++) {
-		                        var y = params[i].split('=');
-		                        if(y[0] === 'oauth_verifier') {
-		                            verifier = y[1];
-		                        }
-		                    }
-		                    
-		                    console.log('verifier: ' + verifier);
-		                    var oauth = OAuth(aouthOoptions);
-		                    
-		                    oauth.get('https://api.twitter.com/oauth/access_token?oauth_verifier='+verifier+'&oauth_token='+oauth_token
-		                    		+'&oauth_token_secret='+oauth_token_secret, function(data) {
-		                    	var accessParams = {};
-                                var qvars_tmp = data.text.split('&');
-                                for (var i = 0; i < qvars_tmp.length; i++) {
-                                    var y = qvars_tmp[i].split('=');
-                                    accessParams[y[0]] = decodeURIComponent(y[1]);
-                                }
-                                console.log('AppLaudLog: ' + accessParams.oauth_token + ' : ' + accessParams.oauth_token_secret);
-                                oauth.setAccessToken([accessParams.oauth_token, accessParams.oauth_token_secret]);
-                                
-                                // Save access token/key in localStorage
-                                var accessData = {};
-                                accessData.accessTokenKey = accessParams.oauth_token;
-                                accessData.accessTokenSecret = accessParams.oauth_token_secret;                                
-                                browser.close();
-                                oauth.post('https://api.twitter.com/1.1/statuses/update.json',{ 'status' : 'guia encuentro test',  // jsOAuth encodes for us
-                                    'trim_user' : 'true' }, function(data) {
-                                    	var entry = JSON.parse(data.text);
-                                    	console.log("AppLaudLog: Tweet id: " + entry.id_str + " text: " + entry.text);                               	
-								},
-								function(data) {
-									console.log("AppLaudLog: Error during tweet " + data.text);
-								});
-									}, function(data) {
-										console.log("AppLaudLog: 1 Error " + data); 
-									});
-						}
-					});
-					
-				});
+					console.log('getOAuthAppToken resolved 5');
+					getOAuthAppToken.resolve(cb, reply);
+				} else {
+					console.log('getOAuthAppToken rejected');
+					getOAuthAppToken.reject();
+				}
 			});
-		};
+			
+			return getOAuthAppToken.promise();
+		}
+		
+		function getOAuthUserToken(cb, reply){
+			console.log('getOAuthUserToken called 6');
+			var getOAuthUserTokenProm = new $.Deferred();
+			
+			cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+			// gets the authorize screen URL
+			cb.__call("oauth_authorize", {}, function(reply) {
+				// if the call fails the reply contains a httpstatus if was successful is the aouth url
+				if(reply.httpstatus){
+					console.log('getOAuthUserToken reject');
+					getOAuthUserTokenProm.reject();
+				} else {
+					console.log('getOAuthUserToken resolve 7 reply: ' + reply);
+					getOAuthUserTokenProm.resolve(reply);
+				}										
+			});
+			
+			return getOAuthUserTokenProm.promise();
+		}
+		
+		function manageBrowser(url) {
+			console.log('manageBrowser called 8 url: ' + url);
+			var manageBrowserProm = new $.Deferred();
+			var browser = cordovaServices.openBrowser(url);
+			browser.addEventListener('loadstart', function(event) {
+				console.log('page loaded: ' + event.url);
+				var currentUrl = event.url;
+				
+				//user cancels the request
+				if(currentUrl.indexOf('https://www.facebook.com/guiatwittertest3/?denied') >= 0 ){
+					console.log('manageBrowser rejected');					
+					browser.close();
+					manageBrowserProm.rejected();
+				}
+				
+				if (currentUrl === oauthOptions.callbackUrl) {
+					console.log('manageBrowser rejected');					
+                    browser.close();
+                    manageBrowserProm.rejected();
+                }
+				
+				if(currentUrl.indexOf('https://www.facebook.com/guiatwittertest3?') >= 0){		 
+					console.log('verifier ' + currentUrl);
+                    var verifier = getQueryVariable(currentUrl, 'oauth_verifier');
+                    var oauth_token = getQueryVariable(currentUrl, 'oauth_token');
+                    //var oauth_token_secret = getQueryVariable(currentUrl, 'oauth_token_secret');
+                    oauth.get('https://api.twitter.com/oauth/access_token?oauth_verifier='+verifier+'&oauth_token='+oauth_token
+                    		/*+'&oauth_token_secret='+oauth_token_secret*/, function(data) {
+                    	console.log('data.text: ' + data.text);
+                    	var oauth_token = getQueryVariable(data.text, 'oauth_token');
+                    	var oauth_token_secret = getQueryVariable(data.text, 'oauth_token_secret');		                    	
+                        oauth.setAccessToken([oauth_token, oauth_token_secret]);
+                        
+                        // Save access token/key in localStorage
+                        var accessData = {};
+                        accessData.accessTokenKey = oauth_token;
+                        accessData.accessTokenSecret = oauth_token_secret;  
+                        localStorageService.set('accessData', accessData); 
+                        console.log('manageBrowser resolve');                      
+                        manageBrowserProm.resolve();
+                        browser.close();                                
+							}, function(data) {
+								console.log('manageBrowser rejected'); 
+								manageBrowserProm.rejected();
+							});
+				}
+			});
+			
+			return manageBrowserProm.promise();
+		}		
+		
+		function verifyCredentials() {
+			console.log('verifyCredentials called 1');
+			var verifyCredentials = new $.Deferred();
+			var storedAccessData = localStorageService.get('accessData');			
+			if(storedAccessData){
+				oauthOptions.accessTokenKey = storedAccessData.accessTokenKey;
+				oauthOptions.accessTokenSecret = storedAccessData.accessTokenSecret;	
+				oauth = OAuth(oauthOptions);
+		        oauth.get('https://api.twitter.com/1.1/account/verify_credentials.json?skip_status=true', function() {
+		        	console.log('verifyCredentials resolved');
+	                verifyCredentials.resolve();
+				}, function() {
+		        	oauthOptions.accessTokenKey = '';
+		        	oauthOptions.accessTokenSecret = '';
+		        	localStorageService.set('accessData', null);
+		        	console.log('verifyCredentials rejected 2');
+					verifyCredentials.reject();
+				});
+			} else {
+				console.log('verifyCredentials rejected 2');
+				verifyCredentials.reject()
+			}
+			
+			return verifyCredentials.promise();
+		}
+		
+		function publishTweet(text) {
+			console.log('publishTweet called');
+			oauth.post('https://api.twitter.com/1.1/statuses/update.json',{ 'status' : text,  // jsOAuth encodes for us
+                'trim_user' : 'true' }, function(data) {  
+                	if(data.text != ''){
+                		cordovaServices.alert($translate('publishTwitter'), $translate('publishTitle'), $translate('publishOk'));
+                		console.log('publishTweet resolved');         		
+                	} else {
+                		console.log('publishTweet rejected');
+                		publishFailure();
+                	}                	
+			},
+			function(data) {
+				publishFailure();
+				console.log('publishTweet rejected');
+			});		
+		}
+		
+		function getQueryVariable(url, variable) {
+			var query = url.substr(url.indexOf('?') + 1);
+		    var vars = query.split('&');
+		    for (var i = 0; i < vars.length; i++) {
+		        var pair = vars[i].split('=');
+		        if (decodeURIComponent(pair[0]) == variable) {
+		            return decodeURIComponent(pair[1]);
+		        }
+		    }
+		    console.log('getQueryVariable called: ' + variable)
+		    console.log('Query variable %s not found', variable);
+		}
 
-		function twitterFailure() {
-			console.log('faillllllllll :(');
+		function publishFailure() {
+			cordovaServices.alert($translate('publishFail'), $translate('publishTitle'), $translate('publishOk'));
 		}
 
 		return twitterServiceFactory;

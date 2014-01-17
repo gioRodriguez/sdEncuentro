@@ -9,7 +9,7 @@ define(
 
 			var textViewerController = function($scope, navigationService,
 					localStorageService, constantsService, dataServices,
-					cordovaServices) {
+					cordovaServices, $translate) {
 				var FONT_SIZES = [ 'xx-small', 'x-small', 'small', 'medium',
 						'large', 'x-large', 'xx-large' ];
 				var MAX_FONT_SIZE = FONT_SIZES.length;
@@ -81,7 +81,7 @@ define(
 														cordovaServices
 																.alert(
 																		'Publicado en facebook :)',
-																		'notificación',
+																		'Gracias',
 																		'Aceptar');
 													} else {
 														console
@@ -98,8 +98,8 @@ define(
 
 				$scope.twitterPublish = function() {
 					require([ 'twitterService' ], function(TwitterService) {
-						var twitterService = new TwitterService(cordovaServices, localStorageService);
-						twitterService.publish();
+						var twitterService = new TwitterService(cordovaServices, localStorageService, $translate);
+						twitterService.publish('Hola desde guia encuentro');
 					});
 				};
 
@@ -115,6 +115,6 @@ define(
 
 			guiaEncuentroApp.controller('TextViewerController', [ '$scope',
 					'navigationService', 'localStorageService',
-					'constantsService', 'dataServices', 'cordovaServices',
+					'constantsService', 'dataServices', 'cordovaServices', '$translate',
 					textViewerController ]);
 		})
