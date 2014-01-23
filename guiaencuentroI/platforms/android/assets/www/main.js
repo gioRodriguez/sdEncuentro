@@ -32,7 +32,7 @@ require.config({
 		'facebookService' : 'js/app/services/facebookService.min',
 		'constantsService' : 'js/app/services/constantsService',
 		'navigationService' : 'js/app/services/navigationService.min',
-		'localStorageService' : 'js/app/services/localStgeService.min',
+		'localStorageService' : 'js/app/services/localStgeService',
 		'dataServices' : 'js/app/services/dataServices.min',
 		'cordovaServices' : 'js/app/services/cordovaServices',
 

@@ -2,34 +2,39 @@
  * twitter service
  */
 
-define(['codebird'], function(Codebird) {
-	var twitterService = function(cordovaServices, localStorageService, $translate) {
+define(['codebird', 'zepto', 'localStorageService', 'jsOAuth'], function(Codebird, $, LocalStorageService) {
+	var twitterService = function(cordovaServices, $translate) {
 		var twitterServiceFactory = {};		
 		var oauthOptions = { 
 	            consumerKey: 'xnBHedrb9KkhgokvnZMmg',
 	            consumerSecret: '6sDkd3ZEP1CRInrQunNfnqWfGKB4CKBsgmnEDPxWBBA',
 	            callbackUrl: 'https://www.facebook.com/guiatwittertest3' };
-		var oauth = OAuth(oauthOptions);				
-		var authUrl = '';
-		twitterServiceFactory.publish = function(text) {				
-			verifyCredentials().then(function(){ return publishTweet(text) }, function(){ loginTwitter().then(function(){return publishTweet(text)})});			
+		var oauth = OAuth(oauthOptions);
+		var twitText = '';
+		twitterServiceFactory.publish = function(text) {	
+			twitText = text;
+			verifyCredentials().then(publishTweet, loginAndPublish);		
 		}
 		
-		function loginTwitter() {		
-			console.log('loginTwitter called 3');
-			var cb = new Codebird;
-			cb.setConsumerKey(oauthOptions.consumerKey, oauthOptions.consumerSecret);			
-			return getOAuthAppToken(cb).then(function(cb, reply){return getOAuthUserToken(cb, reply);}).then(function(url){return manageBrowser(url);});
+		function loginAndPublish(){
+			return login().then(publishTweet);
 		}
 		
-		function getOAuthAppToken(cb){
+		function login() {		
+			console.log('loginTwitter called 3');					
+			return getOAuthAppToken().then(getOAuthUserToken).then(manageBrowser);
+		}
+		
+		function getOAuthAppToken(){
 			console.log('getOAuthAppToken called 4');
 			var getOAuthAppToken = new $.Deferred();
+			var cb = new Codebird;
+			cb.setConsumerKey(oauthOptions.consumerKey, oauthOptions.consumerSecret);
 			cb.__call("oauth_requestToken", { oauth_callback : oauthOptions.callbackUrl }, function(reply) {
-				if(reply.httpstatus == 200){
-					
+				if(reply.httpstatus == 200){					
 					console.log('getOAuthAppToken resolved 5');
-					getOAuthAppToken.resolve(cb, reply);
+					cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+					getOAuthAppToken.resolve(cb);
 				} else {
 					console.log('getOAuthAppToken rejected');
 					getOAuthAppToken.reject();
@@ -39,12 +44,9 @@ define(['codebird'], function(Codebird) {
 			return getOAuthAppToken.promise();
 		}
 		
-		function getOAuthUserToken(cb, reply){
+		function getOAuthUserToken(cb){
 			console.log('getOAuthUserToken called 6');
 			var getOAuthUserTokenProm = new $.Deferred();
-			
-			cb.setToken(reply.oauth_token, reply.oauth_token_secret);
-			// gets the authorize screen URL
 			cb.__call("oauth_authorize", {}, function(reply) {
 				// if the call fails the reply contains a httpstatus if was successful is the aouth url
 				if(reply.httpstatus){
@@ -84,9 +86,8 @@ define(['codebird'], function(Codebird) {
 					console.log('verifier ' + currentUrl);
                     var verifier = getQueryVariable(currentUrl, 'oauth_verifier');
                     var oauth_token = getQueryVariable(currentUrl, 'oauth_token');
-                    //var oauth_token_secret = getQueryVariable(currentUrl, 'oauth_token_secret');
-                    oauth.get('https://api.twitter.com/oauth/access_token?oauth_verifier='+verifier+'&oauth_token='+oauth_token
-                    		/*+'&oauth_token_secret='+oauth_token_secret*/, function(data) {
+                    
+                    oauth.get('https://api.twitter.com/oauth/access_token?oauth_verifier='+verifier+'&oauth_token='+oauth_token, function(data) {
                     	console.log('data.text: ' + data.text);
                     	var oauth_token = getQueryVariable(data.text, 'oauth_token');
                     	var oauth_token_secret = getQueryVariable(data.text, 'oauth_token_secret');		                    	
@@ -95,15 +96,16 @@ define(['codebird'], function(Codebird) {
                         // Save access token/key in localStorage
                         var accessData = {};
                         accessData.accessTokenKey = oauth_token;
-                        accessData.accessTokenSecret = oauth_token_secret;  
+                        accessData.accessTokenSecret = oauth_token_secret; 
+                        var localStorageService = new LocalStorageService();
                         localStorageService.set('accessData', accessData); 
                         console.log('manageBrowser resolve');                      
                         manageBrowserProm.resolve();
-                        browser.close();                                
-							}, function(data) {
-								console.log('manageBrowser rejected'); 
-								manageBrowserProm.rejected();
-							});
+                        browser.close();                                						
+                    }, function(data) {
+                    	console.log('manageBrowser rejected'); 
+                    	manageBrowserProm.rejected();
+                    	});
 				}
 			});
 			
@@ -113,6 +115,7 @@ define(['codebird'], function(Codebird) {
 		function verifyCredentials() {
 			console.log('verifyCredentials called 1');
 			var verifyCredentials = new $.Deferred();
+			var localStorageService = new LocalStorageService();
 			var storedAccessData = localStorageService.get('accessData');			
 			if(storedAccessData){
 				oauthOptions.accessTokenKey = storedAccessData.accessTokenKey;
@@ -136,19 +139,14 @@ define(['codebird'], function(Codebird) {
 			return verifyCredentials.promise();
 		}
 		
-		function publishTweet(text) {
+		function publishTweet() {
 			console.log('publishTweet called');
-			oauth.post('https://api.twitter.com/1.1/statuses/update.json',{ 'status' : text,  // jsOAuth encodes for us
-                'trim_user' : 'true' }, function(data) {  
-                	if(data.text != ''){
-                		cordovaServices.alert($translate('publishTwitter'), $translate('publishTitle'), $translate('publishOk'));
-                		console.log('publishTweet resolved');         		
-                	} else {
-                		console.log('publishTweet rejected');
-                		publishFailure();
-                	}                	
+			oauth.post('https://api.twitter.com/1.1/statuses/update.json',{ 'status' : twitText,  // jsOAuth encodes for us
+                'trim_user' : 'true' }, function() {  
+                	cordovaServices.alert($translate('publishTwitter'), $translate('publishTitle'), $translate('publishOk'));
+            		console.log('publishTweet resolved');                	
 			},
-			function(data) {
+			function() {
 				publishFailure();
 				console.log('publishTweet rejected');
 			});		

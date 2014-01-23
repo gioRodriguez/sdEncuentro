@@ -98,7 +98,7 @@ define(
 
 				$scope.twitterPublish = function() {
 					require([ 'twitterService' ], function(TwitterService) {
-						var twitterService = new TwitterService(cordovaServices, localStorageService, $translate);
+						var twitterService = new TwitterService(cordovaServices, $translate);
 						twitterService.publish('Hola desde guia encuentro');
 					});
 				};

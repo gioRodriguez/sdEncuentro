@@ -17,4 +17,5 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 	};
 
 	guiaEncuentroApp.factory('localStorageService', localStgeService);
+	return localStgeService;
 });

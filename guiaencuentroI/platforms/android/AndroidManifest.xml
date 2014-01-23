@@ -12,6 +12,11 @@
         android:smallScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
 
     <application
         android:debuggable="true"
@@ -38,9 +43,5 @@
             android:label="@string/app_name" >
         </activity>
     </application>
-
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8"/>
-
-    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>
