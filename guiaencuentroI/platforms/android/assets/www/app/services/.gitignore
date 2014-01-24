@@ -4,3 +4,6 @@
 /localStgeService.min.js
 /navigationService.min.js
 /dataServices.min.js
+/cordovaServices.min.js
+/facebookService.min.js
+/twitterService.min.js

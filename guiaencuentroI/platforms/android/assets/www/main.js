@@ -5,41 +5,41 @@
 
 require.config({
 	paths : {
-		'guiaEncuentroApp' : 'js/guiaEncuentroApp',
-		'jquery' : 'js/lib/jquery/jquery-1.10.2.min',
-		'zepto' : 'js/lib/zepto/zepto',
-		'mobiscrollZepto' : 'js/lib/mobiscroll/js/mobiscroll.zepto.min',
-		'mobiscrollCore' : 'js/lib/mobiscroll/js/mobiscroll.core.min',
-		'mobiscrollScroller' : 'js/lib/mobiscroll/js/mobiscroll.scroller.min',
-		'mobiscrollDate' : 'js/lib/mobiscroll/js/mobiscroll.datetime.min',
-		'mobiscrollEs' : 'js/lib/mobiscroll/js/i18n/mobiscroll.i18n.es.min',
-		'date-es' : 'js/lib/date/date-es-MX.min',
+		'guiaEncuentroApp' : 'app/guiaEncuentroApp',
+		'jquery' : 'app/lib/jquery/jquery-1.10.2.min',
+		'zepto' : 'app/lib/zepto/zepto',
+		'mobiscrollZepto' : 'app/lib/mobiscroll/js/mobiscroll.zepto.min',
+		'mobiscrollCore' : 'app/lib/mobiscroll/js/mobiscroll.core.min',
+		'mobiscrollScroller' : 'app/lib/mobiscroll/js/mobiscroll.scroller.min',
+		'mobiscrollDate' : 'app/lib/mobiscroll/js/mobiscroll.datetime.min',
+		'mobiscrollEs' : 'app/lib/mobiscroll/js/i18n/mobiscroll.i18n.es.min',
+		'date-es' : 'app/lib/date/date-es-MX.min',
 
 		// twitter
-		'jsOAuth' : 'js/lib/jsOAuth/jsOAuth-1.3.6.min',
-		'codebird' : 'js/lib/codebird/codebird',
+		'jsOAuth' : 'app/lib/jsOAuth/jsOAuth-1.3.6.min',
+		'codebird' : 'app/lib/codebird/codebird',
 
 		// facebook
-		'facebookSdk' : 'js/lib/facebook/facebook-js-sdk.min',
-		'fabookPluginConnect' : 'js/lib/facebook/cdv-plugin-fb-connect.min',
+		'facebookSdk' : 'app/lib/facebook/facebook-js-sdk.min',
+		'fabookPluginConnect' : 'app/lib/facebook/cdv-plugin-fb-connect.min',
 
 		// directives
-		'dateSelectorDirective' : 'js/app/directives/mobiscrollDirective.min',
-		'scrollBarDirective' : 'js/app/directives/scrollBarDirective',
+		'dateSelectorDirective' : 'app/directives/mobiscrollDirective.min',
+		'scrollBarDirective' : 'app/directives/scrollBarDirective',
 
 		// services
-		'twitterService' : 'js/app/services/twitterService',
-		'facebookService' : 'js/app/services/facebookService.min',
-		'constantsService' : 'js/app/services/constantsService',
-		'navigationService' : 'js/app/services/navigationService.min',
-		'localStorageService' : 'js/app/services/localStgeService',
-		'dataServices' : 'js/app/services/dataServices.min',
-		'cordovaServices' : 'js/app/services/cordovaServices',
+		'twitterService' : 'app/services/twitterService',
+		'facebookService' : 'app/services/facebookService.min',
+		'constantsService' : 'app/services/constantsService',
+		'navigationService' : 'app/services/navigationService.min',
+		'localStorageService' : 'app/services/localStgeService',
+		'dataServices' : 'app/services/dataServices.min',
+		'cordovaServices' : 'app/services/cordovaServices',
 
 		// controllers
-		'homeController' : 'js/app/controllers/HomeController.min',
-		'textViewerController' : 'js/app/controllers/TextViewerController',
-		'settingsController' : 'js/app/controllers/SettingsController.min'
+		'homeController' : 'app/controllers/HomeController.min',
+		'textViewerController' : 'app/controllers/TextViewerController',
+		'settingsController' : 'app/controllers/SettingsController.min'
 	},
 	shim : {
 		'zepto' : {

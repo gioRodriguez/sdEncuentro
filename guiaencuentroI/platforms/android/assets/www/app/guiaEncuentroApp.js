@@ -16,15 +16,15 @@ define(function() {
 					'$translateProvider',
 					function($routeProvider, $translateProvider) {
 						$routeProvider.when('/', {
-							templateUrl : 'js/app/views/HomeView.html',
+							templateUrl : 'app/views/HomeView.html',
 							controller : 'HomeController'
 						});
 						$routeProvider.when('/textViewer', {
-							templateUrl : 'js/app/views/TextViewerView.html',
+							templateUrl : 'app/views/TextViewerView.html',
 							controller : 'TextViewerController'
 						});
 						$routeProvider.when("/settings", {
-							templateUrl : "js/app/views/SettingsView.html",
+							templateUrl : "app/views/SettingsView.html",
 							controller : "SettingsController"
 						});
 						$routeProvider.otherwise({
