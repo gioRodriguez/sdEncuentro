@@ -17,6 +17,7 @@ require
 				// twitter
 				'jsOAuth' : 'bower_components/jsOAuth/dist/jsOAuth-1.3.6',
 				'codebird' : 'bower_components/codebird/codebird',
+				'sha1' : 'bower_components/codebird/sha1',
 
 				// facebook
 				'facebookSdk' : 'scripts/lib/facebook/facebook-js-sdk',
@@ -62,6 +63,9 @@ require
 				},
 				'jsOAuth' : {
 					exports : 'OAuth'
+				},
+				'codebird' : {
+					deps: ['sha1']
 				}
 			}
 		});
@@ -69,7 +73,6 @@ require
 require([ 'guiaEncuentroApp', 'localStorageService', 'navigationService',
 		'dateSelectorDirective', 'homeController', 'constantsService',
 		'cordovaServices' ], function(guiaEncuentroApp) {
-	console.log('entry');
 	angular.bootstrap(document, [ 'guiaEncuentroApp' ]);
 	guiaEncuentroApp.initialize();
 });

@@ -2,7 +2,7 @@
  * twitter service
  */
 
-define(['guiaEncuentroApp', 'codebird', 'jsOAuth'], function(guiaEncuentroApp, Codebird) {
+define(['guiaEncuentroApp', 'codebird', 'jsOAuth'], function(guiaEncuentroApp) {
 	var twitterService = function(cordovaServices, $translate, localStorageService) {
 		var twitterServiceFactory = {};		
 		var oauthOptions = { 
@@ -27,7 +27,7 @@ define(['guiaEncuentroApp', 'codebird', 'jsOAuth'], function(guiaEncuentroApp, C
 		
 		function getOAuthAppToken(){
 			console.log('getOAuthAppToken called 4');
-			var getOAuthAppToken = new $.Deferred();
+			var getOAuthAppToken = $.Deferred();
 			var cb = new Codebird;
 			cb.setConsumerKey(oauthOptions.consumerKey, oauthOptions.consumerSecret);
 			cb.__call("oauth_requestToken", { oauth_callback : oauthOptions.callbackUrl }, function(reply) {
@@ -46,7 +46,7 @@ define(['guiaEncuentroApp', 'codebird', 'jsOAuth'], function(guiaEncuentroApp, C
 		
 		function getOAuthUserToken(cb){
 			console.log('getOAuthUserToken called 6');
-			var getOAuthUserTokenProm = new $.Deferred();
+			var getOAuthUserTokenProm = $.Deferred();
 			cb.__call("oauth_authorize", {}, function(reply) {
 				// if the call fails the reply contains a httpstatus if was successful is the aouth url
 				if(reply.httpstatus){
@@ -63,7 +63,7 @@ define(['guiaEncuentroApp', 'codebird', 'jsOAuth'], function(guiaEncuentroApp, C
 		
 		function manageBrowser(url) {
 			console.log('manageBrowser called 8 url: ' + url);
-			var manageBrowserProm = new $.Deferred();
+			var manageBrowserProm = $.Deferred();
 			var browser = cordovaServices.openBrowser(url);
 			browser.addEventListener('loadstart', function(event) {
 				console.log('page loaded: ' + event.url);
@@ -97,7 +97,6 @@ define(['guiaEncuentroApp', 'codebird', 'jsOAuth'], function(guiaEncuentroApp, C
                         var accessData = {};
                         accessData.accessTokenKey = oauth_token;
                         accessData.accessTokenSecret = oauth_token_secret; 
-                        var localStorageService = new LocalStorageService();
                         localStorageService.set('accessData', accessData); 
                         console.log('manageBrowser resolve');                      
                         manageBrowserProm.resolve();
@@ -114,8 +113,7 @@ define(['guiaEncuentroApp', 'codebird', 'jsOAuth'], function(guiaEncuentroApp, C
 		
 		function verifyCredentials() {
 			console.log('verifyCredentials called 1');
-			var verifyCredentials = new $.Deferred();
-			var localStorageService = new LocalStorageService();
+			var verifyCredentials = $.Deferred();
 			var storedAccessData = localStorageService.get('accessData');			
 			if(storedAccessData){
 				oauthOptions.accessTokenKey = storedAccessData.accessTokenKey;

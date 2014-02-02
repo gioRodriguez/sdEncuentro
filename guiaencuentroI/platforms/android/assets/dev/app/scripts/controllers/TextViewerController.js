@@ -67,7 +67,8 @@ define(
 				}
 
 				$scope.facebookPublish = function() {
-					var text = getTextForFacebookPublish();
+					//var text = getTextForFacebookPublish();
+					var text = 'hola mundo';
 					facebookService
 							.publish(text)
 							.done(
@@ -88,7 +89,7 @@ define(
 															'notificación',
 															'Aceptar');
 										}
-									});F
+									});
 				};
 
 				$scope.twitterPublish = function() {

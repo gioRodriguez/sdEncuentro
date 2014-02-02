@@ -27,7 +27,7 @@ public class GetTextPlugin extends CordovaPlugin {
 		//2014-Febrero-01
 		String dateSelected = args.getString(0);
 		String date[] = dateSelected.split("-");
-		String month = date[1];
+		String month = date[1].toLowerCase();
 		int day = Integer.parseInt(date[2]);
 		String file = String.format(Locale.ENGLISH, "www/texts/%s/%s%d.gz.js", month, month, day);
 		String text = loadFile(file);

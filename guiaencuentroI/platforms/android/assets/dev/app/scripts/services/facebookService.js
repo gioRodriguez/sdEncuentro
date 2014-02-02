@@ -1,18 +1,20 @@
 /**
  * facebook api services
  */
-define([ 'facebookSdk', 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
-	var mServiceStatus = {};
-	FB.init({
-		appId : '284021708287063',
-		nativeInterface : CDV.FB,
-		useCachedDialogs : false
-	});
-
+define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
+	var mServiceStatus = {};		
+	
 	var facebookService = function() {
 		var facebookServiceFactory = {};
-
-		facebookServiceFactory.publish = function(text) {
+		
+		facebookServiceFactory.publish = function(text) {			
+			FB.init({
+				appId : '284021708287063',
+				nativeInterface : CDV.FB,
+				useCachedDialogs : false
+			});
+			
+			
 			var facebookLoginPromise = checkFacebookLogin();
 			var postDeferred = $.Deferred();
 			facebookLoginPromise.then(function(serviceStatus) {
