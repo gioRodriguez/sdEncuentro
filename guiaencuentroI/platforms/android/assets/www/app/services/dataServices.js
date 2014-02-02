@@ -11,16 +11,13 @@ define([ 'guiaEncuentroApp', 'zepto' ], function(guiaEncuentroApp, $) {
 		dataServicesFactory.getTextByDate = function(selectedDate) {
 			var selectedMonth = selectedDate.split('-')[1];
 			var selectedDay = selectedDate.split('-')[2];
-			return $.ajax({
-				url: 'texts/' + selectedMonth + '/' + selectedMonth
-				+ selectedDay + '.bh',
-				dataType: 'text'
-			}).then();
-			
-			/*return $http.get('texts/' + selectedMonth + '/' + selectedMonth
-					+ selectedDay, {
-				responseType : 'text'
-			});*/
+			var textDeferred = $.Deferred();
+			window.getText(selectedDate, function(text) {
+				textDeferred.resolve(text);
+			}, function() {
+				textDeferred.reject();
+			});
+			return textDeferred.promise();
 		};
 
 		return dataServicesFactory;

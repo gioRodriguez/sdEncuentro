@@ -1,0 +1,38 @@
+<header>
+	<div class="topcoat-navigation-bar">
+		<div class="topcoat-navigation-bar__item center full">
+			<h1 class="topcoat-navigation-bar__title">{{ 'homeTitle' |
+				translate }}</h1>
+		</div>
+	</div>
+</header>
+
+<div class="content">
+	<div class="welcome">
+	{{'welcome' | translate}}
+	</div>
+	<div data-role="fieldcontain">
+		<label for="illyumDateSelector">{{'selectionDate' |
+			translate}}</label> <input illyum-date-selector name="illyumDateSelector"
+			class="illyumDateSelector topcoat-text-input" ng-model="selectedDate"
+			ng-change="setSelectedDate()" />
+	</div>
+	<button class="topcoat-button--cta" ng-click="slidePage('/textViewer')">{{'goReading'
+		| translate}}</button>
+</div>
+
+<footer>
+	<div class="topcoat-navigation-bar">
+		<div class="topcoat-navigation-bar__item left half">
+			<button class="topcoat-icon-button--large--quiet" ng-click="exit()">
+				<span class="topcoat-icon--large home-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item right half">
+			<button class="topcoat-icon-button--large--quiet"
+				ng-click="slidePage('/settings')">
+				<span class="topcoat-icon--large settings-icon"></span>
+			</button>
+		</div>
+	</div>
+</footer>

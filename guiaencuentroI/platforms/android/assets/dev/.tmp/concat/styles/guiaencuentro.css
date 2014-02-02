@@ -1,0 +1,102 @@
+footer {
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	left: 0px;
+	right: 0px;
+	z-index: 1000;
+}
+
+.readHeader {
+	text-shadow: 2px 2px 3px #999;
+}
+
+.readHeader ul {
+	list-style: none;
+	padding-left: 0px;
+	font-weight: bold;
+}
+
+.readHeader ul li:nth-child(1) {
+	
+}
+
+.readHeader ul li:nth-child(2) {
+	
+}
+
+.readHeader ul li:nth-child(3) {
+	
+}
+
+.readContent {
+	text-align: justify;
+	text-indent: 2.5rem;
+}
+
+.content {
+	overflow-y: visible;
+	overflow-x: hidden;
+	padding: 1rem;
+	padding-bottom: 5.5rem;
+}
+
+.six {
+	width: 16.6666%;
+}
+
+.home-icon {
+	background: url("../images/home.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.facebook-icon {
+	background: url("../images/facebook.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.twitter-icon {
+	background: url("../images/twitter.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.magnifier-minus-icon {
+	background: url("../images/magnifier-minus.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.magnifier-plus-icon {
+	background: url("../images/magnifier-plus.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.exit-icon {
+	background: url("../images/exit.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.settings-icon {
+	background: url("../images/settings.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+.back-icon {
+	background: url("../images/back.png") no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}

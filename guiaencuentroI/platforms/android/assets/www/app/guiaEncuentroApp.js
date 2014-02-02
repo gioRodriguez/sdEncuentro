@@ -87,14 +87,14 @@ define(function() {
 			} ]);
 
 	guiaEncuentroApp.initialize = function() {
-		bindEvents();
+		bindEvents();		
 	};
 
 	function bindEvents() {
 		document.addEventListener('deviceready', onDeviceReady, false);
 	}
 
-	function onDeviceReady() {
+	function onDeviceReady() {		
 		FastClick.attach(document.body);
 	}
 

@@ -1,0 +1,41 @@
+<div class="content">
+<div scroll-bar-directive style='font-size: {{fontSize}}'
+	ng-bind-html="text" class="textViewer"></div>
+</div>
+
+<footer>
+	<div class="topcoat-navigation-bar">
+		<div class="topcoat-navigation-bar__item left six">
+			<button class="topcoat-icon-button--quiet">
+				<span class="topcoat-icon--large home-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left six">
+			<button class="topcoat-icon-button--quiet" ng-click="back()">
+				<span class="topcoat-icon--large back-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left six">
+			<button class="topcoat-icon-button--quiet"
+				ng-click="minFontSize()" ng-disabled="applyMinDisabled">
+				<span class="topcoat-icon--large magnifier-minus-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left six">
+			<button class="topcoat-icon-button--quiet"
+				ng-click="plusFontSize()" ng-disabled="applyPlusDisabled">
+				<span class="topcoat-icon--large magnifier-plus-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left six">
+			<button class="topcoat-icon-button--quiet" ng-click="facebookPublish()">
+				<span class="topcoat-icon--large facebook-icon"></span>
+			</button>
+		</div>
+		<div class="topcoat-navigation-bar__item left six">
+			<button class="topcoat-icon-button--quiet" ng-click="twitterPublish()">
+				<span class="topcoat-icon--large twitter-icon"></span>
+			</button>
+		</div>
+	</div>
+</footer>

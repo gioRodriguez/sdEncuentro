@@ -8,12 +8,12 @@ require.config({
 		'guiaEncuentroApp' : 'app/guiaEncuentroApp',
 		'jquery' : 'app/lib/jquery/jquery-1.10.2.min',
 		'zepto' : 'app/lib/zepto/zepto',
-		'mobiscrollZepto' : 'app/lib/mobiscroll/js/mobiscroll.zepto.min',
-		'mobiscrollCore' : 'app/lib/mobiscroll/js/mobiscroll.core.min',
-		'mobiscrollScroller' : 'app/lib/mobiscroll/js/mobiscroll.scroller.min',
-		'mobiscrollDate' : 'app/lib/mobiscroll/js/mobiscroll.datetime.min',
-		'mobiscrollEs' : 'app/lib/mobiscroll/js/i18n/mobiscroll.i18n.es.min',
-		'date-es' : 'app/lib/date/date-es-MX.min',
+		'mobiscrollZepto' : 'app/lib/mobiscroll/js/mobiscroll.zepto',
+		'mobiscrollCore' : 'app/lib/mobiscroll/js/mobiscroll.core',
+		'mobiscrollScroller' : 'app/lib/mobiscroll/js/mobiscroll.scroller',
+		'mobiscrollDate' : 'app/lib/mobiscroll/js/mobiscroll.datetime',
+		'mobiscrollEs' : 'app/lib/mobiscroll/js/i18n/mobiscroll.i18n.es',
+		'date-es' : 'app/lib/date/date-es-MX',
 
 		// twitter
 		'jsOAuth' : 'app/lib/jsOAuth/jsOAuth-1.3.6.min',
@@ -24,22 +24,22 @@ require.config({
 		'fabookPluginConnect' : 'app/lib/facebook/cdv-plugin-fb-connect.min',
 
 		// directives
-		'dateSelectorDirective' : 'app/directives/mobiscrollDirective.min',
+		'dateSelectorDirective' : 'app/directives/mobiscrollDirective',
 		'scrollBarDirective' : 'app/directives/scrollBarDirective',
 
 		// services
 		'twitterService' : 'app/services/twitterService',
-		'facebookService' : 'app/services/facebookService.min',
+		'facebookService' : 'app/services/facebookService',
 		'constantsService' : 'app/services/constantsService',
-		'navigationService' : 'app/services/navigationService.min',
+		'navigationService' : 'app/services/navigationService',
 		'localStorageService' : 'app/services/localStgeService',
-		'dataServices' : 'app/services/dataServices.min',
+		'dataServices' : 'app/services/dataServices',
 		'cordovaServices' : 'app/services/cordovaServices',
 
 		// controllers
-		'homeController' : 'app/controllers/HomeController.min',
+		'homeController' : 'app/controllers/HomeController',
 		'textViewerController' : 'app/controllers/TextViewerController',
-		'settingsController' : 'app/controllers/SettingsController.min'
+		'settingsController' : 'app/controllers/SettingsController'
 	},
 	shim : {
 		'zepto' : {

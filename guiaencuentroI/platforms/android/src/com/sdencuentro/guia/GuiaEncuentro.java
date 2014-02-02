@@ -19,19 +19,52 @@
 
 package com.sdencuentro.guia;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.GZIPInputStream;
+
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaActivity;
+
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import org.apache.cordova.*;
+import android.util.Log;
 
-public class GuiaEncuentro extends CordovaActivity 
-{
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        super.init();
-        // Set by <content src="index.html" /> in config.xml
-        super.loadUrl(Config.getStartUrl());
-        //super.loadUrl("file:///android_asset/www/index.html")
-    }
+public class GuiaEncuentro extends CordovaActivity {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		super.init();
+		
+		String content = loadFile();
+		
+		// Set by <content src="index.html" /> in config.xml
+		super.loadUrl(Config.getStartUrl());
+		// super.loadUrl("file:///android_asset/www/index.html")
+	}
+
+	private String loadFile() {
+		AssetManager assetManager = getAssets();
+		InputStream inputStream = null;
+		try {
+			String[] files = assetManager.list("www/texts/Abril");
+			inputStream = assetManager.open("www/texts/Abril/Abril23.bh");
+			GZIPInputStream zis = new GZIPInputStream(new BufferedInputStream(inputStream));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+            int len;
+            while((len = zis.read(buffer)) != -1){
+            	baos.write(buffer, 0, len);
+            }
+            //close resources
+            zis.close();
+            baos.close();
+            return new String(baos.toByteArray(), "UTF-8");
+		} catch (IOException e) {
+			Log.e("message: ", e.getMessage());
+		}
+		return "";
+	}
 }
-

@@ -36,4 +36,8 @@ GuiaEncuentro
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
+    
+    <feature name="GetText">
+        <param name="android-package" value="com.sdencuentro.guia.plugins.GetTextPlugin" />
+    </feature>
 </widget>
