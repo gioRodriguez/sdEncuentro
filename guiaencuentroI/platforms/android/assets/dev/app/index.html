@@ -22,7 +22,7 @@
 <meta charset="utf-8" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="viewport"
-	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
 <!-- guia encuentro styles -->
 <!-- build:css({.tmp,app}) styles/guiaencuentro.css -->
@@ -58,6 +58,11 @@
 
 	<mobile-view />
 	<!-- build:js scripts/vendor.js -->
+	<!-- Apache Cordova -->
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript"
+		src="plugins/com.sdencuentro.guia.getText/getText.js"></script>
+
 	<!-- bower:js -->
 	<!-- Zepto v1.2.5 -->
 	<script type="text/javascript"
@@ -74,11 +79,6 @@
 		src="bower_components/zeptojs/src/form.js" charset="utf-8"></script>
 	<script type="text/javascript" src="bower_components/zeptojs/src/ie.js"
 		charset="utf-8"></script>
-
-	<!-- Apache cordova 3.2.0 -->
-	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="cordova_plugins.js"></script>
-	<script type="text/javascript" src="plugins/com.sdencuentro.guia.getText/getText.js"></script>
 
 	<!-- AngularJs v1.2.10 -->
 	<script type="text/javascript"
@@ -102,16 +102,15 @@
 		src="bower_components/fastclick/lib/fastclick.js" charset="utf-8"></script>
 	<!-- endbower -->
 	<!-- endbuild -->
-	
+
 	<!-- RequireJs -->
-	<!-- @if NODE_ENV =='development' -->	
+	<!-- @if NODE_ENV =='development' -->
 	<script type="text/javascript"
 		src="bower_components/requirejs/require.js" data-main="main"
 		charset="utf-8"></script>
 	<!-- @endif -->
-	<!-- @if NODE_ENV =='production' -->	
-	<script type="text/javascript"
-		src="main.js" data-main="main"
+	<!-- @if NODE_ENV =='production' -->
+	<script type="text/javascript" src="main.js" data-main="main"
 		charset="utf-8"></script>
 	<!-- @endif -->
 </body>

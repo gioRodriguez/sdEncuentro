@@ -3,11 +3,19 @@
  */
 "use strict";
 
+var tests = [];
+for ( var file in window.__karma__.files) {
+	if (window.__karma__.files.hasOwnProperty(file)) {
+		if (/Test\.js$/.test(file)) {
+			tests.push(file);
+		}
+	}
+}
+
 require
 		.config({
+			baseUrl : '/base/app',
 			paths : {
-				'guiaEncuentroApp' : 'scripts/guiaEncuentroApp',
-				'app' : 'scripts/app',
 				'mobiscrollZepto' : 'bower_components/mobiscroll/js/mobiscroll.zepto',
 				'mobiscrollCore' : 'bower_components/mobiscroll/js/mobiscroll.core',
 				'mobiscrollScroller' : 'bower_components/mobiscroll/js/mobiscroll.scroller',
@@ -24,6 +32,9 @@ require
 				'facebookSdk' : 'scripts/lib/facebook/facebook-js-sdk',
 				'fabookPluginConnect' : 'scripts/lib/facebook/cdv-plugin-fb-connect',
 
+				'guiaEncuentroApp' : 'scripts/guiaEncuentroApp',
+				'app' : 'scripts/app',
+
 				// directives
 				'dateSelectorDirective' : 'scripts/directives/mobiscrollDirective',
 				'scrollBarDirective' : 'scripts/directives/scrollBarDirective',
@@ -39,6 +50,7 @@ require
 
 				// controllers
 				'homeController' : 'scripts/controllers/HomeController',
+				'homeController3' : 'scripts/controllers/HomeController3',
 				'textViewerController' : 'scripts/controllers/TextViewerController',
 				'settingsController' : 'scripts/controllers/SettingsController'
 			},
@@ -68,12 +80,17 @@ require
 				'codebird' : {
 					deps : [ 'sha1' ]
 				}
-			}
+			},
+
+			// ask Require.js to load these files (all our tests)
+			deps : tests,
+
+			// start test run, once Require.js is done
+			callback : window.__karma__.start
 		});
 
 require([ 'guiaEncuentroApp', 'localStgeService', 'navigationService',
 		'dateSelectorDirective', 'homeController', 'constantsService',
 		'cordovaServices' ], function(guiaEncuentroApp) {
-	angular.bootstrap(document, [ 'guiaEncuentroApp' ]);
 	guiaEncuentroApp.initialize();
 });
