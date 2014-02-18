@@ -43,11 +43,11 @@ define(function() {
 											welcome : 'Jesús les dijo: Yo soy el pan de la vida; el que viene a mí no tendrá hambre, y el que cree en mí nunca tendrá sed (Juan 6:35)',
 											spanish : 'Español',
 											english : 'Ingles',
-											publishTitle: 'Compartido',
-											publishFacebook: 'Copartido en fabebook gracias :)',
-											publishTwitter: 'Copartido en twitter gracias :)',
-											publishFail: 'Lo sentimos ha ocurrido un error :(',
-											publishOk: 'Aceptar'
+											publishTitle : 'Compartido',
+											publishFacebook : 'Copartido en fabebook gracias :)',
+											publishTwitter : 'Copartido en twitter gracias :)',
+											publishFail : 'Lo sentimos ha ocurrido un error :(',
+											publishOk : 'Aceptar'
 										});
 
 						$translateProvider
@@ -61,30 +61,15 @@ define(function() {
 											welcome : 'Then Jesus declared, “I am the bread of life. Whoever comes to me will never go hungry, and whoever believes in me will never be thirsty (John :35 )',
 											spanish : 'Spanish',
 											english : 'English',
-											publishTitle: 'Publish',
-											publishFacebook: 'Shared in facebook thank you :)',
-											publishTwitter: 'Shared in twitter thank you :)',
-											publishFail: "We're so sorry an error has been occurred :(",
-											publishOk: 'Ok'
+											publishTitle : 'Publish',
+											publishFacebook : 'Shared in facebook thank you :)',
+											publishTwitter : 'Shared in twitter thank you :)',
+											publishFail : "We're so sorry an error has been occurred :(",
+											publishOk : 'Ok'
 										});
 						$translateProvider.preferredLanguage('es');
 
 					} ]);
-
-	guiaEncuentroApp.run([
-			'localStorageService',
-			'constantsService',
-			'$translate',
-			function(localStorageService, constantsService, $translate) {
-				localStorageService.set(constantsService.selectedDateKey,
-						new Date().toString(constantsService.dateFormat));
-
-				// load language
-				var langSelecByUser = localStorageService
-						.get(constantsService.preferredLanguageKey);
-				var defaultLang = constantsService.preferredLanguageDefault;
-				$translate.uses(langSelecByUser || defaultLang);
-			} ]);
 
 	guiaEncuentroApp.initialize = function() {
 		bindEvents();

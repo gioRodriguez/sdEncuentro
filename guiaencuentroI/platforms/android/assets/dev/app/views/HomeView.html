@@ -15,7 +15,7 @@
 		<label for="illyumDateSelector">{{'selectionDate' |
 			translate}}</label> <input illyum-date-selector name="illyumDateSelector"
 			class="illyumDateSelector topcoat-text-input" ng-model="selectedDate"
-			ng-change="setSelectedDate()" />
+			ng-change="persistSelectedDate()" />
 	</div>
 	<button class="topcoat-button--cta" ng-click="slidePage('/textViewer')">{{'goReading'
 		| translate}}</button>

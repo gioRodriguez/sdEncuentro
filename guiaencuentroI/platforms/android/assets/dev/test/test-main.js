@@ -32,8 +32,8 @@ require
 				'facebookSdk' : 'scripts/lib/facebook/facebook-js-sdk',
 				'fabookPluginConnect' : 'scripts/lib/facebook/cdv-plugin-fb-connect',
 
+				'appBootstrap' : 'scripts/appBootstrap',
 				'guiaEncuentroApp' : 'scripts/guiaEncuentroApp',
-				'app' : 'scripts/app',
 
 				// directives
 				'dateSelectorDirective' : 'scripts/directives/mobiscrollDirective',
@@ -89,8 +89,7 @@ require
 			callback : window.__karma__.start
 		});
 
-require([ 'guiaEncuentroApp', 'localStgeService', 'navigationService',
-		'dateSelectorDirective', 'homeController', 'constantsService',
-		'cordovaServices' ], function(guiaEncuentroApp) {
+require([ 'guiaEncuentroApp', 'appBootstrap', 'homeController' ], function(
+		guiaEncuentroApp) {
 	guiaEncuentroApp.initialize();
 });

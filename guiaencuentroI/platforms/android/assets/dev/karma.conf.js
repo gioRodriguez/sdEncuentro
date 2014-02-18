@@ -21,7 +21,11 @@ module.exports = function(config) {
 
 				'app/bower_components/zeptojs/src/zepto.js',
 				'app/bower_components/zeptojs/src/form.js',
-				'app/bower_components/zeptojs/src/ie.js', {
+				'app/bower_components/zeptojs/src/ie.js',
+				'app/bower_components/zeptojs/src/deferred.js',
+				'app/bower_components/zeptojs/src/callbacks.js',
+				'app/bower_components/zeptojs/src/event.js',
+				'app/bower_components/zeptojs/src/ajax.js', {
 					pattern : 'app/*.js',
 					included : false
 				}, {

@@ -6,6 +6,7 @@
 require
 		.config({
 			paths : {
+				'appBootstrap' : 'scripts/appBootstrap',
 				'guiaEncuentroApp' : 'scripts/guiaEncuentroApp',
 				'app' : 'scripts/app',
 				'mobiscrollZepto' : 'bower_components/mobiscroll/js/mobiscroll.zepto',
@@ -71,9 +72,8 @@ require
 			}
 		});
 
-require([ 'guiaEncuentroApp', 'localStgeService', 'navigationService',
-		'dateSelectorDirective', 'homeController', 'constantsService',
-		'cordovaServices' ], function(guiaEncuentroApp) {
+require([ 'guiaEncuentroApp', 'appBootstrap', 'homeController' ], function(
+		guiaEncuentroApp) {
 	angular.bootstrap(document, [ 'guiaEncuentroApp' ]);
 	guiaEncuentroApp.initialize();
 });
