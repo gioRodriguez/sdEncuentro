@@ -2,98 +2,139 @@
  * Home Controller
  */
 
-define([ 'guiaEncuentroApp', 'scrollBarDirective', 'dataServices',
-		'facebookService', 'twitterService' ], function(guiaEncuentroApp) {
-	var textViewerController = function($scope, navigationService,
-			localStorageService, constantsService, dataServices, cordovaServices,
-			$translate, facebookService, twitterService) {
-		var FONT_SIZES = [ 'xx-small', 'x-small', 'small', 'medium', 'large',
-				'x-large', 'xx-large' ];
+define([
+		'guiaEncuentroApp',
+		'scrollBarDirective',
+		'dataServices',
+		'facebookService',
+		'twitterService' ], function(guiaEncuentroApp) {
+	var textViewerController = function(
+			$scope,
+			navigationService,
+			localStorageService,
+			constantsService,
+			dataServices,
+			cordovaServices,
+			$translate,
+			facebookService,
+			twitterService) {
+
+		var FONT_SIZES = [
+				'xx-small',
+				'x-small',
+				'small',
+				'medium',
+				'large',
+				'x-large',
+				'xx-large' ];
 		var MAX_FONT_SIZE = FONT_SIZES.length;
+		var indexPreferredFontSize;
 
-		var localFontSize = localStorageService.get('fontSize');
-		var currentFontSize = localFontSize != null ? localFontSize
-				: constantsService.defaultFontSize;
-		setFontSize(currentFontSize);
-
-		// load the selected text
-		$scope.selectedDate = localStorageService
-				.get(constantsService.selectedDateKey);
-		dataServices.getTextByDate($scope.selectedDate).done(function(data) {
-			$scope.text = data;
-		}).fail(function(data) {
-			console.log('error: ' + data);
-		});
-
-		$scope.applyPlusDisabled = applyPlusDisabled();
-		function applyPlusDisabled() {
-			return currentFontSize + 1 >= MAX_FONT_SIZE;
+		function init() {
+			loadUserPreferredFontSize();
+			loadSelectedText();
+			enableDisableMinPlusFont();
 		}
 
-		$scope.applyMinDisabled = applyMinDisabled();
-		function applyMinDisabled() {
-			return currentFontSize - 1 < 0;
+		function enableDisableMinPlusFont() {
+			isDisabledPlusFontSize();
+			isDisabledMinFontSize();
+		}
+
+		function loadUserPreferredFontSize() {
+			var fontSizeStored = localStorageService.get('fontSize');
+			indexPreferredFontSize = fontSizeStored != null ? fontSizeStored
+					: constantsService.defaultFontSize;
+			$scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
+		}
+
+		function setFontSize() {
+			$scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
+			localStorageService.set('fontSize', indexPreferredFontSize);
+		}
+
+		function loadSelectedText() {
+			$scope.selectedDate = localStorageService
+					.get(constantsService.selectedDateKey);
+			dataServices.getTextByDate($scope.selectedDate).done(function(data) {
+				$scope.text = data;
+			}).fail(function(data) {
+				console.log('error: ' + data);
+			});
+		}
+
+		function isDisabledPlusFontSize() {
+			$scope.disablePlusFontSize = indexPreferredFontSize + 1 >= MAX_FONT_SIZE;
+			return $scope.disablePlusFontSize;
+		}
+
+		function isDisabledMinFontSize() {
+			$scope.disableMinFontSize = indexPreferredFontSize - 1 < 0;
+			return $scope.disableMinFontSize;
 		}
 
 		$scope.back = function(path, type) {
 			navigationService.back();
 		};
 
-		function setFontSize(currentFontSize) {
-			$scope.fontSize = FONT_SIZES[currentFontSize];
-			localStorageService.set('fontSize', currentFontSize);
-		}
-
 		$scope.plusFontSize = function() {
-			if (!applyPlusDisabled()) {
-				$scope.applyMinDisabled = false;
-				currentFontSize = currentFontSize + 1;
-				setFontSize(currentFontSize);
+			if (!$scope.disablePlusFontSize) {
+				indexPreferredFontSize++;
+				setFontSize();
 			}
-			$scope.applyPlusDisabled = applyPlusDisabled();
+			enableDisableMinPlusFont();
 		}
 
 		$scope.minFontSize = function() {
-			if (!applyMinDisabled()) {
-				$scope.applyPlusDisabled = false;
-				currentFontSize = currentFontSize - 1;
-				setFontSize(currentFontSize);
+			if (!$scope.disableMinFontSize) {
+				indexPreferredFontSize--;
+				setFontSize();
 			}
-			$scope.applyMinDisabled = applyMinDisabled();
+			enableDisableMinPlusFont();
 		}
 
 		$scope.facebookPublish = function() {
-			// var text = getTextForFacebookPublish();
-			var text = 'hola mundo';
+			var text = getTextForPublish();
 			facebookService.publish(text).done(
 					function(response) {
 						if (!response.error) {
-							console.log(response);
-							cordovaServices.alert('Publicado en facebook :)', 'Gracias',
-									'Aceptar');
+							cordovaServices.alert($translate('publishFacebook'),
+									$translate('publishTitle'), $translate('publishOk'));
 						} else {
 							console.log(response.error.message);
-							cordovaServices.alert(
-									'Lo sentimos ocurrio un error al publicar :(',
-									'notificación', 'Aceptar');
+							cordovaServices.alert($translate('publishFail'),
+									$translate('publishTitle'), $translate('publishOk'));
 						}
 					});
 		};
 
 		$scope.twitterPublish = function() {
-			twitterService.publish('Hola desde guia encuentro');
+			var text = getTextForPublish();
+			twitterService.publish(text);
+		};
+		
+		$scope.exit = function() {
+			cordovaServices.exitApp();
 		};
 
-		function getTextForFacebookPublish() {
-			var header = $('.readHeader ul').text().replace('/\r?\n/g', '').trim()
-					+ '\n';
-			var read = $('.readContent').text().substring(0, 600) + "...";
-			return header + read;
+		function getTextForPublish() {
+			var text = $scope.text.substring(0, 600) + '...';
+			return String(text).replace(/<[^>]+>/gm, '');
+			;
 		}
+
+		init();
 	};
 
-	guiaEncuentroApp.controller('TextViewerController', [ '$scope',
-			'navigationService', 'localStorageService', 'constantsService',
-			'dataServices', 'cordovaServices', '$translate', 'facebookService',
-			'twitterService', textViewerController ]);
+	guiaEncuentroApp.controller('TextViewerController', [
+			'$scope',
+			'navigationService',
+			'localStorageService',
+			'constantsService',
+			'dataServices',
+			'cordovaServices',
+			'$translate',
+			'facebookService',
+			'twitterService',
+			textViewerController ]);
 })

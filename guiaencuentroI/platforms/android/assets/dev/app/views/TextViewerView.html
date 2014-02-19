@@ -1,5 +1,5 @@
 <div class="content">
-<div scroll-bar-directive style='font-size: {{fontSize}}'
+<div scroll-bar-directive style='font-size: {{userPreferredFontSize}}'
 	ng-bind-html="text" class="textViewer"></div>
 </div>
 
@@ -17,13 +17,13 @@
 		</div>
 		<div class="topcoat-navigation-bar__item left six">
 			<button class="topcoat-icon-button--quiet"
-				ng-click="minFontSize()" ng-disabled="applyMinDisabled">
+				ng-click="minFontSize()" ng-disabled="disableMinFontSize">
 				<span class="topcoat-icon magnifier-minus-icon"></span>
 			</button>
 		</div>
 		<div class="topcoat-navigation-bar__item left six">
 			<button class="topcoat-icon-button--quiet"
-				ng-click="plusFontSize()" ng-disabled="applyPlusDisabled">
+				ng-click="plusFontSize()" ng-disabled="disablePlusFontSize">
 				<span class="topcoat-icon magnifier-plus-icon"></span>
 			</button>
 		</div>

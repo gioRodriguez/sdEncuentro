@@ -4,7 +4,7 @@
 
 define(
 		[ 'guiaEncuentroApp', 'homeController' ],
-		function(guiaEncuentroApp) {
+		function() {
 			describe(
 					'homeController',
 					function() {
@@ -22,8 +22,10 @@ define(
 							localStorageService.get = function() {
 							};
 							spyOn(localStorageService, 'get').andReturn(CURRENT_DATE);
-							cordovaServices = jasmine.createSpyObj('cordovaServices', [ 'exitApp' ]);
-							navigationService = jasmine.createSpyObj('navigationService', [ 'slidePage' ]);
+							cordovaServices = jasmine.createSpyObj('cordovaServices',
+									[ 'exitApp' ]);
+							navigationService = jasmine.createSpyObj('navigationService',
+									[ 'slidePage' ]);
 
 							scope = $rootScope.$new();
 							homeController = $controller('HomeController', {
