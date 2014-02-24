@@ -95,32 +95,35 @@ define([
 
 		$scope.facebookPublish = function() {
 			var text = getTextForPublish();
-			facebookService.publish(text).done(
-					function(response) {
-						if (!response.error) {
+			if (text) {
+				facebookService.publish(text).then(
+						function() {
 							cordovaServices.alert($translate('publishFacebook'),
 									$translate('publishTitle'), $translate('publishOk'));
-						} else {
-							console.log(response.error.message);
+						},
+						function() {
 							cordovaServices.alert($translate('publishFail'),
 									$translate('publishTitle'), $translate('publishOk'));
-						}
-					});
+						});
+			}
+
 		};
 
 		$scope.twitterPublish = function() {
 			var text = getTextForPublish();
 			twitterService.publish(text);
 		};
-		
+
 		$scope.exit = function() {
 			cordovaServices.exitApp();
 		};
 
 		function getTextForPublish() {
-			var text = $scope.text.substring(0, 600) + '...';
-			return String(text).replace(/<[^>]+>/gm, '');
-			;
+			if ($scope.text) {
+				textToPublish = $scope.text.substring(0, 600) + '...';
+				return String(textToPublish).replace(/<[^>]+>/gm, '');
+			}
+			return null;
 		}
 
 		init();

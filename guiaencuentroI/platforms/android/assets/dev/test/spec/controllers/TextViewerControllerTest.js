@@ -70,7 +70,7 @@ define(
 							facebookService.publish = function() {
 							}
 							spyOn(facebookService, 'publish').andReturn({
-								done : function(func) {
+								then : function(func) {
 									func('success');
 									return {
 										fail : function() {
@@ -99,6 +99,56 @@ define(
 									[ 'publishFacebook', 'publishTitle', 'publishOk' ]);
 							expect(cordovaServices.alert).toHaveBeenCalledWith('messageFake',
 									'messageFake', 'messageFake');
+						});
+						
+						it('must cancell publish to facebook when there are not selected text', function() {
+							// arrange
+							dataServices = jasmine.createSpy('dataServices');
+							dataServices.getTextByDate = function() {								
+							};
+							spyOn(dataServices, 'getTextByDate').andReturn({
+								done : function(func) {
+									func(undefined);
+									return {
+										fail : function() {
+										}
+									};
+								}
+							});
+							var translateKeys = [];
+							$translate = function(translateKey) {
+								translateKeys.push(translateKey);
+								return 'messageFake';
+							}
+							facebookService = jasmine.createSpyObj('facebookService',
+									[ 'publish' ]);
+							facebookService.publish = function() {
+							}
+							spyOn(facebookService, 'publish').andReturn({
+								done : function(func) {
+									func('success');
+									return {
+										fail : function() {
+										}
+									};
+								}
+							});
+							textViewerController = controller('TextViewerController', {
+								$scope : scope,
+								localStorageService : localStorageService,
+								dataServices : dataServices,
+								constantsService : constantsService,
+								navigationService : navigationService,
+								cordovaServices : cordovaServices,
+								facebookService : facebookService,
+								$translate : $translate
+							});
+
+							// act
+							scope.facebookPublish();
+
+							// assert
+							expect(facebookService.publish).not.toHaveBeenCalled();
 						});
 						
 						it('must publish to twitter', function() {
