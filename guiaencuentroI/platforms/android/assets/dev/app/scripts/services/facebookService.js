@@ -7,6 +7,9 @@ define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
 	var facebookService = function() {
 		var facebookServiceFactory = {};
 
+		/**
+		 * Publish a text to facebook
+		 */
 		facebookServiceFactory.publish = function(text) {
 			FB.init({
 				appId : '284021708287063',
@@ -76,6 +79,9 @@ define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
 			return hasPreviousLoginActive.promise();
 		}
 
+		/**
+		 * Do facebook logout
+		 */
 		facebookServiceFactory.logout = function() {
 			FB.logout(function(response) {
 				window.location.reload();
