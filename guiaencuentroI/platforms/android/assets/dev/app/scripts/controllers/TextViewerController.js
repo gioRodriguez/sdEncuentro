@@ -94,9 +94,7 @@ define([
 		}
 
 		$scope.facebookPublish = function() {
-			cordovaServices.alert($translate('publishFacebook'),
-					$translate('publishTitle'), $translate('publishOk'));
-			/*var text = getTextForPublish();
+			var text = getTextForPublish();
 			if (text) {
 				facebookService.publish(text).then(
 						function() {
@@ -107,7 +105,7 @@ define([
 							cordovaServices.alert($translate('publishFail'),
 									$translate('publishTitle'), $translate('publishOk'));
 						});
-			}*/
+			}
 		};
 		
 		$scope.twitterPublish = function() {

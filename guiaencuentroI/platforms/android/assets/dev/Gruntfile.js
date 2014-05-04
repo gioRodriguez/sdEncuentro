@@ -376,12 +376,8 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build', [ 'clean:dist', 'useminPrepare', 'compass:dist',
 			'imagemin', 'svgmin', 'autoprefixer', 'concat', 'copy:dist', 'cdnify',
-			'cssmin', 'compress', 'clean:bh', 'preprocess:js', // Remove
-			// DEBUG
-			// code from
-			// production
-			// builds
-			'preprocess:html', // Remove DEBUG code from production builds
+			'cssmin', 'compress', 'clean:bh',
+			'preprocess:html', 'preprocess:js', // Remove DEBUG code from production builds
 			'ngmin', 'requirejs', 'uglify', 'rev', 'usemin', 'htmlmin' ]);
 
 	// default task(s).
