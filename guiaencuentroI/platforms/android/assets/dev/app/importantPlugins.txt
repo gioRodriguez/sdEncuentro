@@ -1,0 +1,3 @@
+When update or create the project cordova use the non minified plugins versions, but grunt
+copies the minified version, so, update manually the cordova_plugins.js file to use the .min 
+scripts versions

@@ -94,7 +94,9 @@ define([
 		}
 
 		$scope.facebookPublish = function() {
-			var text = getTextForPublish();
+			cordovaServices.alert($translate('publishFacebook'),
+					$translate('publishTitle'), $translate('publishOk'));
+			/*var text = getTextForPublish();
 			if (text) {
 				facebookService.publish(text).then(
 						function() {
@@ -105,13 +107,22 @@ define([
 							cordovaServices.alert($translate('publishFail'),
 									$translate('publishTitle'), $translate('publishOk'));
 						});
-			}
-
+			}*/
 		};
-
+		
 		$scope.twitterPublish = function() {
-			var text = getTextForPublish();
-			twitterService.publish(text);
+			var text = 'twitter test';
+			if (text) {
+				twitterService.publish(text).then(
+						function() {
+							cordovaServices.alert($translate('publishTwitter'),
+									$translate('publishTitle'), $translate('publishOk'));
+						},
+						function() {
+							cordovaServices.alert($translate('publishFail'),
+									$translate('publishTitle'), $translate('publishOk'));
+						});
+			}
 		};
 
 		$scope.exit = function() {
