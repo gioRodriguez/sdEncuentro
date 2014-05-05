@@ -11,20 +11,11 @@ public class GuiaEncuentroReadTest {
 	@Test
 	public void toHtml() throws Exception {
 		// arrange
-		String expected = "<p class='readHeader'>"
-				+ "<ul>"
-				+ "<li>Lectura Del Año Bíblico Del Plan Encuentro I</li>"
-				+ "<li>1 De Abril</li><li>Lucas 4:31:44</li>"
-				+ "<li>Deseado De Todas Las Gentes, Pag. 217-218</li>"
-				+ "<li>Lucas 4:31-44</li>"
-				+ "</ul>"
-				+ "</p>"
-				+ "<hr>"
-				+ "Reina-Valera 1960 (RVR1960)Un hombre que tenía un espíritu inmundo(Mr. 1.21-28)31 Descendió Jesús a Capernaum, ciudad de Galilea; y les enseñaba en los días de reposo.[a]";
+		String expected = "<div class='readHeader'><ul><li><span></span><h1>Lectura Del Año Bíblico Del Plan Encuentro I</h1></li><li><span></span><h2>22 De Mayo</h2></li><li><span></span><h3>Mateo 9:18-31; Marcos 5:21-43.</h3></li></ul></div><hr>Mateo 9:18-31Reina-Valera 1960 (RVR1960)La hija de Jairo, y la mujer que tocó el manto de Jesús(Mr. 5.21-43; Lc. 8.40-56)";
 		
 		GuiaEncuentroReaderImpl guiaEncuentroReader = new GuiaEncuentroReaderImpl();
 		GuiaEncuentroRead guiaEncuentroRead = new GuiaEncuentroRead(guiaEncuentroReader);
-		guiaEncuentroRead.setReadPath("guiaEncuentroReadII.txt");
+		guiaEncuentroRead.setReadPath(GuiaEncuentroReadTest.class.getResource("/guiaEncuentroReadII.txt").getPath());
 		
 		// act
 		String actual = guiaEncuentroRead.toHtml();

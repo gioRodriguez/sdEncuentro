@@ -19,7 +19,12 @@ public class GuiaEncuentroHeaderLine extends GuiaEncuentroLine {
 
 	@Override
 	public String toHtml() {
-		return String.format("<li>%s</li>", toHeader(getLineBody()));
+		return String.format(
+				"<li><span></span><h%d>%s</h%d></li>", 
+				getLineIndex() + 1, 
+				toHeader(getLineBody()), 
+				getLineIndex() + 1
+		);
 	}
 
 	private String toHeader(String body){
@@ -27,7 +32,10 @@ public class GuiaEncuentroHeaderLine extends GuiaEncuentroLine {
 			return "";
 		}
 		
-		Iterable<String> words = Splitter.on(" ").split(body.toLowerCase());
+		Iterable<String> words = Splitter.on(" ")
+				.trimResults()
+				.omitEmptyStrings()				
+				.split(body.toLowerCase());
 		StringBuilder headerBuilder = new StringBuilder();
 		for (String word : words) {
 			if(Strings.isNullOrEmpty(word)){

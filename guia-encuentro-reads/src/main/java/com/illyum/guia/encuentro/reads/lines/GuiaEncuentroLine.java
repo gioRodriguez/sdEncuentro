@@ -5,7 +5,9 @@ import com.illyum.guia.encuentro.reads.formatters.Formatter;
 
 public abstract class GuiaEncuentroLine implements NullObject, Formatter {
 
-	private static final int LINES_TO_USE_AS_HEADER = 4;
+	private static final int MIN_HEADER_LENGHT = 3;
+
+	private static final int LINES_TO_USE_AS_HEADER = 3;
 
 	private static GuiaEncuentroLine NULL_LINE = new GuiaEncuentroNullLine();
 
@@ -22,6 +24,10 @@ public abstract class GuiaEncuentroLine implements NullObject, Formatter {
 	) {
 		_lineBody = lineBody;
 		_lineIndex = lineIndex;
+	}
+	
+	public int getLineIndex(){
+		return _lineIndex;
 	}
 	
 	public String getLineBody(){
@@ -41,7 +47,9 @@ public abstract class GuiaEncuentroLine implements NullObject, Formatter {
 			String lineBody,
 			int lineIndex
 	) {
-		if (Strings.isNullOrEmpty(lineBody) || "".equals(lineBody.trim())) {
+		if (Strings.isNullOrEmpty(lineBody) || 
+				"".equals(lineBody.trim()) ||
+				lineBody.length() < MIN_HEADER_LENGHT) {
 			return nullLine();
 		}
 
@@ -60,7 +68,7 @@ public abstract class GuiaEncuentroLine implements NullObject, Formatter {
 
 	public static boolean isHeaderLine(
 			int lineIndex) {
-		return 0 <= lineIndex && lineIndex <= LINES_TO_USE_AS_HEADER;
+		return 0 <= lineIndex && lineIndex < LINES_TO_USE_AS_HEADER;
 	}
 
 	public static GuiaEncuentroLine nullLine() {

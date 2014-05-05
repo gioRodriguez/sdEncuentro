@@ -37,7 +37,7 @@ public class GuiaEncuentroRead implements Formatter{
 	) {
 		StringBuilder headerBuilder = new StringBuilder();
 		
-		headerBuilder.append("<p class='readHeader'>");
+		headerBuilder.append("<div class='readHeader'>");
 		headerBuilder.append("<ul>");
 		
 		for (GuiaEncuentroLine guiaEncuentroLine : lines) {	
@@ -47,7 +47,7 @@ public class GuiaEncuentroRead implements Formatter{
 		}
 		
 		headerBuilder.append("</ul>");
-		headerBuilder.append("</p>");
+		headerBuilder.append("</div>");
 		headerBuilder.append("<hr>");
 		
 		return headerBuilder.toString();
