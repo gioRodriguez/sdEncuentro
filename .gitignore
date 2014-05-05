@@ -1,6 +1,16 @@
 *.class
-
-# Package Files #
 *.war
+
 *.ear
+
+CordovaLib
+.settings
+.project
+target
+.classpath
+ant-gen
+ant-build
+ant-gen
+ant-build
+CordovaLib
 CordovaLib
