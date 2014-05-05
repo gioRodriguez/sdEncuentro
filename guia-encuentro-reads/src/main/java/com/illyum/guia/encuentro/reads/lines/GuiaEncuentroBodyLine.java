@@ -11,7 +11,7 @@ public class GuiaEncuentroBodyLine extends GuiaEncuentroLine {
 
 	@Override
 	public String toHtml() {
-		return getLineBody();
+		return String.format("<p>%s</p>", getLineBody());
 	}
 
 }

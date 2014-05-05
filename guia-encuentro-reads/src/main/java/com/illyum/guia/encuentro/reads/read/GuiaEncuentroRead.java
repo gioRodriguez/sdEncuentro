@@ -56,12 +56,14 @@ public class GuiaEncuentroRead implements Formatter{
 	private String getBody(
 			List<GuiaEncuentroLine> lines
 	) {
-		StringBuilder bodyBuilder = new StringBuilder();		
+		StringBuilder bodyBuilder = new StringBuilder();	
+		bodyBuilder.append("<div class='readBoby'>");
 		for (GuiaEncuentroLine guiaEncuentroLine : lines) {	
 			if(!guiaEncuentroLine.isHeader()){
 				bodyBuilder.append(guiaEncuentroLine.toHtml());
 			}				
 		}		
+		bodyBuilder.append("</div>");
 		return bodyBuilder.toString();
 	}
 
