@@ -93,7 +93,7 @@ module.exports = function(grunt) {
 			bh : {
 				files : [ {
 					dot : true,
-					src : [ '<%= yeoman.dist %>/texts/**/*.bh' ]
+					src : [ '<%= yeoman.dist %>/texts/**/*.txt' ]
 				} ]
 			},
 			server : '.tmp'
