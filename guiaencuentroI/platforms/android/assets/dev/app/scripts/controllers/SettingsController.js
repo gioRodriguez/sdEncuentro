@@ -5,7 +5,8 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 			$translate,
 			localStorageService,
 			constantsService,
-			cordovaServices) {
+			cordovaServices,
+			facebookService) {
 		
 		$scope.back = function() {
 			navigationService.back()
@@ -25,6 +26,23 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 		$scope.exit = function() {
 			cordovaServices.exitApp();
 		};
+				
+		$scope.disableFacebookButton = true;
+		$scope.ckeckFacebookButton = function() {
+			facebookService.hasActiveAccount().then(function() {
+				$scope.disableFacebookButton = false;
+			}, function() {
+				$scope.disableFacebookButton = true;
+			});
+		}
+		
+		$scope.facebookLogout = function() {
+			facebookService.logout().then(function() {
+				$scope.ckeckFacebookButton();
+				cordovaServices.alert($translate('accountAlertMsg'),
+						$translate('accountAlertTitle'), $translate('publishOk'));
+			});
+		}
 	};
 	guiaEncuentroApp.controller("SettingsController", [
 			"$scope",
@@ -33,5 +51,6 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 			'localStorageService',
 			'constantsService',
 			'cordovaServices',
+			'facebookService',
 			settingsController ])
 });

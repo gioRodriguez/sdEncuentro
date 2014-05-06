@@ -15,22 +15,29 @@
        KIND, either express or implied.  See the License for the
        specific language governing permissions and limitations
        under the License.
- */
+*/
 
-package com.sdencuentro.guia;
+package org.apache.cordova.splashscreen;
 
-import org.apache.cordova.Config;
-import org.apache.cordova.CordovaActivity;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.json.JSONArray;
 
-import android.os.Bundle;
+public class SplashScreen extends CordovaPlugin {
 
-public class GuiaEncuentro extends CordovaActivity {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		super.init();
-		
-		// Set by <content src="index.html" /> in config.xml
-		super.loadUrl(Config.getStartUrl(), 2500);
-	}
+    @Override
+    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+        if (action.equals("hide")) {
+            this.webView.postMessage("splashscreen", "hide");
+        } else if (action.equals("show")){
+            this.webView.postMessage("splashscreen", "show");
+        }
+        else {
+            return false;
+        }
+
+        callbackContext.success();
+        return true;
+    }
+
 }

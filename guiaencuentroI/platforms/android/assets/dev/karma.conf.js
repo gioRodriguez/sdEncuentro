@@ -35,7 +35,7 @@ module.exports = function(config) {
 					pattern : 'app/scripts/**/*.js',
 					included : false
 				}, {
-					pattern : 'test/spec/**/twitter*.js',
+					pattern : 'test/spec/**/*.js',
 					included : false
 				}, {
 					pattern : 'app/bower_components/**/*.js',

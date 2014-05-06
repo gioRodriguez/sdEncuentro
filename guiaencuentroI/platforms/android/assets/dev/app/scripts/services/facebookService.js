@@ -8,14 +8,18 @@ define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
 		var facebookServiceFactory = {};
 
 		/**
+		 * Valid if has an active account
+		 */
+		facebookServiceFactory.hasActiveAccount =  function() {
+			init();			
+			return validUserPreviousLogin();
+		};
+		
+		/**
 		 * Publish a text to facebook
 		 */
 		facebookServiceFactory.publish = function(text) {
-			FB.init({
-				appId : '284021708287063',
-				nativeInterface : CDV.FB,
-				useCachedDialogs : false
-			});
+			init();
 
 			var publish = $.Deferred();
 			validUserPreviousLogin().then(function() {
@@ -83,10 +87,20 @@ define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
 		 * Do facebook logout
 		 */
 		facebookServiceFactory.logout = function() {
+			var logoutDeferred = $.Deferred();
 			FB.logout(function(response) {
-				window.location.reload();
+				logoutDeferred.resolve();
 			});
+			return logoutDeferred.promise();
 		};
+		
+		function init() {
+			FB.init({
+				appId : '284021708287063',
+				nativeInterface : CDV.FB,
+				useCachedDialogs : false
+			});
+		}
 
 		return facebookServiceFactory;
 	}

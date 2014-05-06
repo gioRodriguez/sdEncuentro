@@ -3,7 +3,7 @@
  */
 
 define(
-		[ 'guiaEncuentroApp', 'settingsController' ],
+		[ 'guiaEncuentroApp', 'settingsController', 'facebookService' ],
 		function() {
 			describe(
 					'settings controller test',
@@ -11,30 +11,110 @@ define(
 						'use strict';
 						beforeEach(module('guiaEncuentroApp'));
 
-						var settingsController, scope, $translate, localStorageService, cordovaServices, navigationService;
+						var settingsController;
+						var controller;
+						var rootScope;
+						var scope;
+						var $translate;
+						var localStorageService;
+						var cordovaServices;
+						var navigationService;
+						var facebookService;
 
 						beforeEach(inject(function($controller, $rootScope) {
+							controller = $controller;
+							rootScope = $rootScope;
+							
 							$translate = jasmine.createSpyObj('$translate', [ 'uses' ]);
 							$translate.uses = function() {
 							}
 							spyOn($translate, 'uses').andReturn('us');
+							
 							localStorageService = jasmine.createSpyObj('localStorageService',
 									[ 'set' ]);
+							
 							cordovaServices = jasmine.createSpyObj('cordovaServices',
 									[ 'exitApp' ]);
+							
 							navigationService = jasmine.createSpyObj('navigationService',
 									[ 'back' ]);
 
+							facebookService = jasmine.createSpyObj('facebookService', ['hasActiveAccount', 'logout']);
+							
 							scope = $rootScope.$new();
 							settingsController = $controller('SettingsController', {
 								$scope : scope,
 								$translate : $translate,
 								localStorageService : localStorageService,
 								cordovaServices : cordovaServices,
-								navigationService : navigationService
+								navigationService : navigationService,
+								facebookService : facebookService
 							});
 						}));
+						
+						it('must do facebook logout', function() {
+							// arrange
+							facebookService.logout = function() {								
+							};
+							var deferred = $.Deferred();
+							spyOn(facebookService, 'logout').andCallFake(function() {
+								return deferred.promise();
+							});
+							deferred.resolve();
+							
+							// act
+							//scope.facebookLogout();
+							
+							// assert
+							//expect(facebookService.logout).toHaveBeenCalled();
+						});
 
+						it('must facebook account button default is disabled', function() {
+							// arrange							
+	
+							// act
+							var actual = scope.disableFacebookButton;
+							
+							// assert
+							expect(actual).toBe(true);
+						});
+						
+						it('must facebook account be enabeld if is a valid account', function() {
+							// arrange							
+							facebookService.hasActiveAccount = function() {								
+							};
+							var deferred = $.Deferred();
+							spyOn(facebookService, 'hasActiveAccount').andCallFake(function() {
+								return deferred.promise();
+							});
+							deferred.resolve();
+							
+							// act
+							scope.ckeckFacebookButton();
+							var actual = scope.disableFacebookButton;
+							
+							// assert
+							expect(actual).toBe(false);
+						});
+						
+						it('must facebook account be disabled if is not a valid account', function() {
+							// arrange							
+							facebookService.hasActiveAccount = function() {								
+							};
+							var deferred = $.Deferred();
+							spyOn(facebookService, 'hasActiveAccount').andCallFake(function() {
+								return deferred.promise();
+							});
+							deferred.reject();
+							
+							// act
+							scope.ckeckFacebookButton();
+							var actual = scope.disableFacebookButton;
+							
+							// assert
+							expect(actual).toBe(true);
+						});
+						
 						it('must call navigation back when back', function() {
 							// arrange
 							
@@ -64,6 +144,16 @@ define(
 								});
 
 						it('must call cordova exit app on exit', function() {
+							// arrange
+							
+							// act
+							scope.exit();
+							
+							// assert
+							expect(cordovaServices.exitApp).toHaveBeenCalled();
+						});
+						
+						it('must show enabled facebook remove account when is has a facebook account saved it', function() {
 							// arrange
 							
 							// act

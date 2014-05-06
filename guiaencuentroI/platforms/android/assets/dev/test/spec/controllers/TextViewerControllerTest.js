@@ -150,40 +150,6 @@ define(
 							// assert
 							expect(facebookService.publish).not.toHaveBeenCalled();
 						});
-						
-						it('must publish to twitter', function() {
-							// arrange
-							twitterService = jasmine.createSpyObj('twitterService',
-									[ 'publish' ]);
-							twitterService.publish = function() {
-							}
-							spyOn(twitterService, 'publish').andReturn({
-								done : function(func) {
-									func('success');
-									return {
-										fail : function() {
-										}
-									};
-								}
-							});
-							textViewerController = controller('TextViewerController', {
-								$scope : scope,
-								localStorageService : localStorageService,
-								dataServices : dataServices,
-								constantsService : constantsService,
-								navigationService : navigationService,
-								cordovaServices : cordovaServices,
-								twitterService : twitterService,
-								$translate : $translate
-							});
-
-							// act
-							scope.twitterPublish();
-
-							// assert
-							expect(twitterService.publish).toHaveBeenCalledWith(
-									'text for today...');
-						});
 
 						it('must call navigation back when back', function() {
 							// arrange

@@ -19,7 +19,8 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 					'getLoginStatus',
 					'Dom',
 					'Event',
-					'login' ]);
+					'login',
+					'logout']);
 			FB.Event.fire = function() {
 			};
 			FB.Event.clear = function() {
@@ -27,6 +28,8 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 			FB.getLoginStatus = function() {
 			};
 			FB.login = function() {
+			};
+			FB.logout = function() {
 			};
 			FB.api = function() {
 			};
@@ -38,6 +41,53 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 			inject(function($injector) {
 				injector = $injector
 			});
+		});
+		
+		it('must do facebook logout', function() {
+			// arrange
+			spyOn(FB, 'logout').andCallFake(function(logoutCallback) {
+				logoutCallback();
+			});
+			var facebookService = injector.get('facebookService');
+			
+			// act
+			var logoutPromise = facebookService.logout();
+			
+			// assert
+			expect(FB.logout).toHaveBeenCalled();
+			expect(logoutPromise.state()).toBe('resolved');
+		});
+		
+		it('must resolve if there is a facebook account valid', function() {
+			// arrange
+			spyOn(FB, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
+				loginStatusCallback({
+					authResponse : true
+				});
+			});
+			var facebookService = injector.get('facebookService');
+			
+			// act
+			var hasActiveAccountPromise = facebookService.hasActiveAccount();
+			
+			// assert
+			expect(hasActiveAccountPromise.state()).toBe('resolved');
+		});
+		
+		it('must reject if there is a facebook account valid', function() {
+			// arrange
+			spyOn(FB, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
+				loginStatusCallback({
+					authResponse : false
+				});
+			});
+			var facebookService = injector.get('facebookService');
+			
+			// act
+			var hasActiveAccountPromise = facebookService.hasActiveAccount();
+			
+			// assert
+			expect(hasActiveAccountPromise.state()).toBe('rejected');
 		});
 
 		it('must directly publish when has a previous login active', function() {
@@ -111,6 +161,6 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 				scope : 'email'
 			});
 			expect(publishPromise.state()).toBe('rejected');
-		});
+		});		
 	});
 });

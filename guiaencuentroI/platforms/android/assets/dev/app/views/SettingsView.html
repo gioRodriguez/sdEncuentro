@@ -9,15 +9,36 @@
 
 <div class="content">
 
-	<label class="topcoat-radio-button"> {{'spanish' | translate}} <input
-		type="radio" name="topcoat" ng-model="preferredLanguage"
-		ng-change="changePreferredLanguage()" value="es">
-		<div class="topcoat-radio-button__checkmark"></div> <br>
-	</label> <label class="topcoat-radio-button"> {{'english' | translate}} <input
-		type="radio" name="topcoat" ng-model="preferredLanguage"
-		ng-change="changePreferredLanguage()" value="en">
-		<div class="topcoat-radio-button__checkmark"></div>
-	</label>
+	<article style="display: none;">
+		<label class="topcoat-radio-button"> {{'spanish' | translate}} <input
+			type="radio" name="topcoat" ng-model="preferredLanguage"
+			ng-change="changePreferredLanguage()" value="es">
+			<div class="topcoat-radio-button__checkmark"></div> <br>
+		</label> <label class="topcoat-radio-button"> {{'english' | translate}} <input
+			type="radio" name="topcoat" ng-model="preferredLanguage"
+			ng-change="changePreferredLanguage()" value="en">
+			<div class="topcoat-radio-button__checkmark"></div>
+		</label>
+	</article>
+	<article id="accounts" ng-init="ckeckFacebookButton()">
+		<div class="topcoat-list">
+		  <h3 class="topcoat-list__header">{{ 'accounts' | translate }}</h3>
+		  <ul class="topcoat-list__container">
+		    <li class="topcoat-list__item">		      
+		      <button class="topcoat-icon-button--quiet" ng-disabled="disableFacebookButton" ng-click="facebookLogout()">
+				<span class="topcoat-icon facebook-icon"></span><span style="padding-left: 1rem;">{{ 'deleteFacebookAccount' | translate }}</span>
+			</button>
+		    </li>
+		  </ul>
+		</div>
+		<div class="topcoat-list">
+		  <h3 class="topcoat-list__header">{{'about' | translate}}</h3>
+		  <ul class="topcoat-list__container">
+		    <li class="topcoat-list__item">{{'poweredBy' | translate}} <b>Illyum</b></li>
+		    <li class="topcoat-list__item">{{'toSarai' | translate}}</li>
+		  </ul>
+		</div>
+	</article>
 </div>
 
 <footer>
