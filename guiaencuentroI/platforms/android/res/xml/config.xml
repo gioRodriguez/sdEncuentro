@@ -10,7 +10,7 @@ Hello Cordova
 
     <preference
         name="loglevel"
-        value="DEBUG" />
+        value="INFO" />
     <preference
         name="splashscreen"
         value="splash" />

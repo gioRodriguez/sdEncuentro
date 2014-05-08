@@ -38,6 +38,9 @@ module.exports = function(config) {
 					pattern : 'test/spec/**/*.js',
 					included : false
 				}, {
+					pattern : 'test/e2e/**/*.js',
+					included : false
+				},{
 					pattern : 'app/bower_components/**/*.js',
 					included : false
 				}, 'test/test-main.js' ],
