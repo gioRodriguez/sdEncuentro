@@ -10,7 +10,6 @@ footer {
 
 .readHeader {
 	text-shadow: 2px 2px 3px #999;
-	color: blue;
 }
 
 .readHeader ul {
@@ -41,8 +40,8 @@ footer {
 }
 
 .readContent {
-	text-align: justify;
-	text-indent: 2.5rem;
+	background: linear-gradient(#FAFAFA, #FAFAFA) repeat scroll 0% 0% #FAFAFA;
+	text-shadow: 0px 1px 0px #EEE;
 }
 
 .content {

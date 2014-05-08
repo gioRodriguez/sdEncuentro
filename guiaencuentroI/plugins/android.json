@@ -15,7 +15,8 @@
         "AndroidManifest.xml": {
             "/manifest": {
                 "<uses-permission android:name=\"android.permission.VIBRATE\" />": 1
-            }
+            },
+            "/*": {}
         }
     },
     "installed_plugins": {

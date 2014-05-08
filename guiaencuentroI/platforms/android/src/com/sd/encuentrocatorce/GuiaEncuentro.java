@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.sd.encuentro;
+package com.sd.encuentrocatorce;
 
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
@@ -31,6 +31,6 @@ public class GuiaEncuentro extends CordovaActivity {
 		super.init();
 		
 		// Set by <content src="index.html" /> in config.xml
-		super.loadUrl(Config.getStartUrl(), 2500);
+		super.loadUrl(Config.getStartUrl(), 1000);
 	}
 }

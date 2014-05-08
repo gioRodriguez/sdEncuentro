@@ -11,7 +11,8 @@ define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
 		 * Valid if has an active account
 		 */
 		facebookServiceFactory.hasActiveAccount =  function() {
-			init();			
+			init();		
+			
 			return validUserPreviousLogin();
 		};
 		

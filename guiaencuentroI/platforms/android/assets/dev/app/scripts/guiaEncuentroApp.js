@@ -36,7 +36,7 @@ define(function() {
 								.translations(
 										'es',
 										{
-											homeTitle : "Guia encuentro",
+											homeTitle : "Plan encuentro",
 											selectionDate : 'Fecha de lectura deseada:',
 											settingsTitle : 'Opciones',
 											accounts : 'Cuentas',
@@ -47,7 +47,7 @@ define(function() {
 											poweredBy : 'Powered por ',
 											toSarai : 'Especial dedicación a Saraí :)',
 											goReading : 'Ir a lectura',
-											welcome : 'Jesús les dijo: Yo soy el pan de la vida; el que viene a mí no tendrá hambre, y el que cree en mí nunca tendrá sed (Juan 6:35)',
+											welcome : 'Escudriñad las Escrituras; porque a vosotros os parece que en ellas tenéis la vida eterna; y ellas son las que dan testimonio de mí (Juan 5:39)',
 											spanish : 'Español',
 											english : 'Ingles',
 											publishTitle : 'Compartido',
@@ -61,7 +61,7 @@ define(function() {
 								.translations(
 										'en',
 										{
-											homeTitle : "Meet guie",
+											homeTitle : "Meet plan",
 											selectionDate : 'Choise a date:',
 											settingsTitle : 'Settings',
 											accounts : 'Accounts',
@@ -72,7 +72,7 @@ define(function() {
 											poweredBy : 'Powered by ',
 											goReading : 'Go to reading',
 											toSarai : 'Speccially dedicated to Sarai :)',
-											welcome : 'Then Jesus declared, “I am the bread of life. Whoever comes to me will never go hungry, and whoever believes in me will never be thirsty (John :35 )',
+											welcome : 'You study the Scriptures diligently because you think that in them you have eternal life. These are the very Scriptures that testify about me (John 5:39)',
 											spanish : 'Spanish',
 											english : 'English',
 											publishTitle : 'Publish',

@@ -11,14 +11,16 @@
 	<div class="welcome">
 	{{'welcome' | translate}}
 	</div>
+	<br>
 	<div data-role="fieldcontain">
-		<label for="illyumDateSelector">{{'selectionDate' |
-			translate}}</label> <input illyum-date-selector name="illyumDateSelector"
+		<label for="illyumDateSelector">{{'selectionDate' | translate}}</label> 
+		<br>
+		<input illyum-date-selector name="illyumDateSelector"
 			class="illyumDateSelector topcoat-text-input" ng-model="selectedDate"
-			ng-change="persistSelectedDate()" />
+			ng-change="persistSelectedDate()" />		
 	</div>
-	<button class="topcoat-button--cta" ng-click="slidePage('/textViewer')">{{'goReading'
-		| translate}}</button>
+	<br>
+	<button class="topcoat-button--cta" ng-click="slidePage('/textViewer')">{{'goReading' | translate}}</button>
 </div>
 
 <footer>
