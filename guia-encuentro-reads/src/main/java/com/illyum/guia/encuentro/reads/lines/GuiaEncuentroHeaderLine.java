@@ -1,9 +1,18 @@
 package com.illyum.guia.encuentro.reads.lines;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
 public class GuiaEncuentroHeaderLine extends GuiaEncuentroLine {
+	
+	private static final Set<String> NOT_UPPER_WORDS = new HashSet<String>();
+	static {
+		NOT_UPPER_WORDS.add("del");
+		NOT_UPPER_WORDS.add("de");
+	}
 
 	protected GuiaEncuentroHeaderLine(
 			String lineBody,
@@ -43,9 +52,10 @@ public class GuiaEncuentroHeaderLine extends GuiaEncuentroLine {
 			}
 			
 			char[] letters = word.toLowerCase().toCharArray();
-			char firstLetterInUpper = word.toUpperCase().charAt(0);
-			
-			letters[0] = firstLetterInUpper;
+			if(!NOT_UPPER_WORDS.contains(word)){
+				char firstLetterInUpper = word.toUpperCase().charAt(0);			
+				letters[0] = firstLetterInUpper;
+			}			
 			
 			for (char letter : letters) {
 				headerBuilder.append(letter);
