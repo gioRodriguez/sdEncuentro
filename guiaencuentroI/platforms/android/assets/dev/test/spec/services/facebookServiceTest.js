@@ -99,13 +99,25 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 			});
 			var facebookService = injector.get('facebookService');
 
+			var publication = {
+				message : 'hello world',
+				link :'appLink',
+				picture : 'appPicture',
+				name : 'appName',
+				caption : 'appCaption'
+			}
+			
 			// act
-			var publishPromise = facebookService.publish('hello world');
+			var publishPromise = facebookService.publish(publication);
 
 			// assert
 			expect(FB.init).toHaveBeenCalled();
 			expect(FB.api).toHaveBeenCalledWith('/me/feed', 'post', {
-				message : 'hello world'
+				message : 'hello world',
+				link :'appLink',
+				picture : 'appPicture',
+				name : 'appName',
+				caption : 'appCaption'
 			}, jasmine.any(Function));
 			expect(publishPromise.state()).toBe('resolved');
 		});
@@ -124,8 +136,16 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 			});
 			var facebookService = injector.get('facebookService');
 
+			var publication = {
+					message : 'hello world',
+					link :'appLink',
+					picture : 'appPicture',
+					name : 'appName',
+					caption : 'appCaption'
+			}
+			
 			// act
-			var publishPromise = facebookService.publish('hello world');
+			var publishPromise = facebookService.publish(publication);
 
 			// assert
 			expect(FB.init).toHaveBeenCalled();
@@ -133,7 +153,11 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 				scope : 'email'
 			});
 			expect(FB.api).toHaveBeenCalledWith('/me/feed', 'post', {
-				message : 'hello world'
+				message : 'hello world',
+				link :'appLink',
+				picture : 'appPicture',
+				name : 'appName',
+				caption : 'appCaption'
 			}, jasmine.any(Function));
 			expect(publishPromise.state()).toBe('resolved');
 		});

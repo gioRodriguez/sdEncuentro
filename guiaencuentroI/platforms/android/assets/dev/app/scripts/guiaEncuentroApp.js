@@ -8,7 +8,12 @@ define(function() {
 	var guiaEncuentroApp = angular.module('guiaEncuentroApp', [ 'ngRoute',
 			'ngTouch', 'ajoslin.mobile-navigate', 'pascalprecht.translate',
 			'ngSanitize' ]);
-
+	var CONSTANST = {
+			appLink : 'https://play.google.com/store/apps/details?id=com.sd.encuentrocatorce',
+			appPicture : 'https://lh4.googleusercontent.com/-0CqPm3Ztv9M/U2u2OsCKJxI/AAAAAAAAABo/w9_2cjMnoss/s200-no/icon.png'
+	};
+	
+	
 	// routes config
 	guiaEncuentroApp
 			.config([
@@ -51,10 +56,14 @@ define(function() {
 											spanish : 'Español',
 											english : 'Ingles',
 											publishTitle : 'Compartido',
-											publishFacebook : 'Copartido en fabebook gracias :)',
-											publishTwitter : 'Copartido en twitter gracias :)',
+											publishFacebook : 'Compartido en facebook gracias :)',
+											publishTwitter : 'Compartido en twitter gracias :)',
 											publishFail : 'Lo sentimos ha ocurrido un error :(',
-											publishOk : 'Aceptar'
+											publishOk : 'Aceptar',
+											publicationLink : CONSTANST.appLink,
+											publicationPicture : CONSTANST.appPicture,
+											publicationAppName : 'Año Bíblico del Plan Encuentro III',
+											publicationAppCaption : 'Esta aplicación es gratuita y te permite leer el año bíblico 2014, que se titula "Cristo, nuestra redención"'								
 										});
 
 						$translateProvider
@@ -79,7 +88,11 @@ define(function() {
 											publishFacebook : 'Shared in facebook thank you :)',
 											publishTwitter : 'Shared in twitter thank you :)',
 											publishFail : "We're so sorry an error has been occurred :(",
-											publishOk : 'Ok'
+											publishOk : 'Ok',
+											publicationLink : CONSTANST.appLink,
+											publicationPicture : CONSTANST.appPicture,
+											publicationAppName : 'Biblic Year Meet Plan III',
+											publicationAppCaption : 'This application it is free and allow you to read the biblic year 2014'	
 										});
 						$translateProvider.preferredLanguage('es');
 

@@ -96,7 +96,15 @@ define([
 		$scope.facebookPublish = function() {
 			var text = getTextForPublish();
 			if (text) {
-				facebookService.publish(text).then(
+				var publication = {
+						message : text,
+						link : $translate('publicationLink'),
+						picture : $translate('publicationPicture'),
+						name : $translate('publicationAppName'),
+						caption : $translate('publicationAppCaption')
+				};
+				
+				facebookService.publish(publication).then(
 						function() {
 							cordovaServices.alert($translate('publishFacebook'),
 									$translate('publishTitle'), $translate('publishOk'));
@@ -104,9 +112,29 @@ define([
 						function() {
 							cordovaServices.alert($translate('publishFail'),
 									$translate('publishTitle'), $translate('publishOk'));
-						});
+						}
+				);
 			}
 		};
+		
+		function getTextForPublish() {
+			if ($scope.text) {				
+				textToPublish = getReadBodyText($scope.text);
+				return String(textToPublish)
+					.replace(/<[^>]+>/gm, '#s')
+					.replace(/(#s)+/gm, ' ')
+					.substring(0, 600) + '...';
+			}
+			return null;
+		}
+		
+		function getReadBodyText(text){
+			if(text.indexOf("readBoby")){
+				return text.split("readBoby'>")[1];
+			}
+			
+			return text;
+		}
 		
 		$scope.twitterPublish = function() {
 			var text = 'twitter test';
@@ -125,15 +153,7 @@ define([
 
 		$scope.exit = function() {
 			cordovaServices.exitApp();
-		};
-
-		function getTextForPublish() {
-			if ($scope.text) {
-				textToPublish = $scope.text.substring(0, 600) + '...';
-				return String(textToPublish).replace(/<[^>]+>/gm, '');
-			}
-			return null;
-		}
+		};		
 
 		init();
 	};

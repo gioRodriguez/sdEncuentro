@@ -63,9 +63,22 @@ define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
 			return userLogin.promise();
 		}
 
-		function publishToFacebook(text, publishCallback) {
+		/**
+		 * publication = {
+		 * 	message : text to post in the message
+		 * 	link : link to the item
+		 * 	picture : image URL to show
+		 * 	name : name to show
+		 *  caption : caption to show
+		 * }
+		 */
+		function publishToFacebook(publication, publishCallback) {
 			FB.api('/me/feed', 'post', {
-				message : text
+				message : publication.message,
+				link : publication.link,
+				picture : publication.picture,
+				name : publication.name,
+				caption : publication.caption			
 			}, function(response) {
 				publishCallback(response);
 			});
