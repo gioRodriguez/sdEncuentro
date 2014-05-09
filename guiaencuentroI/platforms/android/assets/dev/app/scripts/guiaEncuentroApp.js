@@ -7,12 +7,12 @@
 define(function() {
 	var guiaEncuentroApp = angular.module('guiaEncuentroApp', [ 'ngRoute',
 			'ngTouch', 'ajoslin.mobile-navigate', 'pascalprecht.translate',
-			'ngSanitize' ]);
+			'ngSanitize', 'angularSpinner' ]);
+	
 	var CONSTANST = {
 			appLink : 'https://play.google.com/store/apps/details?id=com.sd.encuentrocatorce',
 			appPicture : 'https://lh4.googleusercontent.com/-0CqPm3Ztv9M/U2u2OsCKJxI/AAAAAAAAABo/w9_2cjMnoss/s200-no/icon.png'
 	};
-	
 	
 	// routes config
 	guiaEncuentroApp

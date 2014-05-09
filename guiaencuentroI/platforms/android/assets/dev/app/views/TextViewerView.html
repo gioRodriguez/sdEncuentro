@@ -19,9 +19,13 @@
 			</button>
 		</div>
 		<div class="topcoat-navigation-bar__item left third">
-			<button class="topcoat-icon-button--quiet" ng-click="facebookPublish()">
+			<button 
+				class="topcoat-icon-button--quiet" 
+				ng-click="facebookPublish()"
+				ng-disabled="disableFacebook">
 				<span class="topcoat-icon facebook-icon"></span>
 			</button>
-		</div>
+			<span us-spinner spinner-key="publishSpin"></span>
+		</div>		
 	</div>
 </footer>

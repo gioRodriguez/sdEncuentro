@@ -25,7 +25,8 @@ define(
 						, facebookService
 						, cordovaServices
 						, $translate
-						, twitterService;
+						, twitterService
+						, usSpinnerService;
 
 						beforeEach(function() {
 							navigationService = jasmine.createSpyObj('navigationService',
@@ -62,9 +63,12 @@ define(
 
 						});
 
-						it('must publish to facebook', function() {
+						it('must publish to facebook and disable the button', function() {
 							// arrange
 							var translateKeys = [];
+							var $timeout = function(func) {
+								func();
+							}
 							$translate = function(translateKey) {
 								translateKeys.push(translateKey);
 								var messages = {
@@ -88,6 +92,9 @@ define(
 									};
 								}
 							});
+							
+							usSpinnerService = jasmine.createSpyObj('usSpinnerService', ['spin', 'stop']);
+							
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
@@ -96,7 +103,9 @@ define(
 								navigationService : navigationService,
 								cordovaServices : cordovaServices,
 								facebookService : facebookService,
-								$translate : $translate
+								$translate : $translate,
+								usSpinnerService : usSpinnerService,
+								$timeout : $timeout
 							});
 
 							var publication = {
@@ -112,6 +121,9 @@ define(
 
 							// assert
 							expect(facebookService.publish).toHaveBeenCalledWith(publication);
+							expect(scope.disableFacebook).toBe(false);
+							expect(usSpinnerService.spin).toHaveBeenCalledWith('publishSpin');
+							expect(usSpinnerService.stop).toHaveBeenCalledWith('publishSpin');
 							expect(cordovaServices.alert).toHaveBeenCalledWith('messageFake',
 									'messageFake', 'messageFake');
 						});
@@ -147,7 +159,8 @@ define(
 										}
 									};
 								}
-							});
+							});													
+							
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
@@ -164,6 +177,7 @@ define(
 
 							// assert
 							expect(facebookService.publish).not.toHaveBeenCalled();
+							expect(scope.disableFacebook).toBe(false);
 						});
 
 						it('must call navigation back when back', function() {

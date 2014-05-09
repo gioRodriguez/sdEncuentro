@@ -18,6 +18,7 @@ module.exports = function(config) {
 				'app/bower_components/angular-touch/angular-touch.js',
 				'app/bower_components/angular-mobile-nav/mobile-nav.js',
 				'app/bower_components/angular-translate/angular-translate.js',
+				'app/bower_components/angular-spinner/angular-spinner.js',
 
 				'app/bower_components/zeptojs/src/zepto.js',
 				'app/bower_components/zeptojs/src/form.js',

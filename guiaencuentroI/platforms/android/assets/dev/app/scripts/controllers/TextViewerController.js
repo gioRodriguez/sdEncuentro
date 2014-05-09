@@ -17,8 +17,12 @@ define([
 			cordovaServices,
 			$translate,
 			facebookService,
-			twitterService) {
-
+			twitterService,
+			usSpinnerService,
+			$timeout) {
+		var _this = this;
+		_this.$scope = $scope;
+		
 		var FONT_SIZES = [
 				'xx-small',
 				'x-small',
@@ -34,6 +38,8 @@ define([
 			loadUserPreferredFontSize();
 			loadSelectedText();
 			enableDisableMinPlusFont();
+			
+			$scope.disableFacebook = false;
 		}
 
 		function enableDisableMinPlusFont() {
@@ -92,30 +98,46 @@ define([
 			}
 			enableDisableMinPlusFont();
 		}
-
+		
 		$scope.facebookPublish = function() {
 			var text = getTextForPublish();
-			if (text) {
-				var publication = {
-						message : text,
-						link : $translate('publicationLink'),
-						picture : $translate('publicationPicture'),
-						name : $translate('publicationAppName'),
-						caption : $translate('publicationAppCaption')
-				};
-				
-				facebookService.publish(publication).then(
-						function() {
-							cordovaServices.alert($translate('publishFacebook'),
-									$translate('publishTitle'), $translate('publishOk'));
-						},
-						function() {
-							cordovaServices.alert($translate('publishFail'),
-									$translate('publishTitle'), $translate('publishOk'));
-						}
-				);
+			if (!text) {
+				return;
 			}
+			
+			$scope.disableFacebook = true;
+			usSpinnerService.spin('publishSpin');
+				
+			var publication = {
+					message : text,
+					link : $translate('publicationLink'),
+					picture : $translate('publicationPicture'),
+					name : $translate('publicationAppName'),
+					caption : $translate('publicationAppCaption')
+			};
+				
+			facebookService.publish(publication).then(												
+					function() {							
+						enableFacebook();
+						
+						cordovaServices.alert($translate('publishFacebook'),
+								$translate('publishTitle'), $translate('publishOk'));													
+					},
+					function() {
+						enableFacebook();
+						
+						cordovaServices.alert($translate('publishFail'),
+								$translate('publishTitle'), $translate('publishOk'));
+					}
+			);			
 		};
+		
+		function enableFacebook(){
+			usSpinnerService.stop('publishSpin');						
+			$timeout(function() {
+				$scope.disableFacebook = false;
+			});
+		}
 		
 		function getTextForPublish() {
 			if ($scope.text) {				
@@ -168,5 +190,7 @@ define([
 			'$translate',
 			'facebookService',
 			'twitterService',
+			'usSpinnerService',
+			'$timeout',
 			textViewerController ]);
 })
