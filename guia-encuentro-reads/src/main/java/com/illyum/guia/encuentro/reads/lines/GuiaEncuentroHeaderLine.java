@@ -34,7 +34,7 @@ public class GuiaEncuentroHeaderLine extends GuiaEncuentroLine {
 				toHeader(getLineBody()), 
 				getLineIndex() + 1
 		).replace("lectura", "Lectura")
-		.replace("I", "III");
+		 .replace("Iii", "III");
 	}
 
 	private String toHeader(String body){
