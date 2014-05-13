@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				options : {
 					almond : true,
 					name : 'main',
-					mainConfigFile : 'app/main.js',
+					mainConfigFile : '.tmp/app/main.js',
 					out : '<%= yeoman.dist %>/main.js',
 					preserveLicenseComments : false
 				}
@@ -265,6 +265,11 @@ module.exports = function(grunt) {
 							cwd : '.tmp/images',
 							dest : '<%= yeoman.dist %>/images',
 							src : [ 'generated/*' ]
+						}, {
+							expand : true,
+							cwd : '<%= yeoman.app %>',
+							dest : '.tmp/app',
+							src : [ 'bower_components/**/*.js', 'scripts/**/*.js', '*.js' ]
 						} ]
 			},
 			styles : {
@@ -347,7 +352,7 @@ module.exports = function(grunt) {
 						'<%= yeoman.dist %>/views/*.html' ]
 			},
 			js : {
-				src : '.tmp/concat/scripts/*.js'
+				src : '.tmp/app/scripts/**/*.js'
 			}
 		},
 		compress : {

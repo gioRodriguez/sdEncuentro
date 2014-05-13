@@ -11,7 +11,7 @@ define(function() {
 	
 	var CONSTANST = {
 			appLink : 'https://play.google.com/store/apps/details?id=com.sd.encuentrocatorce',
-			appPicture : 'https://lh4.googleusercontent.com/-0CqPm3Ztv9M/U2u2OsCKJxI/AAAAAAAAABo/w9_2cjMnoss/s200-no/icon.png'
+			appPicture : 'https://lh4.googleusercontent.com/-3dahp2cXhd0/U3F4Slu04uI/AAAAAAAAAEk/-6G0i_nRW6I/s200-no/icon.png'
 	};
 	
 	// routes config

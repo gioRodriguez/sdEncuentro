@@ -20,7 +20,7 @@
 			<div class="topcoat-radio-button__checkmark"></div>
 		</label>
 	</article>
-	<article id="accounts" ng-init="ckeckFacebookButton()">
+	<article id="accounts" ng-init="init()">
 		<div class="topcoat-list">
 		  <h3 class="topcoat-list__header">{{ 'accounts' | translate }}</h3>
 		  <ul class="topcoat-list__container">
@@ -34,8 +34,8 @@
 		<div class="topcoat-list">
 		  <h3 class="topcoat-list__header">{{'about' | translate}}</h3>
 		  <ul class="topcoat-list__container">
-		    <li class="topcoat-list__item">{{'poweredBy' | translate}} <b>Illyum</b></li>
-		    <li class="topcoat-list__item">{{'toSarai' | translate}}</li>
+		    <li class="topcoat-list__item" ng-click="showSaraiMessage()">{{'poweredBy' | translate}} <b>Illyum</b></li>
+		    <li ng-hide="hideSaraiMessage" class="topcoat-list__item">{{'toSarai' | translate}}</li>
 		  </ul>
 		</div>
 	</article>

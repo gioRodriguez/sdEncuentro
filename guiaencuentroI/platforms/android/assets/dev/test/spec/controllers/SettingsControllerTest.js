@@ -52,6 +52,29 @@ define(
 							});
 						}));
 						
+						it('must hide sarai message', function() {
+							// arrange							
+							
+							// act
+							var actual = scope.hideSaraiMessage;
+							
+							// assert
+							expect(actual).toBe(true);
+						});
+						
+						it('must show sarai message after some clicks', function() {
+							// arrange							
+							scope.showSaraiMessage();
+							scope.showSaraiMessage();
+							scope.showSaraiMessage();
+							
+							// act
+							var actual = scope.hideSaraiMessage;
+							
+							// assert
+							expect(actual).toBe(false);
+						});
+						
 						it('must do facebook logout', function() {
 							// arrange
 							facebookService.logout = function() {								

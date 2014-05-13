@@ -7,6 +7,11 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 			constantsService,
 			cordovaServices,
 			facebookService) {
+		var CONSTANTS = {
+				clickToShowSaraiMessage : 3
+		};
+		
+		var clicksToShowSaraiMessageCount = 0;
 		
 		$scope.back = function() {
 			navigationService.back()
@@ -43,6 +48,23 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 						$translate('accountAlertTitle'), $translate('publishOk'));
 			});
 		}
+		
+		$scope.hideSaraiMessage = true;
+		$scope.showSaraiMessage = function() {
+			clicksToShowSaraiMessageCount++;
+			
+			if(clicksToShowSaraiMessageCount >= CONSTANTS.clickToShowSaraiMessage){
+				$scope.hideSaraiMessage = false;
+			} else {
+				$scope.hideSaraiMessage = true;
+			}
+		}
+		
+		$scope.init = function() {
+			$scope.ckeckFacebookButton();
+			
+			clicksToShowSaraiMessageCount = 0;
+		};
 	};
 	guiaEncuentroApp.controller("SettingsController", [
 			"$scope",
