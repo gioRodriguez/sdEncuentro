@@ -2,14 +2,17 @@
  * facebook service test
  */
 
-define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
+define([ 'guiaEncuentroApp', 'exceptions', 'facebookService' ], function(guiaEncuentroApp, exceptions) {
 	describe('facebookService test', function() {
 		'use strict';
 
 		beforeEach(module('guiaEncuentroApp'));
 
-		var injector, facebookService;
-
+		var injector;
+		var facebookService;
+		var cordovaService;
+		var isConnectionAvaulableDeferred = $.Deferred();
+		
 		beforeEach(function() {
 			var CDV = jasmine.createSpyObj('CDV', [ 'FB' ]);
 			window.CDV = CDV;
@@ -38,9 +41,55 @@ define([ 'guiaEncuentroApp', 'facebookService' ], function(guiaEncuentroApp) {
 			});
 			window.FB = FB;
 
+			cordovaServices = jasmine.createSpyObj('cordovaServices', ['isNetworkAvailable', 'isNetworkAvailableAsync']);
+			cordovaServices.isNetworkAvailable = function() {
+			}	
+			cordovaServices.isNetworkAvailableAsync = function(success) {
+				return isConnectionAvaulableDeferred.promise();
+			}
+			isConnectionAvaulableDeferred.resolve();
+			spyOn(cordovaServices, 'isNetworkAvailable').andCallFake(function() {
+				return true;
+			});
+			module(function($provide) {
+				$provide.value('cordovaServices', cordovaServices);
+			});
+			
 			inject(function($injector) {
 				injector = $injector
 			});
+		});
+		
+		it('hasActiveAccount must throw NotNetworkException when there is not network', function() {
+			// arrange
+			var connectionAvailableDeferred = $.Deferred();
+			cordovaServices.isNetworkAvailableAsync = function() {
+				return connectionAvailableDeferred.promise();
+			}
+			connectionAvailableDeferred.reject();
+			var facebookService = injector.get('facebookService');
+			
+			// act			
+			var hasActiveAccountPromise =  facebookService.hasActiveAccount();
+			
+			// assert
+			expect(hasActiveAccountPromise.state()).toBe('rejected');
+		});
+		
+		it('publish must throw NotNetworkException when there is not network', function() {
+			// arrange
+			var connectionAvailableDeferred = $.Deferred();
+			cordovaServices.isNetworkAvailableAsync = function() {
+				return connectionAvailableDeferred.promise();
+			}
+			connectionAvailableDeferred.reject();
+			var facebookService = injector.get('facebookService');
+			
+			// act			
+			var publishPromise =  facebookService.publish();
+			
+			// assert
+			expect(publishPromise.state()).toBe('rejected');
 		});
 		
 		it('must do facebook logout', function() {

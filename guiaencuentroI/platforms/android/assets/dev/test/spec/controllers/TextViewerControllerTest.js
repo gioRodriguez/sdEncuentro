@@ -2,8 +2,8 @@
  * Text viewer controller test
  */
 define(
-		[ 'guiaEncuentroApp', 'textViewerController' ],
-		function() {
+		[ 'guiaEncuentroApp', 'exceptions', 'textViewerController' ],
+		function(guiaEncuentroApp, exceptions) {
 			describe(
 					'textViewerController test',
 					function() {
@@ -50,7 +50,10 @@ define(
 							});
 
 							cordovaServices = jasmine.createSpyObj('cordovaServices',
-									[ 'alert', 'exitApp' ]);
+									[ 'alert', 'exitApp', 'isNetworkAvailable' ]);
+							cordovaServices.isNetworkAvailable = function() {
+								return true;
+							}
 
 							constantsService = jasmine.createSpyObj('constantsService',
 									[ 'defaultFontSize' ]);
@@ -61,6 +64,53 @@ define(
 								controller = $controller;
 							})
 
+						});
+						
+						it('must alert that there is not network when try to publish offline', function() {
+						// arrange
+							var translateKeys = [];
+							var $timeout = function(func) {
+								func();
+							}
+							$translate = function(translateKey) {
+								translateKeys.push(translateKey);
+								var messages = {
+										notNetworkTitle :'notNetworkTitle',
+										notNetworkDesc : 'notNetworkDesc',
+										publishOk : 'publishOk'
+								}
+								return messages[translateKey] ? messages[translateKey] : 'messageFake';
+							}
+							facebookService = jasmine.createSpyObj('facebookService',
+									[ 'publish' ]);
+							facebookService.publish = function() {								
+							}
+							var deferred = $.Deferred();
+							spyOn(facebookService, 'publish').andCallFake(function() {
+								return deferred.promise();
+							});
+							deferred.reject(exceptions.notNetworkException());
+							
+							usSpinnerService = jasmine.createSpyObj('usSpinnerService', ['spin', 'stop']);
+							
+							textViewerController = controller('TextViewerController', {
+								$scope : scope,
+								localStorageService : localStorageService,
+								dataServices : dataServices,
+								constantsService : constantsService,
+								navigationService : navigationService,
+								cordovaServices : cordovaServices,
+								facebookService : facebookService,
+								$translate : $translate,
+								usSpinnerService : usSpinnerService,
+								$timeout : $timeout
+							});
+							
+							// act
+							scope.facebookPublish();
+							
+							// assert
+							expect(cordovaServices.alert).toHaveBeenCalledWith('notNetworkDesc', 'notNetworkTitle', 'publishOk');
 						});
 
 						it('must publish to facebook and disable the button', function() {

@@ -3,8 +3,8 @@
  */
 
 define(
-		[ 'guiaEncuentroApp', 'settingsController', 'facebookService' ],
-		function() {
+		[ 'guiaEncuentroApp', 'exceptions', 'settingsController', 'facebookService' ],
+		function(guiaEncuentroApp, exceptions) {
 			describe(
 					'settings controller test',
 					function() {
@@ -51,6 +51,23 @@ define(
 								facebookService : facebookService
 							});
 						}));
+						
+						it('it must disable facebook buttons if there is not network available', function() {
+							// arrange
+							facebookService.hasActiveAccount = function() {								
+							};
+							var deferred = $.Deferred();
+							spyOn(facebookService, 'hasActiveAccount').andCallFake(function() {
+								return deferred.promise();
+							});
+							deferred.reject();
+							
+							// act
+							scope.init();
+							
+							// assert
+							expect(scope.disableFacebookButton).toBe(true);
+						});
 						
 						it('must hide sarai message', function() {
 							// arrange							

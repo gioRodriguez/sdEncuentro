@@ -63,7 +63,9 @@ define(function() {
 											publicationLink : CONSTANST.appLink,
 											publicationPicture : CONSTANST.appPicture,
 											publicationAppName : 'Año Bíblico del Plan Encuentro III',
-											publicationAppCaption : 'Esta aplicación es gratuita y te permite leer el año bíblico 2014, que se titula "Cristo, nuestra redención"'								
+											publicationAppCaption : 'Esta aplicación es gratuita y te permite leer el año bíblico 2014, que se titula "Cristo, nuestra redención"',
+											notNetworkDesc : 'Necesitamos acceso a internet para compartir',
+											notNetworkTitle : 'Problemas de conectividad'
 										});
 
 						$translateProvider
@@ -92,7 +94,9 @@ define(function() {
 											publicationLink : CONSTANST.appLink,
 											publicationPicture : CONSTANST.appPicture,
 											publicationAppName : 'Biblic Year Meet Plan III',
-											publicationAppCaption : 'This application it is free and allow you to read the biblic year 2014'	
+											publicationAppCaption : 'This application it is free and allow you to read the biblic year 2014',
+											notNetworkDesc : 'We need internet access for publish',
+											notNetworkTitle : 'Connectivity throubles'
 										});
 						$translateProvider.preferredLanguage('es');
 

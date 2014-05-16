@@ -41,7 +41,10 @@ require
 				// controllers
 				'homeController' : 'scripts/controllers/HomeController',
 				'textViewerController' : 'scripts/controllers/TextViewerController',
-				'settingsController' : 'scripts/controllers/SettingsController'
+				'settingsController' : 'scripts/controllers/SettingsController',
+				
+				// exceptions
+				'exceptions' : 'scripts/exceptions/exceptions'
 			},
 			shim : {
 				'mobiscrollDate' : {

@@ -35,10 +35,10 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 		$scope.disableFacebookButton = true;
 		$scope.ckeckFacebookButton = function() {
 			facebookService.hasActiveAccount().then(function() {
-				$scope.disableFacebookButton = false;
-			}, function() {
-				$scope.disableFacebookButton = true;
-			});
+					$scope.disableFacebookButton = false;
+				}, function() {
+					$scope.disableFacebookButton = true;
+			});			
 		}
 		
 		$scope.facebookLogout = function() {
@@ -61,9 +61,8 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 		}
 		
 		$scope.init = function() {
-			$scope.ckeckFacebookButton();
-			
 			clicksToShowSaraiMessageCount = 0;
+			$scope.ckeckFacebookButton();					
 		};
 	};
 	guiaEncuentroApp.controller("SettingsController", [

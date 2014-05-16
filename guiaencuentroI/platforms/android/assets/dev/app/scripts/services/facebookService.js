@@ -1,49 +1,62 @@
 /**
  * facebook api services
  */
-define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
+define([ 'guiaEncuentroApp', 'exceptions', 'facebookSdk' ], function(guiaEncuentroApp, exceptions) {
 	var mServiceStatus = {};
 
-	var facebookService = function() {
+	var facebookService = function(cordovaServices) {
 		var facebookServiceFactory = {};
 
 		/**
 		 * Valid if has an active account
 		 */
 		facebookServiceFactory.hasActiveAccount =  function() {
-			init();		
-			
-			return validUserPreviousLogin();
+			var isNetworkAvaiablePromise = cordovaServices.isNetworkAvailableAsync();
+			return isNetworkAvaiablePromise.then(function() {
+				init();						
+				return validUserPreviousLogin();
+			}, function() {
+				return exceptions.notNetworkException();
+			});
 		};
 		
 		/**
 		 * Publish a text to facebook
 		 */
 		facebookServiceFactory.publish = function(text) {
+			var isNetworkAvaiablePromise = cordovaServices.isNetworkAvailableAsync();
+			return isNetworkAvaiablePromise.then(function() {
+				return publish(text);
+			}, function() {
+				return exceptions.notNetworkException();
+			});
+		};
+		
+		function publish(text) {
 			init();
-
-			var publish = $.Deferred();
+			
+			var publishDeferred = $.Deferred();
 			validUserPreviousLogin().then(function() {
 				// the user has a previous login active then
 				publishToFacebook(text, function() {
-					publish.resolve();
+					publishDeferred.resolve();
 				});
 			}, function() {
 				// called if the user has not a previous login or was disabled then
 				requestUserDoLogin().then(function() {
 					// if the user did a successful login then
 					publishToFacebook(text, function() {
-						publish.resolve();
+						publishDeferred.resolve();
 					});
 				}, function() {
 					// if the user fail then
-					publish.reject();
+					publishDeferred.reject();
 				});
 			});
 
 			// I promises you the publish will be done ;) or maybe not :P 
-			return publish.promise();
-		};
+			return publishDeferred.promise();
+		}
 
 		function requestUserDoLogin() {
 			var userLogin = $.Deferred();
@@ -119,5 +132,5 @@ define([ 'guiaEncuentroApp', 'facebookSdk' ], function(guiaEncuentroApp) {
 		return facebookServiceFactory;
 	}
 
-	guiaEncuentroApp.factory('facebookService', [ facebookService ]);
+	guiaEncuentroApp.factory('facebookService', [ 'cordovaServices', facebookService ]);
 });

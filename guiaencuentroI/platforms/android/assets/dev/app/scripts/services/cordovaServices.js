@@ -22,6 +22,25 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 		cordovaServicesFactory.openBrowser = function(url) {
 			return window.open(url, '_blank', 'location=no');
 		};
+		
+		function isNetworkAvailable () {
+			var networkState = navigator.connection.type;
+			return networkState != Connection.UNKNOWN && 
+				networkState != Connection.NONE;
+		};
+		
+		cordovaServicesFactory.isNetworkAvailableAsync = function() {
+			var connectionAvailableDeferred = $.Deferred();
+			$.when(isNetworkAvailable()).done(function(networkState) {
+				if(networkState){
+					connectionAvailableDeferred.resolve();
+				} else {
+					connectionAvailableDeferred.reject();
+				}
+			});
+			
+			return connectionAvailableDeferred.promise();
+		};
 
 		return cordovaServicesFactory;
 	};

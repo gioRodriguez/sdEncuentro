@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.sdencuentro.guia" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <preference name="loglevel" value="INFO" />
+    <preference name="loglevel" value="DEBUG" />
     <preference name="splashscreen" value="splash" />
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
@@ -18,6 +18,7 @@ Plan Encuentro
     <access origin="m.facebook.com" />
     <access origin="graph.facebook.com" />
     <access origin="api.facebook.com" />
+    <access origin="*.facebook.com" />
     <access origin="*.fbcdn.net" />
     <access origin="*.akamaihd.net" />
     <access origin="*.twitter.com" />
@@ -38,5 +39,8 @@ Plan Encuentro
     </feature>
     <feature name="SplashScreen">
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
 </widget>

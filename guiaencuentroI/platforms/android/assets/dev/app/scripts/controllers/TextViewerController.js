@@ -4,10 +4,11 @@
 
 define([
 		'guiaEncuentroApp',
+		'exceptions',
 		'scrollBarDirective',
 		'dataServices',
 		'facebookService',
-		'twitterService' ], function(guiaEncuentroApp) {
+		'twitterService' ], function(guiaEncuentroApp, exceptions) {
 	var textViewerController = function(
 			$scope,
 			navigationService,
@@ -20,8 +21,6 @@ define([
 			twitterService,
 			usSpinnerService,
 			$timeout) {
-		var _this = this;
-		_this.$scope = $scope;
 		
 		var FONT_SIZES = [
 				'xx-small',
@@ -103,7 +102,7 @@ define([
 			var text = getTextForPublish();
 			if (!text) {
 				return;
-			}
+			}			
 			
 			$scope.disableFacebook = true;
 			usSpinnerService.spin('publishSpin');
@@ -115,21 +114,24 @@ define([
 					name : $translate('publicationAppName'),
 					caption : $translate('publicationAppCaption')
 			};
-				
+			
 			facebookService.publish(publication).then(												
 					function() {							
-						enableFacebook();
-						
+						enableFacebook();						
 						cordovaServices.alert($translate('publishFacebook'),
 								$translate('publishTitle'), $translate('publishOk'));													
 					},
-					function() {
+					function(error) {
 						enableFacebook();
-						
-						cordovaServices.alert($translate('publishFail'),
-								$translate('publishTitle'), $translate('publishOk'));
+						if(error.isNetworkException){
+							cordovaServices.alert($translate('notNetworkDesc'),
+									$translate('notNetworkTitle'), $translate('publishOk'));
+						} else {
+							cordovaServices.alert($translate('publishFail'),
+									$translate('publishTitle'), $translate('publishOk'));
+						}																	
 					}
-			);			
+			);					
 		};
 		
 		function enableFacebook(){
