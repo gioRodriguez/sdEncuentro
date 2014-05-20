@@ -107,12 +107,12 @@ define(function() {
 	};
 
 	function bindEvents() {
-		document.addEventListener('deviceready', onDeviceReady, false);
+		//document.addEventListener('deviceready', onDeviceReady, false);
 	}
 
-	function onDeviceReady() {
-		FastClick.attach(document.body);
-	}
+	$(function() {
+    FastClick.attach(document.body);
+	});
 
 	return guiaEncuentroApp;
 });
