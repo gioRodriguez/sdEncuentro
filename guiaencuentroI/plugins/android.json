@@ -6,11 +6,11 @@
     "config_munge": {
         "res/xml/config.xml": {
             "/*": {
-                "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>": 1,
                 "<feature name=\"Vibration\"><param name=\"android-package\" value=\"org.apache.cordova.vibration.Vibration\" /></feature>": 1,
                 "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>": 1,
                 "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>": 1,
-                "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>": 1
+                "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>": 1,
+                "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>": 1
             }
         },
         "AndroidManifest.xml": {
@@ -23,9 +23,6 @@
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.dialogs": {
-            "PACKAGE_NAME": "com.sdencuentro.guia"
-        },
         "org.apache.cordova.vibration": {
             "PACKAGE_NAME": "com.sdencuentro.guia"
         },
@@ -36,6 +33,9 @@
             "PACKAGE_NAME": "com.sdencuentro.guia"
         },
         "org.apache.cordova.network-information": {
+            "PACKAGE_NAME": "com.sd.encuentrocatorce"
+        },
+        "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.sd.encuentrocatorce"
         }
     },

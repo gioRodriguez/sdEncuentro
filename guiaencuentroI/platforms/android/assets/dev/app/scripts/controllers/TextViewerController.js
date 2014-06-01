@@ -1,27 +1,20 @@
 /**
  * Home Controller
  */
-
-define([
-		'guiaEncuentroApp',
-		'exceptions',
-		'scrollBarDirective',
-		'dataServices',
-		'facebookService',
-		'twitterService' ], function(guiaEncuentroApp, exceptions) {
+(function() {
 	var textViewerController = function(
 			$scope,
 			navigationService,
 			localStorageService,
 			constantsService,
-			dataServices,
+			textService,
 			cordovaServices,
 			$translate,
 			facebookService,
-			twitterService,
 			usSpinnerService,
-			$timeout) {
-		
+			$timeout
+	) {
+
 		var FONT_SIZES = [
 				'xx-small',
 				'x-small',
@@ -37,7 +30,7 @@ define([
 			loadUserPreferredFontSize();
 			loadSelectedText();
 			enableDisableMinPlusFont();
-			
+
 			$scope.disableFacebook = false;
 		}
 
@@ -61,10 +54,16 @@ define([
 		function loadSelectedText() {
 			$scope.selectedDate = localStorageService
 					.get(constantsService.selectedDateKey);
-			dataServices.getTextByDate($scope.selectedDate).done(function(data) {
-				$scope.text = data;
+			textService.getTextByDate($scope.selectedDate).done(function(data) {
+				usSpinnerService.stop('readSpin');
+				$scope.text = data;				
 			}).fail(function(data) {
-				console.log('error: ' + data);
+				usSpinnerService.stop('readSpin');
+				cordovaServices.alert(
+				  $translate('textAskedFailDesc'),
+				  $translate('textAskedFailTitle'), 
+				  $translate('publishOk')
+				);
 			});
 		}
 
@@ -97,69 +96,67 @@ define([
 			}
 			enableDisableMinPlusFont();
 		}
-		
+
 		$scope.facebookPublish = function() {
 			var text = getTextForPublish();
 			if (!text) {
 				return;
-			}			
-			
+			}
+
 			$scope.disableFacebook = true;
 			usSpinnerService.spin('publishSpin');
-				
+
 			var publication = {
-					message : text,
-					link : $translate('publicationLink'),
-					picture : $translate('publicationPicture'),
-					name : $translate('publicationAppName'),
-					caption : $translate('publicationAppCaption')
+				message : text,
+				link : $translate('publicationLink'),
+				picture : $translate('publicationPicture'),
+				name : $translate('publicationAppName'),
+				caption : $translate('publicationAppCaption')
 			};
-			
-			facebookService.publish(publication).then(												
-					function() {							
-						enableFacebook();						
+
+			facebookService.publish(publication).then(
+					function() {
+						enableFacebook();
 						cordovaServices.alert($translate('publishFacebook'),
-								$translate('publishTitle'), $translate('publishOk'));													
+								$translate('publishTitle'), $translate('publishOk'));
 					},
 					function(error) {
 						enableFacebook();
-						if(error.isNetworkException){
+						if (error.isNetworkException) {
 							cordovaServices.alert($translate('notNetworkDesc'),
 									$translate('notNetworkTitle'), $translate('publishOk'));
 						} else {
 							cordovaServices.alert($translate('publishFail'),
 									$translate('publishTitle'), $translate('publishOk'));
-						}																	
-					}
-			);					
+						}
+					});
 		};
-		
-		function enableFacebook(){
-			usSpinnerService.stop('publishSpin');						
+
+		function enableFacebook() {
+			usSpinnerService.stop('publishSpin');
 			$timeout(function() {
 				$scope.disableFacebook = false;
 			});
 		}
-		
+
 		function getTextForPublish() {
-			if ($scope.text) {				
+			if ($scope.text) {
 				textToPublish = getReadBodyText($scope.text);
-				return String(textToPublish)
-					.replace(/<[^>]+>/gm, '#s')
-					.replace(/(#s)+/gm, ' ')
-					.substring(0, 600) + '...';
+				return String(textToPublish).replace(/<[^>]+>/gm, '#s').replace(
+						/(#s)+/gm, ' ').substring(0, 600)
+						+ '...';
 			}
 			return null;
 		}
-		
-		function getReadBodyText(text){
-			if(text.indexOf("readBoby")){
+
+		function getReadBodyText(text) {
+			if (text.indexOf("readBoby")) {
 				return text.split("readBoby'>")[1];
 			}
-			
+
 			return text;
 		}
-		
+
 		$scope.twitterPublish = function() {
 			var text = 'twitter test';
 			if (text) {
@@ -177,22 +174,21 @@ define([
 
 		$scope.exit = function() {
 			cordovaServices.exitApp();
-		};		
+		};
 
 		init();
 	};
-
-	guiaEncuentroApp.controller('TextViewerController', [
+	
+	angular.module('guiaEncuentroApp').controller('TextViewerController', [
 			'$scope',
 			'navigationService',
 			'localStorageService',
 			'constantsService',
-			'dataServices',
+			'textService',
 			'cordovaServices',
 			'$translate',
 			'facebookService',
-			'twitterService',
 			'usSpinnerService',
 			'$timeout',
 			textViewerController ]);
-})
+})();

@@ -8,7 +8,7 @@ module.exports = function(config) {
 		basePath : '',
 
 		// frameworks to use
-		frameworks : [ 'jasmine', 'requirejs' ],
+		frameworks : [ 'jasmine'],
 
 		// list of files / patterns to load in the browser
 		files : [ 'app/bower_components/angular/angular.js',
@@ -26,25 +26,18 @@ module.exports = function(config) {
 				'app/bower_components/zeptojs/src/deferred.js',
 				'app/bower_components/zeptojs/src/callbacks.js',
 				'app/bower_components/zeptojs/src/event.js',
-				'app/bower_components/zeptojs/src/ajax.js', {
-					pattern : 'app/*.js',
-					included : false
-				}, {
-					pattern : 'app/scripts/*.js',
-					included : false
-				}, {
-					pattern : 'app/scripts/**/*.js',
-					included : false
-				}, {
-					pattern : 'test/spec/**/*.js',
-					included : false
-				}, {
-					pattern : 'test/e2e/**/*.js',
-					included : false
-				},{
-					pattern : 'app/bower_components/**/*.js',
-					included : false
-				}, 'test/test-main.js' ],
+				'app/bower_components/zeptojs/src/ajax.js',
+				
+				'app/bower_components/fastclick/lib/fastclick.js',
+				
+				'app/scripts/lib/facebook/facebook-js-sdk.js',
+				'app/scripts/lib/facebook/cdv-plugin-fb-connect.js',
+				
+				'app/scripts/guiaEncuentroApp.js',
+				'app/scripts/appBootstrap.js',
+				'app/scripts/**/*.js', 
+				'test/spec/**/*.js'
+				],
 
 		// list of files to exclude
 		exclude : [],
@@ -78,7 +71,7 @@ module.exports = function(config) {
 		// - PhantomJS
 		// - IE (only Windows; has to be installed with `npm install
 		// karma-ie-launcher`)
-		browsers : [ 'Firefox' ],
+		browsers : [ 'PhantomJS' ],
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout : 60000,

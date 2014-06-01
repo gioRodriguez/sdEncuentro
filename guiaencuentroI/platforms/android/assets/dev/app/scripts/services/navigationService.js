@@ -1,7 +1,7 @@
 /**
  * UI services
  */
-define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
+(function() {
 	var navService = function($navigate) {
 		var navFactory = {};
 		navFactory.slidePage = function(path, type) {
@@ -13,6 +13,6 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 		};
 		return navFactory;
 	};
-
-	guiaEncuentroApp.factory('navigationService', ['$navigate', navService]);
-});
+	
+	angular.module('guiaEncuentroApp').factory('navigationService', ['$navigate', navService]);
+})();

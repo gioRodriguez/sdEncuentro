@@ -1,7 +1,7 @@
 /**
  * service for access to the local storage
  */
-define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
+(function() {
 	var localStgeService = function() {
 		var localStgeServiceFactory = {};
 
@@ -15,7 +15,6 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 
 		return localStgeServiceFactory;
 	};
-
-	guiaEncuentroApp.factory('localStorageService', localStgeService);
-	return localStgeService;
-});
+	
+	angular.module('guiaEncuentroApp').factory('localStorageService', localStgeService);
+})();

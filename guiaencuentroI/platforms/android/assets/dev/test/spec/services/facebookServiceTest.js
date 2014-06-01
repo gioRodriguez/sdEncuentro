@@ -2,9 +2,7 @@
  * facebook service test
  */
 
-define([ 'guiaEncuentroApp', 'exceptions', 'facebookService' ], function(guiaEncuentroApp, exceptions) {
-	describe('facebookService test', function() {
-		'use strict';
+describe('facebookService test', function() {
 
 		beforeEach(module('guiaEncuentroApp'));
 
@@ -236,4 +234,3 @@ define([ 'guiaEncuentroApp', 'exceptions', 'facebookService' ], function(guiaEnc
 			expect(publishPromise.state()).toBe('rejected');
 		});		
 	});
-});

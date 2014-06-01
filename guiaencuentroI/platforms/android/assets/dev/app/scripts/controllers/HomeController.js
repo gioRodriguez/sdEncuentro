@@ -1,15 +1,14 @@
 /**
  * Home Controller
  */
-
-define([ 'guiaEncuentroApp', 'dateSelectorDirective' ], function(
-		guiaEncuentroApp) {
+(function() {
 	var homeController = function(
 			$scope,
 			navigationService,
 			localStorageService,
 			constantsService,
-			cordovaServices) {
+			cordovaServices
+	) {
 
 		$scope.slidePage = function(path, type) {
 			navigationService.slidePage(path, type);
@@ -20,8 +19,7 @@ define([ 'guiaEncuentroApp', 'dateSelectorDirective' ], function(
 		$scope.selectedDate = selectedDate;
 
 		$scope.persistSelectedDate = function() {
-			localStorageService.set(
-					constantsService.selectedDateKey,
+			localStorageService.set(constantsService.selectedDateKey,
 					$scope.selectedDate);
 		};
 
@@ -29,12 +27,12 @@ define([ 'guiaEncuentroApp', 'dateSelectorDirective' ], function(
 			cordovaServices.exitApp();
 		};
 	};
-
-	guiaEncuentroApp.controller('HomeController', [
+	
+	angular.module('guiaEncuentroApp').controller('HomeController', [
 			'$scope',
 			'navigationService',
 			'localStorageService',
 			'constantsService',
 			'cordovaServices',
 			homeController ]);
-})
+})();

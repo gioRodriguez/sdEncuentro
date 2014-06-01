@@ -1,9 +1,7 @@
 /**
  * Apache cordova services
  */
-
-define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
-	
+(function() {
 	var cordovaServices = function() {
 		var cordovaServicesFactory = {};
 		
@@ -44,6 +42,6 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 
 		return cordovaServicesFactory;
 	};
-
-	guiaEncuentroApp.factory('cordovaServices', cordovaServices);
-});
+	
+	angular.module('guiaEncuentroApp').factory('cordovaServices', cordovaServices);
+})();

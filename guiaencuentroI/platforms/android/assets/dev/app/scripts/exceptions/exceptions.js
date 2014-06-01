@@ -1,16 +1,21 @@
 /**
  * 
  */
-define('exceptions', function() {
-	var exceptionsFactory = {};
-
-	exceptionsFactory.notNetworkException = function() {
+var exceptions = exceptions || {};
+(function() {
+	exceptions.notNetworkException = function() {
 		return {
 			name : 'NotNetworkException',
 			message : 'not network available',
 			isNetworkException : true
 		};
 	};
-
-	return exceptionsFactory;
-});
+	
+	exceptions.invalidAskedDateException = function() {
+		return {
+			name : 'InvalidAskedDateException',
+			message : 'The date asked is not valid',
+			isNetworkException : true
+		};
+	};
+})();

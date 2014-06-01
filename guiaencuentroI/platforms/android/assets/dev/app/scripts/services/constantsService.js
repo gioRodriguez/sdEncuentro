@@ -1,7 +1,7 @@
 /**
  * service for access to the local storage
  */
-define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
+(function() {
 	var constantsService = function() {
 		var constantsFactory = {};
 
@@ -16,6 +16,6 @@ define([ 'guiaEncuentroApp' ], function(guiaEncuentroApp) {
 
 		return constantsFactory;
 	};
-
-	guiaEncuentroApp.factory('constantsService', constantsService);
-});
+	
+	angular.module('guiaEncuentroApp').factory('constantsService', constantsService);
+})();

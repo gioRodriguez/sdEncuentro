@@ -2,10 +2,7 @@
  * Home controller tests
  */
 
-define(
-		[ 'guiaEncuentroApp', 'homeController' ],
-		function() {
-			describe(
+describe(
 					'homeController',
 					function() {
 						'use strict';
@@ -56,4 +53,3 @@ define(
 							expect(navigationService.slidePage).toHaveBeenCalled();
 						});
 					});
-		});

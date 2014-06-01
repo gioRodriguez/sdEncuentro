@@ -1,7 +1,7 @@
 /**
  * facebook api services
  */
-define([ 'guiaEncuentroApp', 'exceptions', 'facebookSdk' ], function(guiaEncuentroApp, exceptions) {
+(function() {
 	var mServiceStatus = {};
 
 	var facebookService = function(cordovaServices) {
@@ -131,6 +131,6 @@ define([ 'guiaEncuentroApp', 'exceptions', 'facebookSdk' ], function(guiaEncuent
 
 		return facebookServiceFactory;
 	}
-
-	guiaEncuentroApp.factory('facebookService', [ 'cordovaServices', facebookService ]);
-});
+	
+	angular.module('guiaEncuentroApp').factory('facebookService', [ 'cordovaServices', facebookService ]);
+})();

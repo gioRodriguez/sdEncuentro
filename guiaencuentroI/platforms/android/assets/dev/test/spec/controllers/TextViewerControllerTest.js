@@ -1,10 +1,7 @@
 /**
  * Text viewer controller test
  */
-define(
-		[ 'guiaEncuentroApp', 'exceptions', 'textViewerController' ],
-		function(guiaEncuentroApp, exceptions) {
-			describe(
+describe(
 					'textViewerController test',
 					function() {
 						'use strict';
@@ -18,7 +15,7 @@ define(
 						var textViewerController
 						, scope
 						, localStorageService
-						, dataServices
+						, textService
 						, constantsService
 						, controller
 						, navigationService
@@ -36,10 +33,10 @@ define(
 							localStorageService.get = function() {
 							}
 
-							dataServices = jasmine.createSpy('dataServices');
-							dataServices.getTextByDate = function() {
+							textService = jasmine.createSpy('textService');
+							textService.getTextByDate = function() {
 							}
-							spyOn(dataServices, 'getTextByDate').andReturn({
+							spyOn(textService, 'getTextByDate').andReturn({
 								done : function(func) {
 									func(CONSTANTS.textForTodayHTML);
 									return {
@@ -67,13 +64,11 @@ define(
 						});
 						
 						it('must alert that there is not network when try to publish offline', function() {
-						// arrange
-							var translateKeys = [];
+							// arrange
 							var $timeout = function(func) {
 								func();
 							}
 							$translate = function(translateKey) {
-								translateKeys.push(translateKey);
 								var messages = {
 										notNetworkTitle :'notNetworkTitle',
 										notNetworkDesc : 'notNetworkDesc',
@@ -96,7 +91,7 @@ define(
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
-								dataServices : dataServices,
+								textService : textService,
 								constantsService : constantsService,
 								navigationService : navigationService,
 								cordovaServices : cordovaServices,
@@ -115,12 +110,10 @@ define(
 
 						it('must publish to facebook and disable the button', function() {
 							// arrange
-							var translateKeys = [];
 							var $timeout = function(func) {
 								func();
 							}
 							$translate = function(translateKey) {
-								translateKeys.push(translateKey);
 								var messages = {
 										publicationLink :'appLink',
 										publicationPicture : 'appPicture',
@@ -148,7 +141,7 @@ define(
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
-								dataServices : dataServices,
+								textService : textService,
 								constantsService : constantsService,
 								navigationService : navigationService,
 								cordovaServices : cordovaServices,
@@ -180,10 +173,10 @@ define(
 						
 						it('must cancell publish to facebook when there are not selected text', function() {
 							// arrange
-							dataServices = jasmine.createSpy('dataServices');
-							dataServices.getTextByDate = function() {								
+							textService = jasmine.createSpy('textService');
+							textService.getTextByDate = function() {								
 							};
-							spyOn(dataServices, 'getTextByDate').andReturn({
+							spyOn(textService, 'getTextByDate').andReturn({
 								done : function(func) {
 									func(undefined);
 									return {
@@ -191,12 +184,7 @@ define(
 										}
 									};
 								}
-							});
-							var translateKeys = [];
-							$translate = function(translateKey) {
-								translateKeys.push(translateKey);
-								return 'messageFake';
-							}
+							});						
 							facebookService = jasmine.createSpyObj('facebookService',
 									[ 'publish' ]);
 							facebookService.publish = function() {
@@ -214,7 +202,7 @@ define(
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
-								dataServices : dataServices,
+								textService : textService,
 								constantsService : constantsService,
 								navigationService : navigationService,
 								cordovaServices : cordovaServices,
@@ -235,7 +223,7 @@ define(
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
-								dataServices : dataServices,
+								textService : textService,
 								constantsService : constantsService,
 								navigationService : navigationService
 							});
@@ -252,7 +240,7 @@ define(
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
-								dataServices : dataServices,
+								textService : textService,
 								constantsService : constantsService,
 								navigationService : navigationService,
 								cordovaServices : cordovaServices
@@ -274,7 +262,7 @@ define(
 									textViewerController = controller('TextViewerController', {
 										$scope : scope,
 										localStorageService : localStorageService,
-										dataServices : dataServices,
+										textService : textService,
 										constantsService : constantsService
 									});
 
@@ -298,7 +286,7 @@ define(
 									textViewerController = controller('TextViewerController', {
 										$scope : scope,
 										localStorageService : localStorageService,
-										dataServices : dataServices,
+										textService : textService,
 										constantsService : constantsService
 									});
 
@@ -320,7 +308,7 @@ define(
 									textViewerController = controller('TextViewerController', {
 										$scope : scope,
 										localStorageService : localStorageService,
-										dataServices : dataServices,
+										textService : textService,
 										constantsService : constantsService
 									});
 
@@ -332,21 +320,61 @@ define(
 
 						it('must load the text by the selected day', function() {
 							// arrange
-							spyOn(localStorageService, 'get').andReturn('4-febrero-2012');
+							spyOn(localStorageService, 'get').andReturn('2012-febrero-4');
 							textViewerController = controller('TextViewerController', {
 								$scope : scope,
 								localStorageService : localStorageService,
-								dataServices : dataServices,
+								textService : textService,
 								constantsService : constantsService
 							});
 
 							// act
 
 							// assert
-							expect(scope.selectedDate).toBe('4-febrero-2012');
-							expect(dataServices.getTextByDate).toHaveBeenCalledWith(
-									'4-febrero-2012');
+							expect(scope.selectedDate).toBe('2012-febrero-4');
+							expect(textService.getTextByDate).toHaveBeenCalledWith(
+									'2012-febrero-4');
 							expect(scope.text).toBe(CONSTANTS.textForTodayHTML);
+						});
+						
+						it('must alert when the asked date is invalid', function() {
+							// arrange
+							textService = jasmine.createSpy('textService');
+							textService.getTextByDate = function() {								
+							};
+							spyOn(textService, 'getTextByDate').andReturn({
+								done : function(func) {
+									return {
+										fail : function(func) {
+											func();
+										}
+									};
+								}
+							});
+							$translate = function(translateKey) {
+								var messages = {
+										textAskedFailDesc :'textAskedFailDesc',
+										textAskedFailTitle : 'textAskedFailTitle',
+										publishOk : 'publishOk'
+								}
+								return messages[translateKey] ? messages[translateKey] : 'messageFake';
+							}
+							spyOn(localStorageService, 'get').andReturn('');
+							textViewerController = controller('TextViewerController', {
+								$scope : scope,
+								localStorageService : localStorageService,
+								textService : textService,
+								constantsService : constantsService,
+								$translate : $translate,
+								cordovaServices : cordovaServices
+							});
+
+							// act
+
+							// assert
+							expect(scope.selectedDate).toBe('');
+							expect(textService.getTextByDate).toHaveBeenCalledWith('');
+							expect(cordovaServices.alert).toHaveBeenCalledWith('textAskedFailDesc', 'textAskedFailTitle', 'publishOk');
 						});
 
 						it(
@@ -357,7 +385,7 @@ define(
 									textViewerController = controller('TextViewerController', {
 										$scope : scope,
 										localStorageService : localStorageService,
-										dataServices : dataServices,
+										textService : textService,
 										constantsService : constantsService
 									});
 
@@ -369,4 +397,3 @@ define(
 											'fontSize');
 								});
 					});
-		});

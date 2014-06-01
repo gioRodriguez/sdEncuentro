@@ -2,9 +2,6 @@
  * Settings controller test
  */
 
-define(
-		[ 'guiaEncuentroApp', 'exceptions', 'settingsController', 'facebookService' ],
-		function(guiaEncuentroApp, exceptions) {
 			describe(
 					'settings controller test',
 					function() {
@@ -203,4 +200,3 @@ define(
 							expect(cordovaServices.exitApp).toHaveBeenCalled();
 						});
 					});
-		});

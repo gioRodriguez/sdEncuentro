@@ -1,4 +1,4 @@
-define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
+(function() {
 	var settingsController = function(
 			$scope,
 			navigationService,
@@ -6,23 +6,25 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 			localStorageService,
 			constantsService,
 			cordovaServices,
-			facebookService) {
+			facebookService
+	) {
+		
 		var CONSTANTS = {
-				clickToShowSaraiMessage : 3
+			clickToShowSaraiMessage : 3
 		};
-		
+
 		var clicksToShowSaraiMessageCount = 0;
-		
+
 		$scope.back = function() {
 			navigationService.back()
 		};
 
 		$scope.preferredLanguage = $translate.uses();
 		$scope.changePreferredLanguage = function() {
-			
+
 			// change the translate used language
 			$translate.uses($scope.preferredLanguage);
-			
+
 			// persist user preferred language
 			localStorageService.set(constantsService.preferredLanguageKey,
 					$scope.preferredLanguage);
@@ -31,41 +33,43 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 		$scope.exit = function() {
 			cordovaServices.exitApp();
 		};
-				
+
 		$scope.disableFacebookButton = true;
 		$scope.ckeckFacebookButton = function() {
 			facebookService.hasActiveAccount().then(function() {
-					$scope.disableFacebookButton = false;
-				}, function() {
-					$scope.disableFacebookButton = true;
-			});			
-		}
-		
-		$scope.facebookLogout = function() {
-			facebookService.logout().then(function() {
-				$scope.ckeckFacebookButton();
-				cordovaServices.alert($translate('accountAlertMsg'),
-						$translate('accountAlertTitle'), $translate('publishOk'));
+				$scope.disableFacebookButton = false;
+			}, function() {
+				$scope.disableFacebookButton = true;
 			});
 		}
-		
+
+		$scope.facebookLogout = function() {
+			facebookService.logout().then(
+					function() {
+						$scope.ckeckFacebookButton();
+						cordovaServices.alert($translate('accountAlertMsg'),
+								$translate('accountAlertTitle'), $translate('publishOk'));
+					});
+		}
+
 		$scope.hideSaraiMessage = true;
 		$scope.showSaraiMessage = function() {
 			clicksToShowSaraiMessageCount++;
-			
-			if(clicksToShowSaraiMessageCount >= CONSTANTS.clickToShowSaraiMessage){
+
+			if (clicksToShowSaraiMessageCount >= CONSTANTS.clickToShowSaraiMessage) {
 				$scope.hideSaraiMessage = false;
 			} else {
 				$scope.hideSaraiMessage = true;
 			}
 		}
-		
+
 		$scope.init = function() {
 			clicksToShowSaraiMessageCount = 0;
-			$scope.ckeckFacebookButton();					
+			$scope.ckeckFacebookButton();
 		};
 	};
-	guiaEncuentroApp.controller("SettingsController", [
+	
+	angular.module('guiaEncuentroApp').controller("SettingsController", [
 			"$scope",
 			"navigationService",
 			'$translate',
@@ -73,5 +77,5 @@ define([ "guiaEncuentroApp" ], function(guiaEncuentroApp) {
 			'constantsService',
 			'cordovaServices',
 			'facebookService',
-			settingsController ])
-});
+			settingsController ]);
+})();

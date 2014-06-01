@@ -54,7 +54,7 @@
 <title>Guia encuentro I</title>
 
 </head>
-<body>
+<body ng-app='guiaEncuentroApp'>
 
 	<mobile-view />
 	<!-- build:js scripts/vendor.js -->
@@ -109,19 +109,65 @@
 		
 	<!-- fast click -->
 	<script type="text/javascript"
-		src="bower_components/fastclick/lib/fastclick.js" charset="utf-8"></script>
+		src="bower_components/fastclick/lib/fastclick.js" charset="utf-8"></script>	
 	<!-- endbower -->
 	<!-- endbuild -->
-
-	<!-- RequireJs -->
-	<!-- @if NODE_ENV =='development' -->
+	
+	<!-- build:js scripts/app.js  -->
+	<!-- mobiscroll -->	
 	<script type="text/javascript"
-		src="bower_components/requirejs/require.js" data-main="main"
-		charset="utf-8"></script>
-	<!-- @endif -->
-	<!-- @if NODE_ENV =='production' -->
-	<script type="text/javascript" src="main.js" data-main="main"
-		charset="utf-8"></script>
-	<!-- @endif -->
+		src="bower_components/mobiscroll/js/mobiscroll.zepto.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="bower_components/mobiscroll/js/mobiscroll.core.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="bower_components/mobiscroll/js/mobiscroll.scroller.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="bower_components/mobiscroll/js/mobiscroll.datetime.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="bower_components/mobiscroll/js/i18n/mobiscroll.i18n.es.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="bower_components/datejs/build/date-es-MX.js" charset="utf-8"></script>
+		
+	<!-- facebook -->
+	<script type="text/javascript"
+		src="scripts/lib/facebook/facebook-js-sdk.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/lib/facebook/cdv-plugin-fb-connect.js" charset="utf-8"></script>	
+	
+	<!-- application -->	
+	<script type="text/javascript"
+		src="scripts/guiaEncuentroApp.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/appBootstrap.js" charset="utf-8"></script>
+		
+	<script type="text/javascript"
+		src="scripts/directives/mobiscrollDirective.js" charset="utf-8"></script>
+	
+	<!-- services -->	
+	<script type="text/javascript"
+		src="scripts/services/facebookService.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/services/constantsService.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/services/navigationService.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/services/localStgeService.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/services/text-service.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/services/cordovaServices.js" charset="utf-8"></script>
+		
+		
+	<script type="text/javascript"
+		src="scripts/controllers/HomeController.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/controllers/TextViewerController.js" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="scripts/controllers/SettingsController.js" charset="utf-8"></script>
+		
+		
+	<script type="text/javascript"
+		src="scripts/exceptions/exceptions.js" charset="utf-8"></script>
+	<!-- endbuild -->
 </body>
 </html>
