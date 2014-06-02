@@ -1,4 +1,4 @@
-<div class="content readContent">
+<div class="content readContent ng-class:{highContrast: constratEnabled}">
 	<span us-spinner spinner-key="readSpin" spinner-start-active="1"></span>
 	<div scroll-bar-directive style='font-size: {{userPreferredFontSize}}'
 		ng-bind-html="text" class="textViewer">		
@@ -6,20 +6,20 @@
 </div>
 
 <footer>
-	<div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left third">
+	<div class="topcoat-navigation-bar ng-class:{highContrast: constratEnabled}">
+		<div class="topcoat-navigation-bar__item left quarter">
 			<button class="topcoat-icon-button--quiet"
 				ng-click="minFontSize()" ng-disabled="disableMinFontSize">
 				<span class="topcoat-icon magnifier-minus-icon"></span>
 			</button>
 		</div>
-		<div class="topcoat-navigation-bar__item left third">
+		<div class="topcoat-navigation-bar__item left quarter">
 			<button class="topcoat-icon-button--quiet"
 				ng-click="plusFontSize()" ng-disabled="disablePlusFontSize">
 				<span class="topcoat-icon magnifier-plus-icon"></span>
 			</button>
 		</div>
-		<div class="topcoat-navigation-bar__item left third">
+		<div class="topcoat-navigation-bar__item left quarter">
 			<button 
 				class="topcoat-icon-button--quiet" 
 				ng-click="facebookPublish()"
@@ -27,6 +27,13 @@
 				<span class="topcoat-icon facebook-icon"></span>
 			</button>
 			<span us-spinner spinner-key="publishSpin"></span>
+		</div>	
+		<div class="topcoat-navigation-bar__item left quarter">
+			<button 
+				class="topcoat-icon-button--quiet" 
+				ng-click="setContrast()">
+				<span class="topcoat-icon facebook-icon"></span>
+			</button>
 		</div>		
 	</div>
 </footer>

@@ -28,12 +28,26 @@
 
 		function init() {
 			loadUserPreferredFontSize();
+			loadUserContrast();
 			loadSelectedText();
 			enableDisableMinPlusFont();
 
 			$scope.disableFacebook = false;
 		}
 
+		function loadUserContrast() {
+			$scope.constratEnabled  = localStorageService.get('constratEnabled');
+		}
+		
+		$scope.setContrast = function() {
+			if($scope.constratEnabled){
+				$scope.constratEnabled = false;
+			} else {
+				$scope.constratEnabled = true;
+			}
+			localStorageService.set('constratEnabled', $scope.constratEnabled);
+		}
+		
 		function enableDisableMinPlusFont() {
 			isDisabledPlusFontSize();
 			isDisabledMinFontSize();

@@ -1,6 +1,11 @@
+.topcoat-navigation-bar__title {
+	font-weight: bold !important;
+	color: #fff !important;
+}
+
 footer {
 	position: fixed;
-	bottom: 0px;
+	bottom: -0.8px;
 	width: 100%;
 	left: 0px;
 	right: 0px;
@@ -35,13 +40,19 @@ footer {
 }
 
 .readBoby p {
-	margin-bottom: 0.2rem;
+	margin-bottom: 0.5rem;
 	margin-top: 0rem;
 }
 
 .readContent {
-	background: linear-gradient(#FAFAFA, #FAFAFA) repeat scroll 0% 0% #FAFAFA;
+	background: linear-gradient(#FAFAFA, #FAFAFA) repeat scroll 0% 0%
+		#FAFAFA;
 	text-shadow: 0px 1px 0px #EEE;
+}
+
+.highContrast {
+	background: black !important;
+	color: white !important;
 }
 
 .content {

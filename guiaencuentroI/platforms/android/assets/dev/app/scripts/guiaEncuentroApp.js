@@ -43,7 +43,7 @@
 										.translations(
 												'es',
 												{
-													homeTitle : "Plan encuentro",
+													homeTitle : 'Plan Encuentro 3',
 													selectionDate : 'Fecha de lectura deseada:',
 													settingsTitle : 'Opciones',
 													accounts : 'Cuentas',
@@ -76,7 +76,7 @@
 										.translations(
 												'en',
 												{
-													homeTitle : "Meet plan",
+													homeTitle : 'Meet Plan 3',
 													selectionDate : 'Choise a date:',
 													settingsTitle : 'Settings',
 													accounts : 'Accounts',
