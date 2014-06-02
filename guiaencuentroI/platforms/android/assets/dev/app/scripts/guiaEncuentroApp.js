@@ -112,10 +112,14 @@
 
 })();
 
-$(function() {
+$(function() {		
+	document.addEventListener('deviceready', onDeviceReady, false);
+});
+
+$(document).ready(function() {
 	FastClick.attach(document.body);
 	
-	document.addEventListener('deviceready', onDeviceReady, false);
+	Modernizr.addTest('svgasimg', document.implementation.hasFeature('http://www.w3.org/TR/SVG11/feature#Image', '1.1'));
 });
 
 function onDeviceReady() {

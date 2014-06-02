@@ -34,5 +34,5 @@
 			'localStorageService',
 			'constantsService',
 			'cordovaServices',
-			homeController ]);
+			homeController ]);	
 })();

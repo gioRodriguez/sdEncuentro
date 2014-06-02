@@ -8,31 +8,31 @@
 <footer>
 	<div class="topcoat-navigation-bar ng-class:{highContrast: constratEnabled}">
 		<div class="topcoat-navigation-bar__item left quarter">
-			<button class="topcoat-icon-button--quiet"
+			<button class="topcoat-icon-button--large--quiet"
 				ng-click="minFontSize()" ng-disabled="disableMinFontSize">
-				<span class="topcoat-icon magnifier-minus-icon"></span>
+				<div topcoat-icon="minus" class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
 			</button>
 		</div>
 		<div class="topcoat-navigation-bar__item left quarter">
-			<button class="topcoat-icon-button--quiet"
+			<button class="topcoat-icon-button--large--quiet"
 				ng-click="plusFontSize()" ng-disabled="disablePlusFontSize">
-				<span class="topcoat-icon magnifier-plus-icon"></span>
+				<div topcoat-icon="plus" class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
 			</button>
 		</div>
 		<div class="topcoat-navigation-bar__item left quarter">
 			<button 
-				class="topcoat-icon-button--quiet" 
+				class="topcoat-icon-button--large--quiet" 
 				ng-click="facebookPublish()"
 				ng-disabled="disableFacebook">
-				<span class="topcoat-icon facebook-icon"></span>
+				<div topcoat-icon="facebook" class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
 			</button>
 			<span us-spinner spinner-key="publishSpin"></span>
 		</div>	
 		<div class="topcoat-navigation-bar__item left quarter">
 			<button 
-				class="topcoat-icon-button--quiet" 
+				class="topcoat-icon-button--large--quiet" 
 				ng-click="setContrast()">
-				<span class="topcoat-icon facebook-icon"></span>
+				<div topcoat-icon="text" class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
 			</button>
 		</div>		
 	</div>

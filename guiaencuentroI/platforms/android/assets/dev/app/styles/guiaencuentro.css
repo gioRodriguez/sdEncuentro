@@ -55,6 +55,16 @@ footer {
 	color: white !important;
 }
 
+.icons {
+	color: #9BDA6A;
+	font-size: 2rem;
+}
+
+.iconsHighContrast {
+	color: white !important;
+	font-size: 2rem !important;
+}
+
 .content {
 	overflow-y: visible;
 	overflow-x: hidden;

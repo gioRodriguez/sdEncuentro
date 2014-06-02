@@ -259,7 +259,7 @@ module.exports = function(grunt) {
 							dest : '<%= yeoman.dist %>',
 							src : [ '*.{ico,png,txt}', '.htaccess', '*.html',
 									'views/{,*/}*.html', 'texts/**/*', 'images/{,*/}*.{webp}',
-									'font/*', 'plugins/**/*.min.js', 'cordova_plugins.js' ]
+									'font/*', 'plugins/**/*.min.js', 'cordova_plugins.js', 'styles/icomatic.*' ]
 						}, {
 							expand : true,
 							cwd : '.tmp/images',
