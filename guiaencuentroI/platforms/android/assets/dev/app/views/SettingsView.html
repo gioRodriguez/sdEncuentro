@@ -25,8 +25,9 @@
 		  <h3 class="topcoat-list__header">{{ 'accounts' | translate }}</h3>
 		  <ul class="topcoat-list__container">
 		    <li class="topcoat-list__item">		      
-		      <button class="topcoat-icon-button--quiet" ng-disabled="disableFacebookButton" ng-click="facebookLogout()">
-				<span class="topcoat-icon facebook-icon"></span><span style="padding-left: 1rem;">{{ 'deleteFacebookAccount' | translate }}</span>
+		      <button class="topcoat-icon-button--quiet" ng-disabled="disableFacebookButton" ng-click="facebookLogout()">		   
+		      	<span topcoat-icon="facebook" class='icomatic icons'></span>		      	
+				<span style="padding-left: 1rem;">{{ 'deleteFacebookAccount' | translate }}</span>
 			</button>
 		    </li>
 		  </ul>
