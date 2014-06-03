@@ -16,13 +16,16 @@
 	) {
 
 		var FONT_SIZES = [
-				'xx-small',
-				'x-small',
-				'small',
-				'medium',
-				'large',
-				'x-large',
-				'xx-large' ];
+				'0.5rem',
+				'1rem',
+				'1.5rem',
+				'2rem',
+				'2.5rem',
+				'3rem',
+				'3.5rem',
+				'4rem',
+				'4.5rem',
+				'5rem'];
 		var MAX_FONT_SIZE = FONT_SIZES.length;
 		var indexPreferredFontSize;
 

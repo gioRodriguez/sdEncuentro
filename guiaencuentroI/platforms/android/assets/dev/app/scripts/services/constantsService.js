@@ -12,7 +12,7 @@
 		// defualts
 		constantsFactory.preferredLanguageDefault = 'es';
 		constantsFactory.dateFormat = 'yyyy-MMMM-dd';
-		constantsFactory.defaultFontSize = 2;		
+		constantsFactory.defaultFontSize = 3;		
 
 		return constantsFactory;
 	};

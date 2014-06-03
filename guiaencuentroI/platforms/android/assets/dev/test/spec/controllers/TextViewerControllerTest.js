@@ -54,7 +54,7 @@ describe(
 
 							constantsService = jasmine.createSpyObj('constantsService',
 									[ 'defaultFontSize' ]);
-							constantsService.defaultFontSize = 0;
+							constantsService.defaultFontSize = 3;
 
 							inject(function($controller, $rootScope) {
 								scope = $rootScope.$new();
@@ -253,11 +253,10 @@ describe(
 							expect(cordovaServices.exitApp).toHaveBeenCalled();
 						});
 
-						it(
-								'must apply font plus and disable plus when the max font size is reached',
+						it('must apply font plus and disable plus when the max font size is reached',
 								function() {
 									// arrange
-									var fontSize = 5;
+									var fontSize = 8;
 									spyOn(localStorageService, 'get').andReturn(fontSize);
 									textViewerController = controller('TextViewerController', {
 										$scope : scope,
@@ -272,13 +271,12 @@ describe(
 									// assert
 									expect(localStorageService.set).toHaveBeenCalledWith(
 											'fontSize', fontSize + 1);
-									expect(scope.userPreferredFontSize).toBe('xx-large');
+									expect(scope.userPreferredFontSize).toBe('5rem');
 									expect(scope.disableMinFontSize).toBeFalsy();
 									expect(scope.disablePlusFontSize).toBeTruthy();
 								});
 
-						it(
-								'must apply font min and disable min when the min font size is reached',
+						it('must apply font min and disable min when the min font size is reached',
 								function() {
 									// arrange
 									var fontSize = 1;
@@ -296,7 +294,7 @@ describe(
 									// assert
 									expect(localStorageService.set).toHaveBeenCalledWith(
 											'fontSize', fontSize - 1);
-									expect(scope.userPreferredFontSize).toBe('xx-small');
+									expect(scope.userPreferredFontSize).toBe('0.5rem');
 									expect(scope.disableMinFontSize).toBeTruthy();
 									expect(scope.disablePlusFontSize).toBeFalsy();
 								});
@@ -315,7 +313,7 @@ describe(
 									// act
 
 									// assert
-									expect(scope.userPreferredFontSize).toBe('large');
+									expect(scope.userPreferredFontSize).toBe('2.5rem');
 								});
 
 						it('must load the text by the selected day', function() {
@@ -377,8 +375,7 @@ describe(
 							expect(cordovaServices.alert).toHaveBeenCalledWith('textAskedFailDesc', 'textAskedFailTitle', 'publishOk');
 						});
 
-						it(
-								'must use preferred font size from constanst when local storage is null',
+						it('must use preferred font size from constanst when local storage is null',
 								function() {
 									// arrange
 									spyOn(localStorageService, 'get').andReturn(undefined);
@@ -392,7 +389,7 @@ describe(
 									// act
 
 									// assert
-									expect(scope.userPreferredFontSize).toBe('xx-small');
+									expect(scope.userPreferredFontSize).toBe('2rem');
 									expect(localStorageService.get).toHaveBeenCalledWith(
 											'fontSize');
 								});

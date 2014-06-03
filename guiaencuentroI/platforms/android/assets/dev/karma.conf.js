@@ -28,6 +28,8 @@ module.exports = function(config) {
 				'app/bower_components/zeptojs/src/event.js',
 				'app/bower_components/zeptojs/src/ajax.js',
 				
+				'app/bower_components/modernizr/modernizr.js',
+				
 				'app/bower_components/fastclick/lib/fastclick.js',
 				
 				'app/scripts/lib/facebook/facebook-js-sdk.js',
