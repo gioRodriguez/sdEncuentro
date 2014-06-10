@@ -1,4 +1,6 @@
-guiaEncuentro
+Plan Encuentro 3
 ===========
 
-guiaEncuentro it is an app which joins Apache Cordova for build the application on HTML5 techologies, AngularJs for organize the code, i18n support, dependency injection, RequireJs for build the application in asyncronous modules, so this app its the next generation of Plan encuentro 2014 (https://play.google.com/store/apps/details?id=com.sd.encuentrocatorce&hl=en). 
+Plan Encuentro 3 it is an HTML5 application built with Apache Cordova especially for Android platform
+
+https://play.google.com/store/apps/details?id=com.sd.encuentrocatorce&hl=en
