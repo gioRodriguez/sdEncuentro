@@ -2,210 +2,223 @@
  * Home Controller
  */
 (function() {
-	var textViewerController = function(
-			$scope,
-			navigationService,
-			localStorageService,
-			constantsService,
-			textService,
-			cordovaServices,
-			$translate,
-			facebookService,
-			usSpinnerService,
-			$timeout
-	) {
+  var textViewerController =
+    function(
+        $scope,
+        navigationService,
+        localStorageService,
+        constantsService,
+        textService,
+        cordovaServices,
+        $translate,
+        facebookService,
+        usSpinnerService,
+        $timeout) {
 
-		var FONT_SIZES = [
-				'0.5rem',
-				'1rem',
-				'1.5rem',
-				'2rem',
-				'2.5rem',
-				'3rem',
-				'3.5rem',
-				'4rem',
-				'4.5rem',
-				'5rem'];
-		var MAX_FONT_SIZE = FONT_SIZES.length;
-		var indexPreferredFontSize;
+      var FONT_SIZES = [
+        '0.5rem',
+        '1rem',
+        '1.5rem',
+        '2rem',
+        '2.5rem',
+        '3rem',
+        '3.5rem',
+        '4rem',
+        '4.5rem',
+        '5rem'
+      ];
+      var MAX_FONT_SIZE = FONT_SIZES.length;
+      var indexPreferredFontSize;
 
-		function init() {
-			loadUserPreferredFontSize();
-			loadUserContrast();
-			loadSelectedText();
-			enableDisableMinPlusFont();
+      function init() {
+        loadUserPreferredFontSize();
+        loadUserContrast();
+        loadSelectedText();
+        enableDisableMinPlusFont();
 
-			$scope.disableFacebook = false;
-		}
+        $scope.disableFacebook = false;
+      }
 
-		function loadUserContrast() {
-			$scope.constratEnabled  = localStorageService.get('constratEnabled');
-		}
-		
-		$scope.setContrast = function() {
-			if($scope.constratEnabled){
-				$scope.constratEnabled = false;
-			} else {
-				$scope.constratEnabled = true;
-			}
-			localStorageService.set('constratEnabled', $scope.constratEnabled);
-		}
-		
-		function enableDisableMinPlusFont() {
-			isDisabledPlusFontSize();
-			isDisabledMinFontSize();
-		}
+      function loadUserContrast() {
+        $scope.constratEnabled = localStorageService.get('constratEnabled');
+      }
 
-		function loadUserPreferredFontSize() {
-			var fontSizeStored = localStorageService.get('fontSize');
-			indexPreferredFontSize = fontSizeStored != null ? fontSizeStored
-					: constantsService.defaultFontSize;
-			$scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
-		}
+      $scope.setContrast = function() {
+        if ($scope.constratEnabled) {
+          $scope.constratEnabled = false;
+        } else {
+          $scope.constratEnabled = true;
+        }
+        localStorageService.set('constratEnabled', $scope.constratEnabled);
+      }
 
-		function setFontSize() {
-			$scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
-			localStorageService.set('fontSize', indexPreferredFontSize);
-		}
+      function enableDisableMinPlusFont() {
+        isDisabledPlusFontSize();
+        isDisabledMinFontSize();
+      }
 
-		function loadSelectedText() {
-			$scope.selectedDate = localStorageService
-					.get(constantsService.selectedDateKey);
-			textService.getTextByDate($scope.selectedDate).done(function(data) {
-				usSpinnerService.stop('readSpin');
-				$scope.text = data;				
-			}).fail(function(data) {
-				usSpinnerService.stop('readSpin');
-				cordovaServices.alert(
-				  $translate('textAskedFailDesc'),
-				  $translate('textAskedFailTitle'), 
-				  $translate('publishOk')
-				);
-			});
-		}
+      function loadUserPreferredFontSize() {
+        var fontSizeStored = localStorageService.get('fontSize');
+        indexPreferredFontSize =
+          fontSizeStored != null ? fontSizeStored : constantsService.defaultFontSize;
+        $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
+      }
 
-		function isDisabledPlusFontSize() {
-			$scope.disablePlusFontSize = indexPreferredFontSize + 1 >= MAX_FONT_SIZE;
-			return $scope.disablePlusFontSize;
-		}
+      function setFontSize() {
+        $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
+        localStorageService.set('fontSize', indexPreferredFontSize);
+      }
 
-		function isDisabledMinFontSize() {
-			$scope.disableMinFontSize = indexPreferredFontSize - 1 < 0;
-			return $scope.disableMinFontSize;
-		}
+      function loadSelectedText() {
+        $scope.selectedDate = localStorageService.get(constantsService.selectedDateKey);
+        textService.getTextByDate($scope.selectedDate).done(function(data) {
+          usSpinnerService.stop('readSpin');
+          $scope.text = data;
+        }).fail(
+            function(data) {
+              usSpinnerService.stop('readSpin');
+              cordovaServices.alert(
+                  $translate('textAskedFailDesc'),
+                  $translate('textAskedFailTitle'),
+                  $translate('publishOk'));
+            });
+      }
 
-		$scope.back = function(path, type) {
-			navigationService.back();
-		};
+      function isDisabledPlusFontSize() {
+        $scope.disablePlusFontSize = indexPreferredFontSize + 1 >= MAX_FONT_SIZE;
+        return $scope.disablePlusFontSize;
+      }
 
-		$scope.plusFontSize = function() {
-			if (!$scope.disablePlusFontSize) {
-				indexPreferredFontSize++;
-				setFontSize();
-			}
-			enableDisableMinPlusFont();
-		}
+      function isDisabledMinFontSize() {
+        $scope.disableMinFontSize = indexPreferredFontSize - 1 < 0;
+        return $scope.disableMinFontSize;
+      }
 
-		$scope.minFontSize = function() {
-			if (!$scope.disableMinFontSize) {
-				indexPreferredFontSize--;
-				setFontSize();
-			}
-			enableDisableMinPlusFont();
-		}
+      $scope.back = function(path, type) {
+        navigationService.back();
+      };
 
-		$scope.facebookPublish = function() {
-			var text = getTextForPublish();
-			if (!text) {
-				return;
-			}
+      $scope.plusFontSize = function() {
+        if (!$scope.disablePlusFontSize) {
+          indexPreferredFontSize++;
+          setFontSize();
+        }
+        enableDisableMinPlusFont();
+      }
 
-			$scope.disableFacebook = true;
-			usSpinnerService.spin('publishSpin');
+      $scope.minFontSize = function() {
+        if (!$scope.disableMinFontSize) {
+          indexPreferredFontSize--;
+          setFontSize();
+        }
+        enableDisableMinPlusFont();
+      }
 
-			var publication = {
-				message : text,
-				link : $translate('publicationLink'),
-				picture : $translate('publicationPicture'),
-				name : $translate('publicationAppName'),
-				caption : $translate('publicationAppCaption')
-			};
+      $scope.facebookPublish =
+        function() {
+          var text = getTextForPublish();
+          if (!text) {
+            return;
+          }
 
-			facebookService.publish(publication).then(
-					function() {
-						enableFacebook();
-						cordovaServices.alert($translate('publishFacebook'),
-								$translate('publishTitle'), $translate('publishOk'));
-					},
-					function(error) {
-						enableFacebook();
-						if (error.isNetworkException) {
-							cordovaServices.alert($translate('notNetworkDesc'),
-									$translate('notNetworkTitle'), $translate('publishOk'));
-						} else {
-							cordovaServices.alert($translate('publishFail'),
-									$translate('publishTitle'), $translate('publishOk'));
-						}
-					});
-		};
+          $scope.disableFacebook = true;
+          usSpinnerService.spin('publishSpin');
 
-		function enableFacebook() {
-			usSpinnerService.stop('publishSpin');
-			$timeout(function() {
-				$scope.disableFacebook = false;
-			});
-		}
+          var publication = {
+            message : text,
+            link : $translate('publicationLink'),
+            picture : $translate('publicationPicture'),
+            name : $translate('publicationAppName'),
+            caption : $translate('publicationAppCaption')
+          };
 
-		function getTextForPublish() {
-			if ($scope.text) {
-				textToPublish = getReadBodyText($scope.text);
-				return String(textToPublish).replace(/<[^>]+>/gm, '#s').replace(
-						/(#s)+/gm, ' ').substring(0, 600)
-						+ '...';
-			}
-			return null;
-		}
+          facebookService.publish(publication).then(
+              function() {
+                enableFacebook();
+                cordovaServices.alert(
+                    $translate('publishFacebook'),
+                    $translate('publishTitle'),
+                    $translate('publishOk'));
+              },
+              function(error) {
+                enableFacebook();
+                if (error.isNetworkException) {
+                  cordovaServices.alert(
+                      $translate('notNetworkDesc'),
+                      $translate('notNetworkTitle'),
+                      $translate('publishOk'));
+                } else {
+                  cordovaServices.alert(
+                      $translate('publishFail'),
+                      $translate('publishTitle'),
+                      $translate('publishOk'));
+                }
+              });
+        };
 
-		function getReadBodyText(text) {
-			if (text.indexOf("readBoby")) {
-				return text.split("readBoby'>")[1];
-			}
+      function enableFacebook() {
+        usSpinnerService.stop('publishSpin');
+        $timeout(function() {
+          $scope.disableFacebook = false;
+        });
+      }
 
-			return text;
-		}
+      function getTextForPublish() {
+        if ($scope.text) {
+          textToPublish = getReadBodyText($scope.text);
+          return String(textToPublish).replace(/<[^>]+>/gm, '#s').replace(/(#s)+/gm, ' ')
+              .substring(0, 600) +
+            '...';
+        }
+        return null;
+      }
 
-		$scope.twitterPublish = function() {
-			var text = 'twitter test';
-			if (text) {
-				twitterService.publish(text).then(
-						function() {
-							cordovaServices.alert($translate('publishTwitter'),
-									$translate('publishTitle'), $translate('publishOk'));
-						},
-						function() {
-							cordovaServices.alert($translate('publishFail'),
-									$translate('publishTitle'), $translate('publishOk'));
-						});
-			}
-		};
+      function getReadBodyText(text) {
+        if (text.indexOf("readBoby")) {
+          return text.split("readBoby'>")[1];
+        }
 
-		$scope.exit = function() {
-			cordovaServices.exitApp();
-		};
+        return text;
+      }
 
-		init();
-	};
-	
-	angular.module('guiaEncuentroApp').controller('TextViewerController', [
-			'$scope',
-			'navigationService',
-			'localStorageService',
-			'constantsService',
-			'textService',
-			'cordovaServices',
-			'$translate',
-			'facebookService',
-			'usSpinnerService',
-			'$timeout',
-			textViewerController ]);
+      $scope.twitterPublish =
+        function() {
+          var text = 'twitter test';
+          if (text) {
+            twitterService.publish(text).then(
+                function() {
+                  cordovaServices.alert(
+                      $translate('publishTwitter'),
+                      $translate('publishTitle'),
+                      $translate('publishOk'));
+                },
+                function() {
+                  cordovaServices.alert(
+                      $translate('publishFail'),
+                      $translate('publishTitle'),
+                      $translate('publishOk'));
+                });
+          }
+        };
+
+      $scope.exit = function() {
+        cordovaServices.exitApp();
+      };
+
+      init();
+    };
+
+  angular.module('guiaEncuentroApp').controller('TextViewerController', [
+    '$scope',
+    'navigationService',
+    'localStorageService',
+    'constantsService',
+    'textService',
+    'cordovaServices',
+    '$translate',
+    'facebookService',
+    'usSpinnerService',
+    '$timeout',
+    textViewerController
+  ]);
 })();

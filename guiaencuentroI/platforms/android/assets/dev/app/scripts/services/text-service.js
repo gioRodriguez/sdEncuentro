@@ -2,60 +2,64 @@
  * services for interact with the data layer
  */
 (function() {
-	var CONSTANTS = {
-		monthPosition : 1,
-		dayPosition : 2
-	};
-	var textService = function() {
-		var textServiceFactory = {};
+  var CONSTANTS = {
+    monthPosition : 1,
+    dayPosition : 2
+  };
+  var textService = function() {
+    var textServiceFactory = {};
 
-		/**
-		 * selectedDate format 'yyyy-MMMM-dd'
-		 */
-		textServiceFactory.getTextByDate = function(selectedDate) {
-			var textDeferred = $.Deferred();
-			if(selectedDate){
-				$.ajax({
-					url : askedText(selectedDate),
-					dataType : 'text',
-					success : function(text) {
-						textDeferred.resolve(text);
-					},
-					error : function() {
-						textDeferred.reject();
-					}
-				});
-			} else {
-				textDeferred.reject(exceptions.invalidAskedDateException());
-			}		
+    /**
+     * selectedDate format 'yyyy-MMMM-dd'
+     */
+    textServiceFactory.getTextByDate = function(selectedDate) {
+      var textDeferred = $.Deferred();
+      if (selectedDate) {
+        $.ajax({
+          url : askedText(selectedDate),
+          dataType : 'text',
+          success : function(text) {
+            textDeferred.resolve(text);
+          },
+          error : function() {
+            textDeferred.reject();
+          }
+        });
+      } else {
+        textDeferred.reject(exceptions.invalidAskedDateException());
+      }
 
-			return textDeferred.promise();
-		};
+      return textDeferred.promise();
+    };
 
-		return textServiceFactory;
-	};
-	
-	function askedText(selectedDate) {		
-		return 'texts/' + month(selectedDate) + '/'
-		+ month(selectedDate) + day(selectedDate) + '.txt';
-	}
+    return textServiceFactory;
+  };
 
-	function month(selectedDate) {
-		var dateSplited = selectedDate.split('-');
-		return dateSplited[CONSTANTS.monthPosition].toLowerCase();
-	}
+  function askedText(selectedDate) {
+    return 'texts/' +
+      month(selectedDate) +
+      '/' +
+      month(selectedDate) +
+      day(selectedDate) +
+      '.txt';
+  }
 
-	function day(selectedDate) {
-		var dateSplited = selectedDate.split('-');
-		
-		var day = dateSplited[CONSTANTS.dayPosition];
-	
-		if(day.length > 2 ){
-			day = day.substr(day.length - 2, day.length);
-		}
-		
-		return parseInt(day);
-	}
+  function month(selectedDate) {
+    var dateSplited = selectedDate.split('-');
+    return dateSplited[CONSTANTS.monthPosition].toLowerCase();
+  }
 
-	angular.module('guiaEncuentroApp').factory('textService', [ textService ]);
+  function day(selectedDate) {
+    var dateSplited = selectedDate.split('-');
+    var day = dateSplited[CONSTANTS.dayPosition];
+    if (day < 10) {
+      day = day.substr(day.length - 1, day.length);
+    }
+
+    return day;
+  }
+
+  angular.module('guiaEncuentroApp').factory('textService', [
+    textService
+  ]);
 })();

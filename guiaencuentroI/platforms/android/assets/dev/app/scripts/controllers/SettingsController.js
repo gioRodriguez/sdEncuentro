@@ -1,81 +1,85 @@
 (function() {
-	var settingsController = function(
-			$scope,
-			navigationService,
-			$translate,
-			localStorageService,
-			constantsService,
-			cordovaServices,
-			facebookService
-	) {
-		
-		var CONSTANTS = {
-			clickToShowSaraiMessage : 3
-		};
+  var settingsController =
+    function(
+        $scope,
+        navigationService,
+        $translate,
+        localStorageService,
+        constantsService,
+        cordovaServices,
+        facebookService) {
 
-		var clicksToShowSaraiMessageCount = 0;
+      var CONSTANTS = {
+        clickToShowSaraiMessage : 3
+      };
 
-		$scope.back = function() {
-			navigationService.back()
-		};
+      var clicksToShowSaraiMessageCount = 0;
 
-		$scope.preferredLanguage = $translate.uses();
-		$scope.changePreferredLanguage = function() {
+      $scope.back = function() {
+        navigationService.back()
+      };
 
-			// change the translate used language
-			$translate.uses($scope.preferredLanguage);
+      $scope.preferredLanguage = $translate.uses();
+      $scope.changePreferredLanguage = function() {
 
-			// persist user preferred language
-			localStorageService.set(constantsService.preferredLanguageKey,
-					$scope.preferredLanguage);
-		};
+        // change the translate used language
+        $translate.uses($scope.preferredLanguage);
 
-		$scope.exit = function() {
-			cordovaServices.exitApp();
-		};
+        // persist user preferred language
+        localStorageService.set(
+            constantsService.preferredLanguageKey,
+            $scope.preferredLanguage);
+      };
 
-		$scope.disableFacebookButton = true;
-		$scope.ckeckFacebookButton = function() {
-			facebookService.hasActiveAccount().then(function() {
-				$scope.disableFacebookButton = false;
-			}, function() {
-				$scope.disableFacebookButton = true;
-			});
-		}
+      $scope.exit = function() {
+        cordovaServices.exitApp();
+      };
 
-		$scope.facebookLogout = function() {
-			facebookService.logout().then(
-					function() {
-						$scope.ckeckFacebookButton();
-						cordovaServices.alert($translate('accountAlertMsg'),
-								$translate('accountAlertTitle'), $translate('publishOk'));
-					});
-		}
+      $scope.disableFacebookButton = true;
+      $scope.ckeckFacebookButton = function() {
+        facebookService.hasActiveAccount().then(function() {
+          $scope.disableFacebookButton = false;
+        }, function() {
+          $scope.disableFacebookButton = true;
+        });
+      }
 
-		$scope.hideSaraiMessage = true;
-		$scope.showSaraiMessage = function() {
-			clicksToShowSaraiMessageCount++;
+      $scope.facebookLogout = function() {
+        facebookService.logout().then(
+            function() {
+              $scope.ckeckFacebookButton();
+              cordovaServices.alert(
+                  $translate('accountAlertMsg'),
+                  $translate('accountAlertTitle'),
+                  $translate('publishOk'));
+            });
+     }
 
-			if (clicksToShowSaraiMessageCount >= CONSTANTS.clickToShowSaraiMessage) {
-				$scope.hideSaraiMessage = false;
-			} else {
-				$scope.hideSaraiMessage = true;
-			}
-		}
+      $scope.hideSaraiMessage = true;
+      $scope.showSaraiMessage = function() {
+        clicksToShowSaraiMessageCount++;
 
-		$scope.init = function() {
-			clicksToShowSaraiMessageCount = 0;
-			$scope.ckeckFacebookButton();
-		};
-	};
-	
-	angular.module('guiaEncuentroApp').controller("SettingsController", [
-			"$scope",
-			"navigationService",
-			'$translate',
-			'localStorageService',
-			'constantsService',
-			'cordovaServices',
-			'facebookService',
-			settingsController ]);
+        if (clicksToShowSaraiMessageCount >= CONSTANTS.clickToShowSaraiMessage) {
+          $scope.hideSaraiMessage = false;
+        } else {
+          $scope.hideSaraiMessage = true;
+        }
+      }
+
+      $scope.init = function() {
+        clicksToShowSaraiMessageCount = 0;
+        $scope.ckeckFacebookButton();
+      };
+    };
+
+  angular.module('guiaEncuentroApp').controller("SettingsController", [
+    "$scope",
+    "navigationService",
+    '$translate',
+    'localStorageService',
+    'constantsService',
+    'cordovaServices',
+    'facebookService',
+    settingsController
+  ]);
 })();
