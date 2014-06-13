@@ -35,24 +35,28 @@
         cordovaServices.exitApp();
       };
 
-      $scope.disableFacebookButton = true;
-      $scope.ckeckFacebookButton = function() {
+      $scope.removeFacebookAccount = function() {
         facebookService.hasActiveAccount().then(function() {
-          $scope.disableFacebookButton = false;
-        }, function() {
-          $scope.disableFacebookButton = true;
-        });
-      }
-
-      $scope.facebookLogout = function() {
-        facebookService.logout().then(
-            function() {
-              $scope.ckeckFacebookButton();
-              cordovaServices.alert(
-                  $translate('accountAlertMsg'),
-                  $translate('accountAlertTitle'),
-                  $translate('publishOk'));
-            });
+            facebookService.logout().then(
+              function() {
+                cordovaServices.alert(
+                    $translate('accountAlertMsg'),
+                    $translate('accountAlertTitle'),
+                    $translate('publishOk'));
+              });
+        }, function(error) {
+          if(error && error.isNetworkException){
+            cordovaServices.alert(
+                $translate('notNetworkDesc'),
+                $translate('notNetworkTitle'),
+                $translate('publishOk'));
+          } else {
+            cordovaServices.alert(
+                $translate('notAccountAlertMsg'),
+                $translate('accountAlertTitle'),
+                $translate('publishOk'));
+          }          
+        });        
      }
 
       $scope.hideSaraiMessage = true;
@@ -67,8 +71,7 @@
       }
 
       $scope.init = function() {
-        clicksToShowSaraiMessageCount = 0;
-        $scope.ckeckFacebookButton();
+        clicksToShowSaraiMessageCount = 0;        
       };
     };
 

@@ -11,13 +11,20 @@
 		 * Valid if has an active account
 		 */
 		facebookServiceFactory.hasActiveAccount =  function() {
-			var isNetworkAvaiablePromise = cordovaServices.isNetworkAvailableAsync();
-			return isNetworkAvaiablePromise.then(function() {
+			var hasActiveAccountDeferred = $.Deferred();
+			
+			cordovaServices.isNetworkAvailableAsync().then(function() {
 				init();						
-				return validUserPreviousLogin();
+				validUserPreviousLogin().then(function() {
+				  hasActiveAccountDeferred.resolve();
+        }, function() {
+          hasActiveAccountDeferred.reject();
+        });
 			}, function() {
-				return exceptions.notNetworkException();
+			  hasActiveAccountDeferred.reject(exceptions.notNetworkException());
 			});
+			
+			return hasActiveAccountDeferred.promise();
 		};
 		
 		/**

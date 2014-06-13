@@ -25,6 +25,7 @@ describe(
         $translate = jasmine.createSpyObj('$translate', [
           'uses'
         ]);
+        
         $translate.uses = function() {
         }
         spyOn($translate, 'uses').andReturn('us');
@@ -34,7 +35,8 @@ describe(
         ]);
 
         cordovaServices = jasmine.createSpyObj('cordovaServices', [
-          'exitApp'
+          'exitApp',
+          'alert'
         ]);
 
         navigationService = jasmine.createSpyObj('navigationService', [
@@ -56,25 +58,6 @@ describe(
           facebookService : facebookService
         });
       }));
-
-      it(
-          'it must disable facebook buttons if there is not network available',
-          function() {
-            // arrange
-            facebookService.hasActiveAccount = function() {
-            };
-            var deferred = $.Deferred();
-            spyOn(facebookService, 'hasActiveAccount').andCallFake(function() {
-              return deferred.promise();
-            });
-            deferred.reject();
-
-            // act
-            scope.init();
-
-            // assert
-            expect(scope.disableFacebookButton).toBe(true);
-          });
 
       it('must hide sarai message', function() {
         // arrange
@@ -99,35 +82,8 @@ describe(
         expect(actual).toBe(false);
       });
 
-      it('must do facebook logout', function() {
-        // arrange
-        facebookService.logout = function() {
-        };
-        var deferred = $.Deferred();
-        spyOn(facebookService, 'logout').andCallFake(function() {
-          return deferred.promise();
-        });
-        deferred.resolve();
-
-        // act
-        // scope.facebookLogout();
-
-        // assert
-        // expect(facebookService.logout).toHaveBeenCalled();
-      });
-
-      it('must facebook account button default is disabled', function() {
-        // arrange
-
-        // act
-        var actual = scope.disableFacebookButton;
-
-        // assert
-        expect(actual).toBe(true);
-      });
-
-      it('must facebook account be enabeld if is a valid account', function() {
-        // arrange
+      it('must do facebook logout when there is an account', function() {
+        // arrange      
         facebookService.hasActiveAccount = function() {
         };
         var deferred = $.Deferred();
@@ -135,16 +91,37 @@ describe(
           return deferred.promise();
         });
         deferred.resolve();
+        
+        facebookService.logout = function() {
+        };
+        var logountDeferred = $.Deferred();
+        spyOn(facebookService, 'logout').andCallFake(function() {
+          return logountDeferred.promise();
+        });        
+        logountDeferred.resolve();
+        
+        $translate = function() {         
+        };
+        $translate.uses = function() {          
+        };
+        
+        settingsController = controller('SettingsController', {
+          $scope : scope,
+          $translate : $translate,
+          localStorageService : localStorageService,
+          cordovaServices : cordovaServices,
+          navigationService : navigationService,
+          facebookService : facebookService
+        });
 
         // act
-        scope.ckeckFacebookButton();
-        var actual = scope.disableFacebookButton;
+        scope.removeFacebookAccount();
 
         // assert
-        expect(actual).toBe(false);
+        expect(facebookService.logout).toHaveBeenCalled();
       });
 
-      it('must facebook account be disabled if is not a valid account', function() {
+      it('must alert that there is not a facebook account', function() {
         // arrange
         facebookService.hasActiveAccount = function() {
         };
@@ -153,13 +130,77 @@ describe(
           return deferred.promise();
         });
         deferred.reject();
+        
+        var messages= {
+          notAccountAlertMsg : 'notAccountAlertMsg',
+          accountAlertTitle : 'accountAlertTitle',
+          publishOk : 'publishOk'
+        }; 
+        $translate = function(key) {
+          return messages[key];
+        };
+        $translate.uses = function() {          
+        };
+        
+        settingsController = controller('SettingsController', {
+          $scope : scope,
+          $translate : $translate,
+          localStorageService : localStorageService,
+          cordovaServices : cordovaServices,
+          navigationService : navigationService,
+          facebookService : facebookService
+        });
 
         // act
-        scope.ckeckFacebookButton();
-        var actual = scope.disableFacebookButton;
+        scope.removeFacebookAccount();
 
         // assert
-        expect(actual).toBe(true);
+        expect(cordovaServices.alert).toHaveBeenCalledWith(
+            'notAccountAlertMsg',
+            'accountAlertTitle',
+            'publishOk'
+        );
+      });
+      
+      it('must alert that there is not network available', function() {
+        // arrange
+        facebookService.hasActiveAccount = function() {
+        };
+        var deferred = $.Deferred();
+        spyOn(facebookService, 'hasActiveAccount').andCallFake(function() {
+          return deferred.promise();
+        });
+        deferred.reject(exceptions.notNetworkException());
+        
+        var messages= {
+          notNetworkDesc : 'notNetworkDesc',
+          notNetworkTitle : 'notNetworkTitle',
+          publishOk : 'publishOk'
+        }; 
+        $translate = function(key) {
+          return messages[key];
+        };
+        $translate.uses = function() {          
+        };
+        
+        settingsController = controller('SettingsController', {
+          $scope : scope,
+          $translate : $translate,
+          localStorageService : localStorageService,
+          cordovaServices : cordovaServices,
+          navigationService : navigationService,
+          facebookService : facebookService
+        });
+
+        // act
+        scope.removeFacebookAccount();
+
+        // assert
+        expect(cordovaServices.alert).toHaveBeenCalledWith(
+            'notNetworkDesc',
+            'notNetworkTitle',
+            'publishOk'
+        );
       });
 
       it('must call navigation back when back', function() {
@@ -198,8 +239,7 @@ describe(
         expect(cordovaServices.exitApp).toHaveBeenCalled();
       });
 
-      it(
-          'must show enabled facebook remove account when is has a facebook account saved it',
+      it('must show enabled facebook remove account when is has a facebook account saved it',
           function() {
             // arrange
 

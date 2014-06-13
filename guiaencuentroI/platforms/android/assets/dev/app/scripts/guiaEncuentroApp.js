@@ -69,7 +69,8 @@
 													notNetworkDesc : 'Necesitamos acceso a internet para compartir',
 													notNetworkTitle : 'Problemas de conectividad',
 													textAskedFailDesc : 'Lo sentimos ha ocurrido un error con la fecha seleccionada',
-													textAskedFailTitle : 'Selección de lectura'
+													textAskedFailTitle : 'Selección de lectura',
+													notAccountAlertMsg : 'No hay cuenta de facebook'
 												});
 
 								$translateProvider
@@ -102,7 +103,8 @@
 													notNetworkDesc : 'We need internet access for publish',
 													notNetworkTitle : 'Connectivity throubles',
 													textAskedFailDesc : 'We so sorry, has been ocurred an error with the asked read',
-													textAskedFailTitle : 'Read asked'
+													textAskedFailTitle : 'Read asked',
+													notAccountAlertMsg : 'There is not a facebook account'
 												});
 								$translateProvider.preferredLanguage('es');
 							} ]);
