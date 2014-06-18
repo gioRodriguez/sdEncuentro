@@ -10,37 +10,65 @@
 <div>
 
 	<article style="display: none;">
-		<label class="topcoat-radio-button"> {{'spanish' | translate}} <input
-			type="radio" name="topcoat" ng-model="preferredLanguage"
+		<label class="topcoat-radio-button"> {{'spanish' | translate}}
+			<input type="radio" name="topcoat" ng-model="preferredLanguage"
 			ng-change="changePreferredLanguage()" value="es">
 			<div class="topcoat-radio-button__checkmark"></div> <br>
-		</label> <label class="topcoat-radio-button"> {{'english' | translate}} <input
-			type="radio" name="topcoat" ng-model="preferredLanguage"
-			ng-change="changePreferredLanguage()" value="en">
+		</label> <label class="topcoat-radio-button"> {{'english' |
+			translate}} <input type="radio" name="topcoat"
+			ng-model="preferredLanguage" ng-change="changePreferredLanguage()"
+			value="en">
 			<div class="topcoat-radio-button__checkmark"></div>
 		</label>
 	</article>
-	<article id="accounts" ng-init="init()">		
+
+	<article id="accounts" ng-init="init()">
 		<div class="topcoat-list">
-		  <h3 class="topcoat-list__header">{{ 'accounts' | translate }}</h3>
-		  <ul class="topcoat-list__container">
-		    <li class="topcoat-list__item">		      
-		      <button class="topcoat-icon-button--quiet" ng-click="removeFacebookAccount()">		   
-		      	<span topcoat-icon="facebook" class='icomatic icons'></span>		      	
-				<span style="padding-left: 1rem;">{{ 'deleteFacebookAccount' | translate }}</span>
-			</button>
-		    </li>
-		  </ul>
-		</div>
-		<div class="topcoat-list">
-		  <h3 class="topcoat-list__header">{{'about' | translate}}</h3>
-		  <ul class="topcoat-list__container">
-		    <li class="topcoat-list__item" ng-click="showSaraiMessage()">{{'poweredBy' | translate}} <b>Illyum</b></li>
-		    <li ng-hide="hideSaraiMessage" class="topcoat-list__item">{{'toSarai' | translate}}</li>
-		  </ul>
+			<h3 class="topcoat-list__header">{{ 'accounts' | translate }}</h3>
+			<ul class="topcoat-list__container">
+				<li class="topcoat-list__item">
+					<button class="topcoat-icon-button--quiet"
+						ng-click="removeFacebookAccount()">
+						<span topcoat-icon="facebook" class='icomatic icons'></span> <span
+							style="padding-left: 1rem;">{{ 'deleteFacebookAccount' |
+							translate }}</span>
+					</button>
+				</li>
+			</ul>
 		</div>
 	</article>
+
+	<article id="settings">
+		<div class="topcoat-list">
+			<h3 class="topcoat-list__header">{{ 'readSettings' | translate }}</h3>
+			<ul class="topcoat-list__container">
+				<li class="topcoat-list__item">
+					<div
+						style="position: relative; width: 100%; display: inline-block;">
+						<label style="float: left;">{{'continueReadSetting' | translate}}</label> <label
+							class="topcoat-switch" style="z-index: 1; float: right;">
+							<input type="checkbox" class="topcoat-switch__input" ng-change="persistIsContinueReadingActive()" ng-model="isContinueReadingActive">
+							<div class="topcoat-switch__toggle"></div>
+						</label>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</article>
+
+	<article>
+		<div class="topcoat-list">
+			<h3 class="topcoat-list__header">{{'about' | translate}}</h3>
+			<ul class="topcoat-list__container">
+				<li class="topcoat-list__item" ng-click="showSaraiMessage()">{{'poweredBy'
+					| translate}} <b>Illyum</b>
+				</li>
+				<li ng-hide="hideSaraiMessage" class="topcoat-list__item">{{'toSarai'
+					| translate}}</li>
+			</ul>
+		</div>
+	</article>
+
 </div>
 
-<footer>
-</footer>
+<footer> </footer>

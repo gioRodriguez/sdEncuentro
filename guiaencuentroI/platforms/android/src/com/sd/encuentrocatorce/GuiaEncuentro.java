@@ -31,6 +31,6 @@ public class GuiaEncuentro extends CordovaActivity {
 		super.init();
 		
 		// Set by <content src="index.html" /> in config.xml
-		super.loadUrl(Config.getStartUrl(), 1000);
+		super.loadUrl(Config.getStartUrl(), 2000);
 	}
 }

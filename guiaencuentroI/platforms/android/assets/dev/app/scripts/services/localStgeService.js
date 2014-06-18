@@ -2,19 +2,48 @@
  * service for access to the local storage
  */
 (function() {
-	var localStgeService = function() {
-		var localStgeServiceFactory = {};
+  var localStgeService =
+    function() {
+      var localStgeServiceFactory = {};
 
-		localStgeServiceFactory.set = function(key, value) {
-			localStorage.setItem(key, JSON.stringify(value));
-		}
+      localStgeServiceFactory.saveReadPosition = function(readPosition) {
+        if (readPosition) {
+          localStgeServiceFactory.set('readPosition', readPosition);
+        }
+      };
 
-		localStgeServiceFactory.get = function(key) {
-			return JSON.parse(localStorage.getItem(key));
-		}
+      localStgeServiceFactory.getReadPosition = function(readPosition) {
+        return JSON.parse(localStorage.getItem('readPosition'));
+      };
 
-		return localStgeServiceFactory;
-	};
-	
-	angular.module('guiaEncuentroApp').factory('localStorageService', localStgeService);
+      localStgeServiceFactory.isContinueReadingActive =
+        function() {
+          var isContinueReadingActive =
+            localStgeServiceFactory.get('isContinueReadingActive');
+          if (isContinueReadingActive) {
+            return isContinueReadingActive.isContinueReadingActive
+          }
+
+          return true;
+        };
+
+      localStgeServiceFactory.persistContinueReadingActive =
+        function(isContinueReadingActive) {
+          localStorage.setItem('isContinueReadingActive', JSON.stringify({
+            'isContinueReadingActive' : isContinueReadingActive
+          }));
+        };
+
+      localStgeServiceFactory.set = function(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      };
+
+      localStgeServiceFactory.get = function(key) {
+        return JSON.parse(localStorage.getItem(key));
+      };
+
+      return localStgeServiceFactory;
+    };
+
+  angular.module('guiaEncuentroApp').factory('localStorageService', localStgeService);
 })();

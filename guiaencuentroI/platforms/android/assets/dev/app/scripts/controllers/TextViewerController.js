@@ -73,7 +73,7 @@
         $scope.selectedDate = localStorageService.get(constantsService.selectedDateKey);
         textService.getTextByDate($scope.selectedDate).done(function(data) {
           usSpinnerService.stop('readSpin');
-          $scope.text = data;
+          $scope.text = data;          
         }).fail(
             function(data) {
               usSpinnerService.stop('readSpin');
@@ -99,19 +99,31 @@
       };
 
       $scope.plusFontSize = function() {
+        $scope.$broadcast('resize:prepare');
+        
         if (!$scope.disablePlusFontSize) {
           indexPreferredFontSize++;
           setFontSize();
         }
-        enableDisableMinPlusFont();
+        enableDisableMinPlusFont();  
+        
+        $timeout(function() {
+          $scope.$broadcast('resize');
+        });        
       }
 
       $scope.minFontSize = function() {
+        $scope.$broadcast('resize:prepare');
+        
         if (!$scope.disableMinFontSize) {
           indexPreferredFontSize--;
           setFontSize();
         }
         enableDisableMinPlusFont();
+        
+        $timeout(function() {
+          $scope.$broadcast('resize');
+        }); 
       }
 
       $scope.facebookPublish =

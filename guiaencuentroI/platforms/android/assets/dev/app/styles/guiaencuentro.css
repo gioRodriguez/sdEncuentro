@@ -5,12 +5,49 @@
 
 footer {
 	position: fixed;
-	bottom: -0.8px;
+	bottom: -0.5rem;
 	width: 100%;
 	left: 0px;
 	right: 0px;
 	z-index: 1000;
 	display: block !important;
+}
+
+.mb-page {
+	background: linear-gradient(#FAFAFA, #FAFAFA) repeat scroll 0% 0%
+		#FAFAFA;
+}
+
+.content {
+	overflow-y: visible;
+	overflow-x: hidden;
+	padding: 0 1rem;
+}
+
+.textViewer {
+	height: 85%;
+	padding-right: 1rem;
+}
+
+.textViewerFooter {
+	height: 15%
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+	.textViewer {
+		height: 80%;
+		padding-right: 1rem;
+	}
+	
+	.textViewerFooter {
+		height: 20%
+	}
+}
+
+.readContent {
+	height: inherit;
+	text-shadow: 0px 1px 0px #EEE;
 }
 
 .readHeader {
@@ -44,12 +81,6 @@ footer {
 	margin-top: 0rem;
 }
 
-.readContent {
-	background: linear-gradient(#FAFAFA, #FAFAFA) repeat scroll 0% 0%
-		#FAFAFA;
-	text-shadow: 0px 1px 0px #EEE;
-}
-
 .highContrast {
 	background: black !important;
 	color: white !important;
@@ -65,74 +96,10 @@ footer {
 	font-size: 2rem !important;
 }
 
-.content {
-	overflow-y: visible;
-	overflow-x: hidden;
-	padding: 1rem;
-	padding-top: 0rem;
-	padding-bottom: 5.5rem;
-}
-
 .five {
 	width: 20%;
 }
 
 .six {
 	width: 16.6666%;
-}
-
-.home-icon {
-	background: url("../images/home.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-}
-
-.facebook-icon {
-	background: url("../images/facebook.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-}
-
-.twitter-icon {
-	background: url("../images/twitter.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-}
-
-.magnifier-minus-icon {
-	background: url("../images/magnifier-minus.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-}
-
-.magnifier-plus-icon {
-	background: url("../images/magnifier-plus.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-}
-
-.exit-icon {
-	background: url("../images/exit.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-}
-
-.settings-icon {
-	background: url("../images/settings.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-}
-
-.back-icon {
-	background: url("../images/back.png") no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
 }

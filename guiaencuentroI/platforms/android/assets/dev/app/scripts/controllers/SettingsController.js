@@ -20,44 +20,53 @@
       };
 
       $scope.preferredLanguage = $translate.uses();
-      $scope.changePreferredLanguage = function() {
+      $scope.changePreferredLanguage =
+        function() {
 
-        // change the translate used language
-        $translate.uses($scope.preferredLanguage);
+          // change the translate used language
+          $translate.uses($scope.preferredLanguage);
 
-        // persist user preferred language
-        localStorageService.set(
-            constantsService.preferredLanguageKey,
-            $scope.preferredLanguage);
-      };
+          // persist user preferred language
+          localStorageService.set(
+              constantsService.preferredLanguageKey,
+              $scope.preferredLanguage);
+        };
 
       $scope.exit = function() {
         cordovaServices.exitApp();
       };
 
-      $scope.removeFacebookAccount = function() {
-        facebookService.hasActiveAccount().then(function() {
-            facebookService.logout().then(
+      $scope.removeFacebookAccount =
+        function() {
+          facebookService.hasActiveAccount().then(
               function() {
-                cordovaServices.alert(
-                    $translate('accountAlertMsg'),
-                    $translate('accountAlertTitle'),
-                    $translate('publishOk'));
+                facebookService.logout().then(
+                    function() {
+                      cordovaServices.alert(
+                          $translate('accountAlertMsg'),
+                          $translate('accountAlertTitle'),
+                          $translate('publishOk'));
+                    });
+              },
+              function(error) {
+                if (error &&
+                  error.isNetworkException) {
+                  cordovaServices.alert(
+                      $translate('notNetworkDesc'),
+                      $translate('notNetworkTitle'),
+                      $translate('publishOk'));
+                } else {
+                  cordovaServices.alert(
+                      $translate('notAccountAlertMsg'),
+                      $translate('accountAlertTitle'),
+                      $translate('publishOk'));
+                }
               });
-        }, function(error) {
-          if(error && error.isNetworkException){
-            cordovaServices.alert(
-                $translate('notNetworkDesc'),
-                $translate('notNetworkTitle'),
-                $translate('publishOk'));
-          } else {
-            cordovaServices.alert(
-                $translate('notAccountAlertMsg'),
-                $translate('accountAlertTitle'),
-                $translate('publishOk'));
-          }          
-        });        
-     }
+        };
+
+      $scope.persistIsContinueReadingActive = function() {
+        localStorageService.persistContinueReadingActive($scope.isContinueReadingActive);
+      };
 
       $scope.hideSaraiMessage = true;
       $scope.showSaraiMessage = function() {
@@ -71,7 +80,9 @@
       }
 
       $scope.init = function() {
-        clicksToShowSaraiMessageCount = 0;        
+        clicksToShowSaraiMessageCount = 0;
+
+        $scope.isContinueReadingActive = localStorageService.isContinueReadingActive();
       };
     };
 

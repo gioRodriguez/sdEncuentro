@@ -9,10 +9,12 @@
 		constantsFactory.selectedDateKey = 'selectedDate';
 		constantsFactory.preferredLanguageKey = 'preferredLanguage';
 		
-		// defualts
+		// defaults
 		constantsFactory.preferredLanguageDefault = 'es';
 		constantsFactory.dateFormat = 'yyyy-MMMM-dd';
-		constantsFactory.defaultFontSize = 3;		
+		constantsFactory.defaultFontSize = 3;
+		
+		constantsFactory.continueReadActive = true;
 
 		return constantsFactory;
 	};

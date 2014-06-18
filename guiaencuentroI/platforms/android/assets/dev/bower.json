@@ -34,7 +34,8 @@
     "zeptojs": "~1.1.2",
     "angular-spinner": "~0.4.0",
     "topcoat-icons": "~0.2.0",
-    "modernizr": "~2.8.2"
+    "modernizr": "~2.8.2",
+    "jquery-nicescroll": "*"
   },
   "devDependencies": {
     "angular-mocks": "1.2.10",
