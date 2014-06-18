@@ -43,14 +43,11 @@
 			<h3 class="topcoat-list__header">{{ 'readSettings' | translate }}</h3>
 			<ul class="topcoat-list__container">
 				<li class="topcoat-list__item">
-					<div
-						style="position: relative; width: 100%; display: inline-block;">
-						<label style="float: left;">{{'continueReadSetting' | translate}}</label> <label
-							class="topcoat-switch" style="z-index: 1; float: right;">
-							<input type="checkbox" class="topcoat-switch__input" ng-change="persistIsContinueReadingActive()" ng-model="isContinueReadingActive">
-							<div class="topcoat-switch__toggle"></div>
-						</label>
-					</div>
+					<label>{{'continueReadSetting' | translate}}</label>
+					<label class="topcoat-checkbox" style="float: right;">
+					  <input type="checkbox" ng-change="persistIsContinueReadingActive()" ng-model="isContinueReadingActive">
+					  <div class="topcoat-checkbox__checkmark"></div>					  
+					</label>
 				</li>
 			</ul>
 		</div>
