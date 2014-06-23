@@ -6,6 +6,17 @@
     function() {
       var localStgeServiceFactory = {};
 
+      localStgeServiceFactory.saveText = function(selectedDate, text) {
+        localStorage.setItem('text', JSON.stringify({
+          'selectedDate' : selectedDate,
+          'text' : text
+        }));
+      };
+      
+      localStgeServiceFactory.getText = function() {
+        return JSON.parse(localStorage.getItem('text'));
+      };
+      
       localStgeServiceFactory.saveReadPosition = function(readPosition) {
         if (readPosition) {
           localStgeServiceFactory.set('readPosition', readPosition);

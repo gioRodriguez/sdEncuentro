@@ -123,7 +123,7 @@ module.exports = function(grunt) {
           }
         ]
       },
-      reads : {
+      texts : {
         files : [
           {
             dot : true,
@@ -462,7 +462,7 @@ module.exports = function(grunt) {
         },
         expand : true,
         src : [
-          '<%= yeoman.dist %>/texts/**/*'
+          '<%= yeoman.dist %>/texts/*'
         ],
         ext : '.gz.js'
       }
@@ -569,7 +569,7 @@ module.exports = function(grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('compress-reads', [         
+  grunt.registerTask('compress-texts', [         
     'concat:enero',
     'concat:febrero',
     'concat:marzo',
@@ -584,7 +584,7 @@ module.exports = function(grunt) {
     'concat:diciembre',
     
     'compress',
-    'clean:reads'
+    'clean:texts'
   ]);
 
   grunt.registerTask('build', [
@@ -596,7 +596,7 @@ module.exports = function(grunt) {
     'autoprefixer',
     'concat',
     'copy:dist',
-    'compress-reads',
+    'compress-texts',
     'cdnify',
     'cssmin',
     'ngmin',

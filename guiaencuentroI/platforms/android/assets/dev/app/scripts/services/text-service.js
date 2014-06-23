@@ -6,7 +6,9 @@
     monthPosition : 1,
     dayPosition : 2
   };
-  var textService = function() {
+  var cachedText = null;
+
+  var textService = function(localStorageService) {
     var textServiceFactory = {};
 
     /**
@@ -14,20 +16,17 @@
      */
     textServiceFactory.getTextByDate = function(selectedDate) {
       var textDeferred = $.Deferred();
+
       if (selectedDate) {
-        /*$.ajax({
-          url : askedText(selectedDate),
-          dataType : 'text',
-          success : function(text) {
-            textDeferred.resolve(text);
-          },
-          error : function() {
-            textDeferred.reject();
-          }
-        });*/
-        window.getText(selectedDate, function(data) {
-          textDeferred.resolve(data);
-        });
+        if (getCachedText(selectedDate)) {
+          textDeferred.resolve(getCachedText(selectedDate).text);
+        } else {
+          window.getText(selectedDate, function(data) {
+            setCachedText(selectedDate, data);
+
+            textDeferred.resolve(data);
+          });
+        }
       } else {
         textDeferred.reject(exceptions.invalidAskedDateException());
       }
@@ -35,34 +34,38 @@
       return textDeferred.promise();
     };
 
+    function getCachedText(selectedDate) {
+      return getTextFromMemory(selectedDate) ||
+        getTextFromStorage(selectedDate);
+    }
+
+    function getTextFromMemory(selectedDate) {
+      if (cachedText &&
+        cachedText.selectedDate === selectedDate) {
+        return cachedText;
+      } else {
+        return null;
+      }
+    }
+
+    function getTextFromStorage(selectedDate) {
+      cachedText = localStorageService.getText();
+      return getTextFromMemory(selectedDate);
+    }
+
+    function setCachedText(selectedDate, data) {
+      localStorageService.saveText(selectedDate, data);
+      cachedText = {
+        'selectedDate' : selectedDate,
+        'text' : data
+      };
+    }
+
     return textServiceFactory;
   };
 
-  function askedText(selectedDate) {
-    return 'texts/' +
-      month(selectedDate) +
-      '/' +
-      month(selectedDate) +
-      day(selectedDate) +
-      '.txt';
-  }
-
-  function month(selectedDate) {
-    var dateSplited = selectedDate.split('-');
-    return dateSplited[CONSTANTS.monthPosition].toLowerCase();
-  }
-
-  function day(selectedDate) {
-    var dateSplited = selectedDate.split('-');
-    var day = dateSplited[CONSTANTS.dayPosition];
-    if (day < 10) {
-      day = day.substr(day.length - 1, day.length);
-    }
-
-    return day;
-  }
-
   angular.module('guiaEncuentroApp').factory('textService', [
+    'localStorageService',
     textService
   ]);
 })();
