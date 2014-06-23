@@ -123,12 +123,14 @@ module.exports = function(grunt) {
           }
         ]
       },
-      bh : {
+      reads : {
         files : [
           {
             dot : true,
             src : [
-              '<%= yeoman.dist %>/texts/**/*.txt'
+              '<%= yeoman.dist %>/texts/**/*',
+              
+              '!<%= yeoman.dist %>/texts/*.gz.js'
             ]
           }
         ]
@@ -464,7 +466,82 @@ module.exports = function(grunt) {
         ],
         ext : '.gz.js'
       }
+    },
+    concat : {
+      enero : {
+        src : [
+          '<%= yeoman.dist %>/texts/enero/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/enero.txt'
+      },
+      febrero : {
+        src : [
+          '<%= yeoman.dist %>/texts/febrero/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/febrero.txt'
+      },
+      marzo : {
+        src : [
+          '<%= yeoman.dist %>/texts/marzo/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/marzo.txt'
+      },
+      abril : {
+        src : [
+          '<%= yeoman.dist %>/texts/abril/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/abril.txt'
+      },
+      mayo : {
+        src : [
+          '<%= yeoman.dist %>/texts/mayo/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/mayo.txt'
+      },
+      junio : {
+        src : [
+          '<%= yeoman.dist %>/texts/junio/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/junio.txt'
+      },
+      julio : {
+        src : [
+          '<%= yeoman.dist %>/texts/julio/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/julio.txt'
+      },
+      agosto : {
+        src : [
+          '<%= yeoman.dist %>/texts/agosto/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/agosto.txt'
+      },
+      septiembre : {
+        src : [
+          '<%= yeoman.dist %>/texts/septiembre/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/septiembre.txt'
+      },
+      octubre : {
+        src : [
+          '<%= yeoman.dist %>/texts/octubre/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/octubre.txt'
+      },
+      noviembre : {
+        src : [
+          '<%= yeoman.dist %>/texts/noviembre/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/noviembre.txt'
+      },
+      diciembre : {
+        src : [
+          '<%= yeoman.dist %>/texts/diciembre/*'
+        ],
+        dest : '<%= yeoman.dist %>/texts/diciembre.txt'
+      }
     }
+
   });
 
   grunt.registerTask('serve', function(target) {
@@ -492,6 +569,24 @@ module.exports = function(grunt) {
     'karma'
   ]);
 
+  grunt.registerTask('compress-reads', [         
+    'concat:enero',
+    'concat:febrero',
+    'concat:marzo',
+    'concat:abril',
+    'concat:mayo',
+    'concat:junio',
+    'concat:julio',
+    'concat:agosto',
+    'concat:septiembre',
+    'concat:octubre',
+    'concat:noviembre',
+    'concat:diciembre',
+    
+    'compress',
+    'clean:reads'
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
     'useminPrepare',
@@ -501,6 +596,7 @@ module.exports = function(grunt) {
     'autoprefixer',
     'concat',
     'copy:dist',
+    'compress-reads',
     'cdnify',
     'cssmin',
     'ngmin',

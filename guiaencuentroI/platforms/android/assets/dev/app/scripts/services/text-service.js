@@ -15,7 +15,7 @@
     textServiceFactory.getTextByDate = function(selectedDate) {
       var textDeferred = $.Deferred();
       if (selectedDate) {
-        $.ajax({
+        /*$.ajax({
           url : askedText(selectedDate),
           dataType : 'text',
           success : function(text) {
@@ -24,6 +24,9 @@
           error : function() {
             textDeferred.reject();
           }
+        });*/
+        window.getText(selectedDate, function(data) {
+          textDeferred.resolve(data);
         });
       } else {
         textDeferred.reject(exceptions.invalidAskedDateException());

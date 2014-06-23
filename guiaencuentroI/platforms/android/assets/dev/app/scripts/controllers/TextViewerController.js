@@ -31,10 +31,12 @@
       var indexPreferredFontSize;
 
       function init() {
-        loadUserPreferredFontSize();
-        loadUserContrast();
-        loadSelectedText();
-        enableDisableMinPlusFont();
+        $timeout(function() {
+          loadUserPreferredFontSize();
+          loadUserContrast();
+          loadSelectedText();
+          enableDisableMinPlusFont();
+        });        
 
         $scope.disableFacebook = false;
       }

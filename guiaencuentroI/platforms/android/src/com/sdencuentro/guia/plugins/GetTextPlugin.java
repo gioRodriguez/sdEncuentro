@@ -29,8 +29,18 @@ public class GetTextPlugin extends CordovaPlugin {
 		String date[] = dateSelected.split("-");
 		String month = date[1].toLowerCase();
 		int day = Integer.parseInt(date[2]);
-		String file = String.format(Locale.ENGLISH, "www/texts/%s/%s%d.gz.js", month, month, day);
-		String text = loadFile(file);
+		String file = String.format(Locale.ENGLISH, "www/texts/%s.gz.js", month);
+		String content = loadFile(file);
+		
+		String [] texts = content.split("\n");
+		String text = "Lo sentimos texto no encontrado";
+		for (int line = 0; line < texts.length; line++) {
+			if(texts[line].contains(String.format("<h2>%d de", day))){
+				text = texts[line];
+				break;
+			}
+		}
+		
 		callbackContext.success(text);
 		return true;
 	}
