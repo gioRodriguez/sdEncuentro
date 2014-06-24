@@ -6,6 +6,8 @@ describe('text-service-test', function() {
 
   var injector;
   var textService;
+  var _localStorageService;
+  var provide;
   var deferred;
 
   beforeEach(function() {
@@ -21,19 +23,40 @@ describe('text-service-test', function() {
     $.Deferred = function() {
       return deferred;
     }
-    $.ajax = function() {
+
+    window.getText = function() {
     };
+    spyOn(window, 'getText').andCallFake(function(date, func) {
+      func('from file');
+    });
+
+    _localStorageService = jasmine.createSpyObj('_localStorageService', [
+      'saveText',
+      'set',
+      'getText'
+    ]);
+
+    module(function($provide) {
+      _localStorageService.getText = function() {
+      };
+
+      spyOn(_localStorageService, 'getText').andCallFake(function() {
+        return {
+          'selectedDate' : '1988-abril-10',
+          'text' : 'from storage'
+        }
+      });
+
+      $provide.value('localStorageService', _localStorageService);
+    });
 
     inject(function($injector) {
       injector = $injector;
     });
   });
 
-  it('must get the text dy date', function() {
+  it('must get the text from file', function() {
     // arrange
-    spyOn($, 'ajax').andCallFake(function(ajaxOptions) {
-      ajaxOptions.success();
-    });
     textService = injector.get('textService');
 
     // act
@@ -41,78 +64,45 @@ describe('text-service-test', function() {
 
     // assert
     expect(deferred.resolve).toHaveBeenCalled();
-    expect($.ajax).toHaveBeenCalledWith({
-      url : 'texts/abril/abril9.txt',
-      dataType : 'text',
-      success : jasmine.any(Function),
-      error : jasmine.any(Function)
-    });
+    expect(window.getText).toHaveBeenCalledWith('1988-abril-09', jasmine.any(Function));
+    expect(_localStorageService.saveText).toHaveBeenCalledWith(
+        '1988-abril-09',
+        'from file');
   });
 
-  it('must get the text dy date with day', function() {
+  it('must get the text from local storage', function() {
     // arrange
-    spyOn($, 'ajax').andCallFake(function(ajaxOptions) {
-      ajaxOptions.success();
-    });
     textService = injector.get('textService');
 
     // act
-    var textPromise = textService.getTextByDate('1988-abril-1');
+    var textPromise = textService.getTextByDate('1988-abril-10');
 
     // assert
-    expect(deferred.resolve).toHaveBeenCalled();
-    expect($.ajax).toHaveBeenCalledWith({
-      url : 'texts/abril/abril1.txt',
-      dataType : 'text',
-      success : jasmine.any(Function),
-      error : jasmine.any(Function)
-    });
+    expect(deferred.resolve).toHaveBeenCalledWith('from storage');
+    expect(_localStorageService.getText).toHaveBeenCalled();
+    expect(_localStorageService.saveText).not.toHaveBeenCalled();
+    expect(window.getText).not.toHaveBeenCalled();
   });
 
-  it('must get the text dy date with day', function() {
+  it('must get the text from file when storage has text for other date', function() {
     // arrange
-    spyOn($, 'ajax').andCallFake(function(ajaxOptions) {
-      ajaxOptions.success();
-    });
     textService = injector.get('textService');
 
     // act
-    var textPromise = textService.getTextByDate('1988-abril-001');
+    var textPromise = textService.getTextByDate('1988-abril-20');
 
     // assert
-    expect(deferred.resolve).toHaveBeenCalled();
-    expect($.ajax).toHaveBeenCalledWith({
-      url : 'texts/abril/abril1.txt',
-      dataType : 'text',
-      success : jasmine.any(Function),
-      error : jasmine.any(Function)
-    });
-  });
-
-  it('must get the text dy date with month in Upper', function() {
-    // arrange
-    spyOn($, 'ajax').andCallFake(function(ajaxOptions) {
-      ajaxOptions.success();
-    });
-    textService = injector.get('textService');
-
-    // act
-    var textPromise = textService.getTextByDate('1988-Abril-11');
-
-    // assert
-    expect(deferred.resolve).toHaveBeenCalled();
-    expect($.ajax).toHaveBeenCalledWith({
-      url : 'texts/abril/abril11.txt',
-      dataType : 'text',
-      success : jasmine.any(Function),
-      error : jasmine.any(Function)
-    });
+    expect(deferred.resolve).toHaveBeenCalledWith('from file');
+    expect(_localStorageService.getText).toHaveBeenCalled();
+    expect(_localStorageService.saveText).toHaveBeenCalledWith(
+        '1988-abril-20',
+        'from file'
+    );
+    expect(window.getText).toHaveBeenCalled();
   });
 
   it('must get the text dy date with not valid date', function() {
     // arrange
-    spyOn($, 'ajax').andCallFake(function(ajaxOptions) {
-    });
     textService = injector.get('textService');
 
     // act
@@ -120,6 +110,6 @@ describe('text-service-test', function() {
 
     // assert
     expect(deferred.reject).toHaveBeenCalled();
-    expect($.ajax).not.toHaveBeenCalled();
+    expect(window.getText).not.toHaveBeenCalled();
   });
 })

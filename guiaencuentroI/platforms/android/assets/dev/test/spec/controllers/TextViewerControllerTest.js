@@ -13,7 +13,19 @@ describe(
         };
       beforeEach(module('guiaEncuentroApp'));
 
-      var textViewerController, scope, localStorageService, textService, constantsService, controller, navigationService, facebookService, cordovaServices, $translate, twitterService, usSpinnerService;
+      var textViewerController;
+      var scope;
+      var localStorageService;
+      var textService;
+      var constantsService;
+      var controller;
+      var navigationService;
+      var facebookService;
+      var cordovaServices;
+      var $translate;
+      var twitterService;
+      var usSpinnerService;
+      var $timeout;
 
       beforeEach(function() {
         navigationService = jasmine.createSpyObj('navigationService', [
@@ -53,6 +65,10 @@ describe(
         ]);
         constantsService.defaultFontSize = 3;
 
+        $timeout = function(func) {
+          func();
+        }
+        
         inject(function($controller, $rootScope) {
           scope = $rootScope.$new();
           controller = $controller;
@@ -62,9 +78,6 @@ describe(
 
       it('must alert that there is not network when try to publish offline', function() {
         // arrange
-        var $timeout = function(func) {
-          func();
-        }
         $translate = function(translateKey) {
           var messages = {
             notNetworkTitle : 'notNetworkTitle',
@@ -254,7 +267,8 @@ describe(
           textService : textService,
           constantsService : constantsService,
           navigationService : navigationService,
-          cordovaServices : cordovaServices
+          cordovaServices : cordovaServices,
+          $timeout : $timeout
         });
 
         // act
@@ -268,13 +282,17 @@ describe(
           'must apply font plus and disable plus when the max font size is reached',
           function() {
             // arrange
+            var $timeout = function(func) {
+              func();
+            }
             var fontSize = 8;
             spyOn(localStorageService, 'get').andReturn(fontSize);
             textViewerController = controller('TextViewerController', {
               $scope : scope,
               localStorageService : localStorageService,
               textService : textService,
-              constantsService : constantsService
+              constantsService : constantsService,
+              $timeout : $timeout
             });
 
             // act
@@ -298,7 +316,8 @@ describe(
               $scope : scope,
               localStorageService : localStorageService,
               textService : textService,
-              constantsService : constantsService
+              constantsService : constantsService,
+              $timeout : $timeout
             });
 
             // act
@@ -319,7 +338,8 @@ describe(
           $scope : scope,
           localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService
+          constantsService : constantsService,
+          $timeout : $timeout
         });
 
         // act
@@ -335,7 +355,8 @@ describe(
           $scope : scope,
           localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService
+          constantsService : constantsService,
+          $timeout : $timeout
         });
 
         // act
@@ -375,7 +396,8 @@ describe(
           textService : textService,
           constantsService : constantsService,
           $translate : $translate,
-          cordovaServices : cordovaServices
+          cordovaServices : cordovaServices,
+          $timeout : $timeout
         });
 
         // act
@@ -398,7 +420,8 @@ describe(
               $scope : scope,
               localStorageService : localStorageService,
               textService : textService,
-              constantsService : constantsService
+              constantsService : constantsService,
+              $timeout : $timeout
             });
 
             // act
