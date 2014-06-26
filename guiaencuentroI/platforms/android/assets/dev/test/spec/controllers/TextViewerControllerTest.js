@@ -14,10 +14,9 @@ describe(
       beforeEach(module('guiaEncuentroApp'));
 
       var textViewerController;
+      var rootScope;
       var scope;
-      var localStorageService;
       var textService;
-      var constantsService;
       var controller;
       var navigationService;
       var facebookService;
@@ -26,17 +25,28 @@ describe(
       var twitterService;
       var usSpinnerService;
       var $timeout;
+      var $routeParams;
+      var userSettingsService;
+      var httpBackend;
 
       beforeEach(function() {
         navigationService = jasmine.createSpyObj('navigationService', [
           'back'
-        ])
-        localStorageService = jasmine.createSpyObj('localStorageService', [
-          'get',
-          'set'
         ]);
-        localStorageService.get = function() {
-        }
+
+        userSettingsService = jasmine.createSpyObj('userSettingsService', [
+          'isHighConstrastEnabled',
+          'turnOffHighConstrast',
+          'turnOnHighConstrast',
+          'getPreferedFontSize',
+          'savePreferedFontSize'
+        ]);
+        userSettingsService.getPreferedFontSize = function() {
+        };
+        spyOn(userSettingsService, 'getPreferedFontSize').andReturn('5');
+        userSettingsService.isHighConstrastEnabled = function() {
+        };
+        spyOn(userSettingsService, 'isHighConstrastEnabled').andReturn(true);
 
         textService = jasmine.createSpy('textService');
         textService.getTextByDate = function() {
@@ -58,22 +68,50 @@ describe(
         ]);
         cordovaServices.isNetworkAvailable = function() {
           return true;
-        }
-
-        constantsService = jasmine.createSpyObj('constantsService', [
-          'defaultFontSize'
-        ]);
-        constantsService.defaultFontSize = 3;
+        };
 
         $timeout = function(func) {
           func();
         }
-        
-        inject(function($controller, $rootScope) {
+
+        $routeParams = {
+          selectedDateParam : '2012-febrero-4'
+        };
+
+        inject(function($controller, $rootScope, $httpBackend) {
+          rootScope = $rootScope;
           scope = $rootScope.$new();
           controller = $controller;
+          httpBackend = $httpBackend;
         })
 
+        httpBackend.expectGET('views/HomeView.html').respond({ hello: 'World' });
+        
+        $translate = function(translateKey) {
+          var messages = {
+            textAskedFailDesc : 'textAskedFailDesc',
+            textAskedFailTitle : 'textAskedFailTitle',
+            publishOk : 'publishOk'
+          }
+          return messages[translateKey] ? messages[translateKey] : 'messageFake';
+        }
+
+        usSpinnerService = jasmine.createSpyObj('usSpinnerService', [
+          'spin',
+          'stop'
+        ]);
+
+        textViewerController = controller('TextViewerController', {
+          $scope : scope,
+          textService : textService,
+          navigationService : navigationService,
+          cordovaServices : cordovaServices,
+          facebookService : facebookService,
+          $translate : $translate,
+          usSpinnerService : usSpinnerService,
+          $timeout : $timeout,
+          $routeParams : $routeParams
+        });
       });
 
       it('must alert that there is not network when try to publish offline', function() {
@@ -104,9 +142,7 @@ describe(
 
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService,
           navigationService : navigationService,
           cordovaServices : cordovaServices,
           facebookService : facebookService,
@@ -161,9 +197,7 @@ describe(
 
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService,
           navigationService : navigationService,
           cordovaServices : cordovaServices,
           facebookService : facebookService,
@@ -211,27 +245,12 @@ describe(
         facebookService = jasmine.createSpyObj('facebookService', [
           'publish'
         ]);
-        facebookService.publish = function() {
-        }
-        spyOn(facebookService, 'publish').andReturn({
-          done : function(func) {
-            func('success');
-            return {
-              fail : function() {
-              }
-            };
-          }
-        });
 
+        scope = rootScope.$new();
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService,
-          navigationService : navigationService,
-          cordovaServices : cordovaServices,
-          facebookService : facebookService,
-          $translate : $translate
+          facebookService : facebookService
         });
 
         // act
@@ -246,9 +265,7 @@ describe(
         // arrange
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService,
           navigationService : navigationService
         });
 
@@ -263,9 +280,7 @@ describe(
         // arrange
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService,
           navigationService : navigationService,
           cordovaServices : cordovaServices,
           $timeout : $timeout
@@ -285,22 +300,26 @@ describe(
             var $timeout = function(func) {
               func();
             }
-            var fontSize = 8;
-            spyOn(localStorageService, 'get').andReturn(fontSize);
+            var fontSize = 9;
+            userSettingsService.getPreferedFontSize = function() {
+            };
+            spyOn(userSettingsService, 'getPreferedFontSize').andReturn(fontSize);
+
+            scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
               $scope : scope,
-              localStorageService : localStorageService,
               textService : textService,
-              constantsService : constantsService,
-              $timeout : $timeout
+              $timeout : $timeout,
+              userSettingsService : userSettingsService
             });
 
             // act
-            scope.plusFontSize();
+            scope.plusFontSize();            
+            scope.$apply();
 
             // assert
-            expect(localStorageService.set)
-                .toHaveBeenCalledWith('fontSize', fontSize + 1);
+            expect(userSettingsService.savePreferedFontSize).toHaveBeenCalledWith(
+                fontSize + 1);
             expect(scope.userPreferredFontSize).toBe('5rem');
             expect(scope.disableMinFontSize).toBeFalsy();
             expect(scope.disablePlusFontSize).toBeTruthy();
@@ -310,54 +329,89 @@ describe(
           'must apply font min and disable min when the min font size is reached',
           function() {
             // arrange
-            var fontSize = 1;
-            spyOn(localStorageService, 'get').andReturn(fontSize);
+            var fontSize = 2;
+            userSettingsService.getPreferedFontSize = function() {
+            };
+            spyOn(userSettingsService, 'getPreferedFontSize').andReturn(fontSize);
+            
+            scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
               $scope : scope,
-              localStorageService : localStorageService,
               textService : textService,
-              constantsService : constantsService,
-              $timeout : $timeout
+              $timeout : $timeout,
+              userSettingsService : userSettingsService
             });
 
             // act
             scope.minFontSize();
+            scope.$apply();
 
             // assert
-            expect(localStorageService.set)
-                .toHaveBeenCalledWith('fontSize', fontSize - 1);
+            expect(userSettingsService.savePreferedFontSize).toHaveBeenCalledWith(
+                fontSize - 1);
             expect(scope.userPreferredFontSize).toBe('0.5rem');
             expect(scope.disableMinFontSize).toBeTruthy();
             expect(scope.disablePlusFontSize).toBeFalsy();
           });
 
-      it('must load user preferred font size from local storage', function() {
+      it('must load user settings', function() {
         // arrange
-        spyOn(localStorageService, 'get').andReturn(4);
+        scope = rootScope.$new();
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService,
-          $timeout : $timeout
+          $timeout : $timeout,
+          userSettingsService : userSettingsService
         });
 
         // act
+        scope.$apply();
 
         // assert
         expect(scope.userPreferredFontSize).toBe('2.5rem');
+        expect(userSettingsService.isHighConstrastEnabled).toHaveBeenCalled();
+        expect(userSettingsService.getPreferedFontSize).toHaveBeenCalled();
+      });
+
+      it('must turn off high constract when the user does', function() {
+        // arrange
+        textViewerController = controller('TextViewerController', {
+          $scope : scope,
+          textService : textService,
+          $timeout : $timeout,
+          userSettingsService : userSettingsService
+        });
+
+        // act
+        scope.setContrast();
+
+        // assert
+        expect(userSettingsService.turnOffHighConstrast).toHaveBeenCalled();
+      });
+
+      it('must turn on high constract when the user does', function() {
+        // arrange
+        userSettingsService.isHighConstrastEnabled = function() {
+        };
+        spyOn(userSettingsService, 'isHighConstrastEnabled').andReturn(false);
+
+        scope = rootScope.$new();
+        textViewerController = controller('TextViewerController', {
+          $scope : scope,
+          textService : textService,
+          $timeout : $timeout,
+          userSettingsService : userSettingsService
+        });
+
+        // act
+        scope.setContrast();
+
+        // assert
+        expect(userSettingsService.turnOnHighConstrast).toHaveBeenCalled();
       });
 
       it('must load the text by the selected day', function() {
         // arrange
-        spyOn(localStorageService, 'get').andReturn('2012-febrero-4');
-        textViewerController = controller('TextViewerController', {
-          $scope : scope,
-          localStorageService : localStorageService,
-          textService : textService,
-          constantsService : constantsService,
-          $timeout : $timeout
-        });
 
         // act
 
@@ -367,8 +421,11 @@ describe(
         expect(scope.text).toBe(CONSTANTS.textForTodayHTML);
       });
 
-      it('must alert when the asked date is invalid', function() {
+      it('must alert when the loaded text is invalid', function() {
         // arrange
+        $routeParams = {
+          selectedDateParam : ''
+        };
         textService = jasmine.createSpy('textService');
         textService.getTextByDate = function() {
         };
@@ -381,23 +438,15 @@ describe(
             };
           }
         });
-        $translate = function(translateKey) {
-          var messages = {
-            textAskedFailDesc : 'textAskedFailDesc',
-            textAskedFailTitle : 'textAskedFailTitle',
-            publishOk : 'publishOk'
-          }
-          return messages[translateKey] ? messages[translateKey] : 'messageFake';
-        }
-        spyOn(localStorageService, 'get').andReturn('');
+
+        scope = rootScope.$new();
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          localStorageService : localStorageService,
           textService : textService,
-          constantsService : constantsService,
           $translate : $translate,
           cordovaServices : cordovaServices,
-          $timeout : $timeout
+          $timeout : $timeout,
+          $routeParams : $routeParams
         });
 
         // act
@@ -410,24 +459,4 @@ describe(
             'textAskedFailTitle',
             'publishOk');
       });
-
-      it(
-          'must use preferred font size from constanst when local storage is null',
-          function() {
-            // arrange
-            spyOn(localStorageService, 'get').andReturn(undefined);
-            textViewerController = controller('TextViewerController', {
-              $scope : scope,
-              localStorageService : localStorageService,
-              textService : textService,
-              constantsService : constantsService,
-              $timeout : $timeout
-            });
-
-            // act
-
-            // assert
-            expect(scope.userPreferredFontSize).toBe('2rem');
-            expect(localStorageService.get).toHaveBeenCalledWith('fontSize');
-          });
     });

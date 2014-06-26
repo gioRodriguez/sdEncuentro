@@ -8,16 +8,23 @@ describe('homeController', function() {
   // load the controller's module
   beforeEach(module('guiaEncuentroApp'));
 
-  var homeController, scope, localStorageService, cordovaServices, navigationService;
+  var homeController;
+  var scope;
+  var cordovaServices;
+  var navigationService;
+  var userSettingsService;
 
   // initialize the controller and a mock scope
   beforeEach(inject(function($controller, $rootScope) {
-    localStorageService = jasmine.createSpyObj('localStorageService', [
-      'set'
+
+    userSettingsService = jasmine.createSpyObj('userSettingsService', [
+      'getSelectedDate',
+      'saveSelectedDate'
     ]);
-    localStorageService.get = function() {
+    userSettingsService.getSelectedDate = function() {
     };
-    spyOn(localStorageService, 'get').andReturn(CURRENT_DATE);
+    spyOn(userSettingsService, 'getSelectedDate').andReturn(CURRENT_DATE);
+    
     cordovaServices = jasmine.createSpyObj('cordovaServices', [
       'exitApp'
     ]);
@@ -28,9 +35,9 @@ describe('homeController', function() {
     scope = $rootScope.$new();
     homeController = $controller('HomeController', {
       $scope : scope,
-      localStorageService : localStorageService,
       cordovaServices : cordovaServices,
-      navigationService : navigationService
+      navigationService : navigationService,
+      userSettingsService : userSettingsService
     });
   }));
 
@@ -38,9 +45,9 @@ describe('homeController', function() {
     expect(scope.selectedDate).toBe(CURRENT_DATE);
   });
 
-  it('must persist selected data to local storage', function() {
+  it('must persist selected', function() {
     scope.persistSelectedDate();
-    expect(localStorageService.set).toHaveBeenCalledWith('selectedDate', CURRENT_DATE);
+    expect(userSettingsService.saveSelectedDate).toHaveBeenCalledWith(CURRENT_DATE);
   });
 
   it('must call cordova exit app on exit', function() {

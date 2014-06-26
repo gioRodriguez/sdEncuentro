@@ -2,7 +2,7 @@
  * mobiscroll directive
  */
 (function() {
-	var mobiscrollDirective = function($timeout, constantsService) {
+	var mobiscrollDirective = function($timeout) {
 		var mobiscrollDirectiveFactory = {};
 		var mEmelent = null;
 		var mScope = null;
@@ -17,7 +17,7 @@
 					preset : 'date',
 					dateOrder : 'ddMyy',
 					theme : 'ios',
-					dateFormat : constantsService.dateFormat,
+					dateFormat : 'yyyy-MMMM-dd',
 					lang : 'es',
 					onSelect : function() {
 						mScope.$apply(function() {
@@ -39,6 +39,5 @@
 	
 	angular.module('guiaEncuentroApp').directive('illyumDateSelector', [
 			'$timeout',
-			'constantsService',
 			mobiscrollDirective ]);
 })();

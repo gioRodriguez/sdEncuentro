@@ -6,16 +6,17 @@
     function(
         $scope,
         navigationService,
-        localStorageService,
-        constantsService,
         textService,
         cordovaServices,
         $translate,
         facebookService,
         usSpinnerService,
-        $timeout) {
+        $timeout,
+        $routeParams,
+        userSettingsService) {
 
       var FONT_SIZES = [
+        '0.5rem', // the cero position is not valid
         '0.5rem',
         '1rem',
         '1.5rem',
@@ -27,55 +28,44 @@
         '4.5rem',
         '5rem'
       ];
+      var MIN_FONT_SIZE = 1;
       var MAX_FONT_SIZE = FONT_SIZES.length;
       var indexPreferredFontSize;
 
       function init() {
         $timeout(function() {
           loadUserPreferredFontSize();
-          loadUserContrast();
+          loadHighConstrast();
           loadSelectedText();
-          enableDisableMinPlusFont();
-        });        
+        });
 
         $scope.disableFacebook = false;
       }
 
-      function loadUserContrast() {
-        $scope.constratEnabled = localStorageService.get('constratEnabled');
+      function loadHighConstrast() {
+        $scope.constratEnabled = userSettingsService.isHighConstrastEnabled();
       }
 
       $scope.setContrast = function() {
         if ($scope.constratEnabled) {
           $scope.constratEnabled = false;
+          userSettingsService.turnOffHighConstrast();
         } else {
           $scope.constratEnabled = true;
+          userSettingsService.turnOnHighConstrast();
         }
-        localStorageService.set('constratEnabled', $scope.constratEnabled);
-      }
-
-      function enableDisableMinPlusFont() {
-        isDisabledPlusFontSize();
-        isDisabledMinFontSize();
       }
 
       function loadUserPreferredFontSize() {
-        var fontSizeStored = localStorageService.get('fontSize');
-        indexPreferredFontSize =
-          fontSizeStored != null ? fontSizeStored : constantsService.defaultFontSize;
+        indexPreferredFontSize = userSettingsService.getPreferedFontSize();
         $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
-      }
-
-      function setFontSize() {
-        $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
-        localStorageService.set('fontSize', indexPreferredFontSize);
       }
 
       function loadSelectedText() {
-        $scope.selectedDate = localStorageService.get(constantsService.selectedDateKey);
+        $scope.selectedDate = $routeParams.selectedDateParam;
         textService.getTextByDate($scope.selectedDate).done(function(data) {
           usSpinnerService.stop('readSpin');
-          $scope.text = data;          
+          $scope.text = data;
         }).fail(
             function(data) {
               usSpinnerService.stop('readSpin');
@@ -86,46 +76,36 @@
             });
       }
 
-      function isDisabledPlusFontSize() {
-        $scope.disablePlusFontSize = indexPreferredFontSize + 1 >= MAX_FONT_SIZE;
-        return $scope.disablePlusFontSize;
-      }
-
-      function isDisabledMinFontSize() {
-        $scope.disableMinFontSize = indexPreferredFontSize - 1 < 0;
-        return $scope.disableMinFontSize;
-      }
-
       $scope.back = function(path, type) {
         navigationService.back();
       };
 
       $scope.plusFontSize = function() {
+        plusMinFont(true);
+      }
+
+      function plusMinFont(isPlus) {
         $scope.$broadcast('resize:prepare');
-        
-        if (!$scope.disablePlusFontSize) {
+
+        if (isPlus &&
+          !$scope.disablePlusFontSize) {
           indexPreferredFontSize++;
-          setFontSize();
         }
-        enableDisableMinPlusFont();  
-        
+
+        if (!isPlus &&
+          !$scope.disableMinFontSize) {
+          indexPreferredFontSize--;
+        }
+
+        $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
+
         $timeout(function() {
           $scope.$broadcast('resize');
-        });        
+        });
       }
 
       $scope.minFontSize = function() {
-        $scope.$broadcast('resize:prepare');
-        
-        if (!$scope.disableMinFontSize) {
-          indexPreferredFontSize--;
-          setFontSize();
-        }
-        enableDisableMinPlusFont();
-        
-        $timeout(function() {
-          $scope.$broadcast('resize');
-        }); 
+        plusMinFont(false);
       }
 
       $scope.facebookPublish =
@@ -195,44 +175,32 @@
         return text;
       }
 
-      $scope.twitterPublish =
-        function() {
-          var text = 'twitter test';
-          if (text) {
-            twitterService.publish(text).then(
-                function() {
-                  cordovaServices.alert(
-                      $translate('publishTwitter'),
-                      $translate('publishTitle'),
-                      $translate('publishOk'));
-                },
-                function() {
-                  cordovaServices.alert(
-                      $translate('publishFail'),
-                      $translate('publishTitle'),
-                      $translate('publishOk'));
-                });
-          }
-        };
-
       $scope.exit = function() {
         cordovaServices.exitApp();
       };
 
       init();
+
+      $scope.$watch('userPreferredFontSize', function() {
+        if (indexPreferredFontSize) {
+          userSettingsService.savePreferedFontSize(indexPreferredFontSize);
+          $scope.disablePlusFontSize = indexPreferredFontSize + 1 >= MAX_FONT_SIZE;
+          $scope.disableMinFontSize = indexPreferredFontSize - 1 < MIN_FONT_SIZE;
+        }
+      });
     };
 
   angular.module('guiaEncuentroApp').controller('TextViewerController', [
     '$scope',
     'navigationService',
-    'localStorageService',
-    'constantsService',
     'textService',
     'cordovaServices',
     '$translate',
     'facebookService',
     'usSpinnerService',
     '$timeout',
+    '$routeParams',
+    'userSettingsService',
     textViewerController
   ]);
 })();

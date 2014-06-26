@@ -13,10 +13,10 @@ describe(
       var rootScope;
       var scope;
       var $translate;
-      var localStorageService;
       var cordovaServices;
       var navigationService;
       var facebookService;
+      var userSettingsService;
 
       beforeEach(inject(function($controller, $rootScope) {
         controller = $controller;
@@ -25,14 +25,10 @@ describe(
         $translate = jasmine.createSpyObj('$translate', [
           'uses'
         ]);
-        
+
         $translate.uses = function() {
         }
         spyOn($translate, 'uses').andReturn('us');
-
-        localStorageService = jasmine.createSpyObj('localStorageService', [
-          'set'
-        ]);
 
         cordovaServices = jasmine.createSpyObj('cordovaServices', [
           'exitApp',
@@ -48,14 +44,20 @@ describe(
           'logout'
         ]);
 
+        userSettingsService = jasmine.createSpyObj('userSettingsService', [
+          'savePreferredLanguage',
+          'turnOnContinueReading',
+          'turnOffContinueReading'          
+        ]);
+
         scope = $rootScope.$new();
         settingsController = $controller('SettingsController', {
           $scope : scope,
           $translate : $translate,
-          localStorageService : localStorageService,
           cordovaServices : cordovaServices,
           navigationService : navigationService,
-          facebookService : facebookService
+          facebookService : facebookService,
+          userSettingsService : userSettingsService
         });
       }));
 
@@ -83,7 +85,7 @@ describe(
       });
 
       it('must do facebook logout when there is an account', function() {
-        // arrange      
+        // arrange
         facebookService.hasActiveAccount = function() {
         };
         var deferred = $.Deferred();
@@ -91,24 +93,23 @@ describe(
           return deferred.promise();
         });
         deferred.resolve();
-        
+
         facebookService.logout = function() {
         };
         var logountDeferred = $.Deferred();
         spyOn(facebookService, 'logout').andCallFake(function() {
           return logountDeferred.promise();
-        });        
+        });
         logountDeferred.resolve();
-        
-        $translate = function() {         
+
+        $translate = function() {
         };
-        $translate.uses = function() {          
+        $translate.uses = function() {
         };
-        
+
         settingsController = controller('SettingsController', {
           $scope : scope,
           $translate : $translate,
-          localStorageService : localStorageService,
           cordovaServices : cordovaServices,
           navigationService : navigationService,
           facebookService : facebookService
@@ -130,22 +131,21 @@ describe(
           return deferred.promise();
         });
         deferred.reject();
-        
-        var messages= {
+
+        var messages = {
           notAccountAlertMsg : 'notAccountAlertMsg',
           accountAlertTitle : 'accountAlertTitle',
           publishOk : 'publishOk'
-        }; 
+        };
         $translate = function(key) {
           return messages[key];
         };
-        $translate.uses = function() {          
+        $translate.uses = function() {
         };
-        
+
         settingsController = controller('SettingsController', {
           $scope : scope,
           $translate : $translate,
-          localStorageService : localStorageService,
           cordovaServices : cordovaServices,
           navigationService : navigationService,
           facebookService : facebookService
@@ -158,10 +158,9 @@ describe(
         expect(cordovaServices.alert).toHaveBeenCalledWith(
             'notAccountAlertMsg',
             'accountAlertTitle',
-            'publishOk'
-        );
+            'publishOk');
       });
-      
+
       it('must alert that there is not network available', function() {
         // arrange
         facebookService.hasActiveAccount = function() {
@@ -171,22 +170,21 @@ describe(
           return deferred.promise();
         });
         deferred.reject(exceptions.notNetworkException());
-        
-        var messages= {
+
+        var messages = {
           notNetworkDesc : 'notNetworkDesc',
           notNetworkTitle : 'notNetworkTitle',
           publishOk : 'publishOk'
-        }; 
+        };
         $translate = function(key) {
           return messages[key];
         };
-        $translate.uses = function() {          
+        $translate.uses = function() {
         };
-        
+
         settingsController = controller('SettingsController', {
           $scope : scope,
           $translate : $translate,
-          localStorageService : localStorageService,
           cordovaServices : cordovaServices,
           navigationService : navigationService,
           facebookService : facebookService
@@ -199,8 +197,7 @@ describe(
         expect(cordovaServices.alert).toHaveBeenCalledWith(
             'notNetworkDesc',
             'notNetworkTitle',
-            'publishOk'
-        );
+            'publishOk');
       });
 
       it('must call navigation back when back', function() {
@@ -219,14 +216,36 @@ describe(
 
       it('must change the preferred languaje selected by the user', function() {
         // arrange
-        scope.preferredLanguage = 'es'
+        scope.preferredLanguage = 'es';
 
         // act
         scope.changePreferredLanguage();
 
         // assert
         expect($translate.uses).toHaveBeenCalledWith('es');
-        expect(localStorageService.set).toHaveBeenCalledWith('preferredLanguage', 'es');
+        expect(userSettingsService.savePreferredLanguage).toHaveBeenCalledWith('es');
+      });
+      
+      it('must turn off the continue reading selected by the user', function() {
+        // arrange
+        scope.isContinueReadingActive = false;
+
+        // act
+        scope.turnOnTurnOffContinueReading();
+
+        // assert
+        expect(userSettingsService.turnOffContinueReading).toHaveBeenCalled();
+      });
+      
+      it('must turn off the continue reading selected by the user', function() {
+        // arrange
+        scope.isContinueReadingActive = true;
+
+        // act
+        scope.turnOnTurnOffContinueReading();
+
+        // assert
+        expect(userSettingsService.turnOnContinueReading).toHaveBeenCalled();
       });
 
       it('must call cordova exit app on exit', function() {
@@ -239,7 +258,8 @@ describe(
         expect(cordovaServices.exitApp).toHaveBeenCalled();
       });
 
-      it('must show enabled facebook remove account when is has a facebook account saved it',
+      it(
+          'must show enabled facebook remove account when is has a facebook account saved it',
           function() {
             // arrange
 

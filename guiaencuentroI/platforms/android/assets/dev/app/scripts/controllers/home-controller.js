@@ -6,32 +6,36 @@
     function(
         $scope,
         navigationService,
-        localStorageService,
-        constantsService,
-        cordovaServices) {
+        cordovaServices,
+        userSettingsService) {
+      function init() {
+        $scope.selectedDate = userSettingsService.getSelectedDate();
+      };
 
       $scope.slidePage = function(path, type) {
         navigationService.slidePage(path, type);
       };
-
-      var selectedDate = localStorageService.get(constantsService.selectedDateKey);
-      $scope.selectedDate = selectedDate;
+      
+      $scope.goTextReader = function() {
+        navigationService.slidePage('/textViewer/' + $scope.selectedDate);
+      };
 
       $scope.persistSelectedDate = function() {
-        localStorageService.set(constantsService.selectedDateKey, $scope.selectedDate);
+        userSettingsService.saveSelectedDate($scope.selectedDate);
       };
 
       $scope.exit = function() {
         cordovaServices.exitApp();
       };
+      
+      init();
     };
 
   angular.module('guiaEncuentroApp').controller('HomeController', [
     '$scope',
     'navigationService',
-    'localStorageService',
-    'constantsService',
     'cordovaServices',
+    'userSettingsService',
     homeController
   ]);
 })();

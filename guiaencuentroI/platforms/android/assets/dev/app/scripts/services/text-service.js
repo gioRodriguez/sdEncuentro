@@ -49,16 +49,17 @@
     }
 
     function getTextFromStorage(selectedDate) {
-      cachedText = localStorageService.getText();
+      cachedText = localStorageService.get('text');
       return getTextFromMemory(selectedDate);
     }
 
     function setCachedText(selectedDate, data) {
-      localStorageService.saveText(selectedDate, data);
       cachedText = {
         'selectedDate' : selectedDate,
         'text' : data
       };
+      
+      localStorageService.set('text', cachedText);      
     }
 
     return textServiceFactory;

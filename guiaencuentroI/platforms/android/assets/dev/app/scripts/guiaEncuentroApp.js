@@ -26,7 +26,7 @@
                 templateUrl : 'views/HomeView.html',
                 controller : 'HomeController'
               });
-              $routeProvider.when('/textViewer', {
+              $routeProvider.when('/textViewer/:selectedDateParam', {
                 templateUrl : 'views/TextViewerView.html',
                 controller : 'TextViewerController'
               });

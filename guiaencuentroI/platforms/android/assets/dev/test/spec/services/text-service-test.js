@@ -31,16 +31,15 @@ describe('text-service-test', function() {
     });
 
     _localStorageService = jasmine.createSpyObj('_localStorageService', [
-      'saveText',
-      'set',
-      'getText'
+      'get',
+      'set'
     ]);
 
     module(function($provide) {
-      _localStorageService.getText = function() {
+      _localStorageService.get = function() {
       };
 
-      spyOn(_localStorageService, 'getText').andCallFake(function() {
+      spyOn(_localStorageService, 'get').andCallFake(function() {
         return {
           'selectedDate' : '1988-abril-10',
           'text' : 'from storage'
@@ -65,9 +64,13 @@ describe('text-service-test', function() {
     // assert
     expect(deferred.resolve).toHaveBeenCalled();
     expect(window.getText).toHaveBeenCalledWith('1988-abril-09', jasmine.any(Function));
-    expect(_localStorageService.saveText).toHaveBeenCalledWith(
-        '1988-abril-09',
-        'from file');
+    expect(_localStorageService.set).toHaveBeenCalledWith(
+        'text',
+        {
+          selectedDate: '1988-abril-09',
+          text: 'from file'
+        }
+    );
   });
 
   it('must get the text from local storage', function() {
@@ -79,8 +82,7 @@ describe('text-service-test', function() {
 
     // assert
     expect(deferred.resolve).toHaveBeenCalledWith('from storage');
-    expect(_localStorageService.getText).toHaveBeenCalled();
-    expect(_localStorageService.saveText).not.toHaveBeenCalled();
+    expect(_localStorageService.get).toHaveBeenCalledWith('text');
     expect(window.getText).not.toHaveBeenCalled();
   });
 
@@ -93,11 +95,8 @@ describe('text-service-test', function() {
 
     // assert
     expect(deferred.resolve).toHaveBeenCalledWith('from file');
-    expect(_localStorageService.getText).toHaveBeenCalled();
-    expect(_localStorageService.saveText).toHaveBeenCalledWith(
-        '1988-abril-20',
-        'from file'
-    );
+    expect(_localStorageService.get).toHaveBeenCalled();
+    expect(_localStorageService.set).toHaveBeenCalled();
     expect(window.getText).toHaveBeenCalled();
   });
 

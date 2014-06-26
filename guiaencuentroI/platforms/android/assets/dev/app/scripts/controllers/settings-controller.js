@@ -4,10 +4,9 @@
         $scope,
         navigationService,
         $translate,
-        localStorageService,
-        constantsService,
         cordovaServices,
-        facebookService) {
+        facebookService,
+        userSettingsService) {
 
       var CONSTANTS = {
         clickToShowSaraiMessage : 3
@@ -27,9 +26,7 @@
           $translate.uses($scope.preferredLanguage);
 
           // persist user preferred language
-          localStorageService.set(
-              constantsService.preferredLanguageKey,
-              $scope.preferredLanguage);
+          userSettingsService.savePreferredLanguage($scope.preferredLanguage);
         };
 
       $scope.exit = function() {
@@ -64,8 +61,12 @@
               });
         };
 
-      $scope.persistIsContinueReadingActive = function() {
-        localStorageService.persistContinueReadingActive($scope.isContinueReadingActive);
+      $scope.turnOnTurnOffContinueReading = function() {
+        if($scope.isContinueReadingActive){
+          userSettingsService.turnOnContinueReading();
+        } else {
+          userSettingsService.turnOffContinueReading();
+        }
       };
 
       $scope.hideSaraiMessage = true;
@@ -82,7 +83,7 @@
       $scope.init = function() {
         clicksToShowSaraiMessageCount = 0;
 
-        $scope.isContinueReadingActive = localStorageService.isContinueReadingActive();
+        $scope.isContinueReadingActive = userSettingsService.isContinueReadingEnabled();
       };
     };
 
@@ -90,10 +91,9 @@
     "$scope",
     "navigationService",
     '$translate',
-    'localStorageService',
-    'constantsService',
     'cordovaServices',
     'facebookService',
+    'userSettingsService',
     settingsController
   ]);
 })();
