@@ -2,42 +2,31 @@
  * mobiscroll directive
  */
 (function() {
-	var mobiscrollDirective = function($timeout) {
-		var mobiscrollDirectiveFactory = {};
-		var mEmelent = null;
-		var mScope = null;
-		var mNgModel = null;
-		mobiscrollDirectiveFactory.run = function(scope, element, attrs, ngModel) {
-			mEmelent = element;
-			mScope = scope;
-			mNgModel = ngModel;
-			$timeout(function() {
-				var illyumDateSelector = $('.illyumDateSelector');
-				var dateSelector = illyumDateSelector.scroller({
-					preset : 'date',
-					dateOrder : 'ddMyy',
-					theme : 'ios',
-					dateFormat : 'yyyy-MMMM-dd',
-					lang : 'es',
-					onSelect : function() {
-						mScope.$apply(function() {
-							mNgModel.$setViewValue(mEmelent.val());
-						});
-					},
-					onBeforeShow : function(ints) {
-						ints.setDate(Date.parse(mEmelent.val()));
-					}
-				});
-			});
-		};
+  var mobiscrollDirective = function() {
+    return {
+      restrict : 'EA',
+      require : '?ngModel',
+      link : function(scope, element, attrs, ngModel) {
+        var dateSelector = $(element).scroller({
+          preset : 'date',
+          dateOrder : 'ddMyy',
+          theme : 'ios',
+          dateFormat : 'yyyy-MMMM-dd',
+          lang : 'es',
+          onSelect : function() {
+            scope.$apply(function() {
+              ngModel.$setViewValue($(element).val());
+            });
+          },
+          onBeforeShow : function(ints) {
+            ints.setDate(Date.parse(scope.selectedDate));
+          }
+        });
+      }
+    };
+  };
 
-		return {
-			require : '?ngModel',
-			link : mobiscrollDirectiveFactory.run
-		};
-	};
-	
-	angular.module('guiaEncuentroApp').directive('illyumDateSelector', [
-			'$timeout',
-			mobiscrollDirective ]);
+  angular.module('guiaEncuentroApp').directive('illyumDateSelector', [
+    mobiscrollDirective
+  ]);
 })();

@@ -11,36 +11,36 @@
 </div>
 
 <footer>
-	<div style="bottom: -0.5rem;"
-		class="topcoat-navigation-bar ng-class:{highContrast: constratEnabled}">
-		<div class="topcoat-navigation-bar__item left quarter">
-			<button class="topcoat-icon-button--large--quiet"
-				ng-click="minFontSize()" ng-disabled="disableMinFontSize">
-				<div topcoat-icon="minus"
-					class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
-			</button>
-		</div>
-		<div class="topcoat-navigation-bar__item left quarter">
-			<button class="topcoat-icon-button--large--quiet"
-				ng-click="plusFontSize()" ng-disabled="disablePlusFontSize">
-				<div topcoat-icon="plus"
-					class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
-			</button>
-		</div>
-		<div class="topcoat-navigation-bar__item left quarter">
-			<button class="topcoat-icon-button--large--quiet"
-				ng-click="facebookPublish()" ng-disabled="disableFacebook">
-				<div topcoat-icon="facebook"
-					class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
-			</button>
+	<illyum-nav-bar
+		is-constrat-enabled="constratEnabled"
+		items-size="quarter">
+
+		<illyum-nav-item 
+			icon="minus"
+			do-click="minFontSize()" 
+			is-disabled="disableMinFontSize"
+			is-constrat-enabled="constratEnabled">
+		</illyum-nav-item>
+		
+		<illyum-nav-item 
+			icon="plus"
+			do-click="plusFontSize()" 
+			is-disabled="disablePlusFontSize"
+			is-constrat-enabled="constratEnabled">
+		</illyum-nav-item>
+
+		<illyum-nav-item 
+			icon="facebook"
+			do-click="facebookPublish()" 
+			is-disabled="disableFacebook"
+			is-constrat-enabled="constratEnabled">
 			<span us-spinner spinner-key="publishSpin"></span>
-		</div>
-		<div class="topcoat-navigation-bar__item left quarter">
-			<button class="topcoat-icon-button--large--quiet"
-				ng-click="setContrast()">
-				<div topcoat-icon="text"
-					class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
-			</button>
-		</div>
-	</div>
+		</illyum-nav-item>
+
+		<illyum-nav-item 
+			icon="text"
+			do-click="setContrast()"
+			is-constrat-enabled="constratEnabled">
+		</illyum-nav-item>
+	</illyum-nav-bar>
 </footer>

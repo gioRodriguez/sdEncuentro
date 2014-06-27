@@ -5,10 +5,10 @@
 define(function() {
 	describe('home e2e tests', function() {
 		it('should show home page', function() {
-			//browser().navigateTo('/');
+			browser().navigateTo('/');
 
 			// assert
-			//expect(browser().location().url()).toBe("/home2");
+			expect(browser().location().url()).toBe("/home2");
 		});		
 	});
 });
