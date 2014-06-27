@@ -2,7 +2,7 @@
  * mobiscroll directive
  */
 (function() {
-  var mobiscrollDirective = function() {
+  var illyumDatepicker = function() {
     return {
       restrict : 'EA',
       require : '?ngModel',
@@ -26,7 +26,7 @@
     };
   };
 
-  angular.module('guiaEncuentroApp').directive('illyumDateSelector', [
-    mobiscrollDirective
+  angular.module('guiaEncuentroApp').directive('illyumDatepicker', [
+    illyumDatepicker
   ]);
 })();
