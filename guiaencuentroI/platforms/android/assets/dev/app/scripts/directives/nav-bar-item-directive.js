@@ -20,5 +20,5 @@
     };
   };
   
-  angular.module('guiaEncuentroApp').directive('illyumNavBarItem', illyumNavBarItemDirective);
+  angular.module('guiaEncuentroApp').directive('illyumNavBarItem', [illyumNavBarItemDirective]);
 })();
