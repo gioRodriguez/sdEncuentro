@@ -23,15 +23,15 @@
             '$translateProvider',
             function($routeProvider, $translateProvider) {
               $routeProvider.when('/', {
-                templateUrl : 'views/HomeView.html',
+                templateUrl : 'views/home.html',
                 controller : 'HomeController'
               });
               $routeProvider.when('/textViewer/:selectedDateParam', {
-                templateUrl : 'views/TextViewerView.html',
+                templateUrl : 'views/text-viewer.html',
                 controller : 'TextViewerController'
               });
               $routeProvider.when("/settings", {
-                templateUrl : "views/SettingsView.html",
+                templateUrl : "views/settings.html",
                 controller : "SettingsController"
               });
               $routeProvider.otherwise({

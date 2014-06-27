@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   
-  var illyumNamItemDirective = function() {
+  var illyumNavBarItemDirective = function() {
   
     return {
       restrict : 'EA',
@@ -20,5 +20,5 @@
     };
   };
   
-  angular.module('guiaEncuentroApp').directive('illyumNavItem', illyumNamItemDirective);
+  angular.module('guiaEncuentroApp').directive('illyumNavBarItem', illyumNavBarItemDirective);
 })();
