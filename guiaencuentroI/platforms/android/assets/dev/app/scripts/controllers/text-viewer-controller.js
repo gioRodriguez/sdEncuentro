@@ -13,7 +13,8 @@
         usSpinnerService,
         $timeout,
         $routeParams,
-        userSettingsService) {
+        userSettingsService,
+        dialogService) {
 
       var FONT_SIZES = [
         '0.5rem', // the cero position is not valid
@@ -69,10 +70,7 @@
         }).fail(
             function(data) {
               usSpinnerService.stop('readSpin');
-              cordovaServices.alert(
-                  $translate('textAskedFailDesc'),
-                  $translate('textAskedFailTitle'),
-                  $translate('publishOk'));
+              dialogService.showError('textAskedFailDesc');
             });
       }
 
@@ -129,23 +127,14 @@
           facebookService.publish(publication).then(
               function() {
                 enableFacebook();
-                cordovaServices.alert(
-                    $translate('publishFacebook'),
-                    $translate('publishTitle'),
-                    $translate('publishOk'));
+                dialogService.showInfo('publishFacebook');
               },
               function(error) {
                 enableFacebook();
                 if (error.isNetworkException) {
-                  cordovaServices.alert(
-                      $translate('notNetworkDesc'),
-                      $translate('notNetworkTitle'),
-                      $translate('publishOk'));
+                  dialogService.showError('notNetworkDesc');
                 } else {
-                  cordovaServices.alert(
-                      $translate('publishFail'),
-                      $translate('publishTitle'),
-                      $translate('publishOk'));
+                  dialogService.showError('publishFail');
                 }
               });
         };
@@ -201,6 +190,7 @@
     '$timeout',
     '$routeParams',
     'userSettingsService',
+    'dialogService',
     textViewerController
   ]);
 })();

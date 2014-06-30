@@ -28,6 +28,7 @@ describe(
       var $routeParams;
       var userSettingsService;
       var httpBackend;
+      var dialogService;
 
       beforeEach(function() {
         navigationService = jasmine.createSpyObj('navigationService', [
@@ -85,7 +86,7 @@ describe(
           httpBackend = $httpBackend;
         })
 
-        httpBackend.expectGET('views/HomeView.html').respond({ hello: 'World' });
+        httpBackend.expectGET('views/home.html').respond({ hello: 'World' });
         
         $translate = function(translateKey) {
           var messages = {
@@ -100,6 +101,8 @@ describe(
           'spin',
           'stop'
         ]);
+        
+        dialogService = jasmine.createSpyObj('dialogService', ['showError', 'showInfo']);
 
         textViewerController = controller('TextViewerController', {
           $scope : scope,
@@ -110,11 +113,12 @@ describe(
           $translate : $translate,
           usSpinnerService : usSpinnerService,
           $timeout : $timeout,
-          $routeParams : $routeParams
+          $routeParams : $routeParams,
+          dialogService : dialogService
         });
       });
 
-      it('must alert that there is not network when try to publish offline', function() {
+      it('must show error when there is not network and try to publish offline', function() {
         // arrange
         $translate = function(translateKey) {
           var messages = {
@@ -148,17 +152,15 @@ describe(
           facebookService : facebookService,
           $translate : $translate,
           usSpinnerService : usSpinnerService,
-          $timeout : $timeout
+          $timeout : $timeout,
+          dialogService : dialogService
         });
 
         // act
         scope.facebookPublish();
 
         // assert
-        expect(cordovaServices.alert).toHaveBeenCalledWith(
-            'notNetworkDesc',
-            'notNetworkTitle',
-            'publishOk');
+        expect(dialogService.showError).toHaveBeenCalledWith('notNetworkDesc');
       });
 
       it('must publish to facebook and disable the button', function() {
@@ -203,7 +205,8 @@ describe(
           facebookService : facebookService,
           $translate : $translate,
           usSpinnerService : usSpinnerService,
-          $timeout : $timeout
+          $timeout : $timeout,
+          dialogService : dialogService
         });
 
         var publication = {
@@ -222,10 +225,7 @@ describe(
         expect(scope.disableFacebook).toBe(false);
         expect(usSpinnerService.spin).toHaveBeenCalledWith('publishSpin');
         expect(usSpinnerService.stop).toHaveBeenCalledWith('publishSpin');
-        expect(cordovaServices.alert).toHaveBeenCalledWith(
-            'messageFake',
-            'messageFake',
-            'messageFake');
+        expect(dialogService.showInfo).toHaveBeenCalledWith('publishFacebook');
       });
 
       it('must cancell publish to facebook when there are not selected text', function() {
@@ -421,7 +421,7 @@ describe(
         expect(scope.text).toBe(CONSTANTS.textForTodayHTML);
       });
 
-      it('must alert when the loaded text is invalid', function() {
+      it('must show error dialog when the loaded text is invalid', function() {
         // arrange
         $routeParams = {
           selectedDateParam : ''
@@ -446,7 +446,8 @@ describe(
           $translate : $translate,
           cordovaServices : cordovaServices,
           $timeout : $timeout,
-          $routeParams : $routeParams
+          $routeParams : $routeParams,
+          dialogService : dialogService
         });
 
         // act
@@ -454,9 +455,6 @@ describe(
         // assert
         expect(scope.selectedDate).toBe('');
         expect(textService.getTextByDate).toHaveBeenCalledWith('');
-        expect(cordovaServices.alert).toHaveBeenCalledWith(
-            'textAskedFailDesc',
-            'textAskedFailTitle',
-            'publishOk');
+        expect(dialogService.showError).toHaveBeenCalledWith('textAskedFailDesc');
       });
     });

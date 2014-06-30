@@ -17,6 +17,7 @@ describe(
       var navigationService;
       var facebookService;
       var userSettingsService;
+      var dialogService;
 
       beforeEach(inject(function($controller, $rootScope) {
         controller = $controller;
@@ -47,7 +48,12 @@ describe(
         userSettingsService = jasmine.createSpyObj('userSettingsService', [
           'savePreferredLanguage',
           'turnOnContinueReading',
-          'turnOffContinueReading'          
+          'turnOffContinueReading'
+        ]);
+
+        dialogService = jasmine.createSpyObj('dialogService', [
+          'showError',
+          'showInfo'
         ]);
 
         scope = $rootScope.$new();
@@ -112,7 +118,8 @@ describe(
           $translate : $translate,
           cordovaServices : cordovaServices,
           navigationService : navigationService,
-          facebookService : facebookService
+          facebookService : facebookService,
+          dialogService : dialogService
         });
 
         // act
@@ -148,17 +155,15 @@ describe(
           $translate : $translate,
           cordovaServices : cordovaServices,
           navigationService : navigationService,
-          facebookService : facebookService
+          facebookService : facebookService,
+          dialogService : dialogService
         });
 
         // act
         scope.removeFacebookAccount();
 
         // assert
-        expect(cordovaServices.alert).toHaveBeenCalledWith(
-            'notAccountAlertMsg',
-            'accountAlertTitle',
-            'publishOk');
+        expect(dialogService.showInfo).toHaveBeenCalledWith('notAccountAlertMsg');
       });
 
       it('must alert that there is not network available', function() {
@@ -187,17 +192,15 @@ describe(
           $translate : $translate,
           cordovaServices : cordovaServices,
           navigationService : navigationService,
-          facebookService : facebookService
+          facebookService : facebookService,
+          dialogService : dialogService
         });
 
         // act
         scope.removeFacebookAccount();
 
         // assert
-        expect(cordovaServices.alert).toHaveBeenCalledWith(
-            'notNetworkDesc',
-            'notNetworkTitle',
-            'publishOk');
+        expect(dialogService.showError).toHaveBeenCalledWith('notNetworkDesc');
       });
 
       it('must call navigation back when back', function() {
@@ -225,7 +228,7 @@ describe(
         expect($translate.uses).toHaveBeenCalledWith('es');
         expect(userSettingsService.savePreferredLanguage).toHaveBeenCalledWith('es');
       });
-      
+
       it('must turn off the continue reading selected by the user', function() {
         // arrange
         scope.isContinueReadingActive = false;
@@ -236,7 +239,7 @@ describe(
         // assert
         expect(userSettingsService.turnOffContinueReading).toHaveBeenCalled();
       });
-      
+
       it('must turn off the continue reading selected by the user', function() {
         // arrange
         scope.isContinueReadingActive = true;

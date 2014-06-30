@@ -6,7 +6,8 @@
         $translate,
         cordovaServices,
         facebookService,
-        userSettingsService) {
+        userSettingsService,
+        dialogService) {
 
       var CONSTANTS = {
         clickToShowSaraiMessage : 3
@@ -39,24 +40,15 @@
               function() {
                 facebookService.logout().then(
                     function() {
-                      cordovaServices.alert(
-                          $translate('accountAlertMsg'),
-                          $translate('accountAlertTitle'),
-                          $translate('publishOk'));
+                      dialogService.showInfo('accountAlertMsg');
                     });
               },
               function(error) {
                 if (error &&
                   error.isNetworkException) {
-                  cordovaServices.alert(
-                      $translate('notNetworkDesc'),
-                      $translate('notNetworkTitle'),
-                      $translate('publishOk'));
+                  dialogService.showError('notNetworkDesc');
                 } else {
-                  cordovaServices.alert(
-                      $translate('notAccountAlertMsg'),
-                      $translate('accountAlertTitle'),
-                      $translate('publishOk'));
+                  dialogService.showInfo('notAccountAlertMsg');
                 }
               });
         };
@@ -94,6 +86,7 @@
     'cordovaServices',
     'facebookService',
     'userSettingsService',
+    'dialogService',
     settingsController
   ]);
 })();
