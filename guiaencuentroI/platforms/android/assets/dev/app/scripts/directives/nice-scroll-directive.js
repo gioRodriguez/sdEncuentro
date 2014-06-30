@@ -12,19 +12,15 @@
       niceScrollDirectiveFactory.run =
         function(scope, element, attrs) {
           $timeout(function() {
-            $timeout(function() {
-              $(element).niceScroll();
+            $(element).niceScroll();
 
-              goToPreiousReadPosition();
+            goToPreiousReadPosition();
 
-              // save the position each time that the user do a scroll
-              // for retrieved it when the user come back
-              $(element).getNiceScroll()[0].scrollend(function() {
-                userSettingsService.saveTextPosition(
-                    scope.selectedDate, 
-                    $(element).getNiceScroll()[0].getScrollTop()
-                );
-              });
+            // save the position each time that the user do a scroll
+            // for retrieved it when the user come back
+            $(element).getNiceScroll()[0].scrollend(function() {
+              userSettingsService.saveTextPosition(scope.selectedDate, $(element)
+                  .getNiceScroll()[0].getScrollTop());
             });
           });
 

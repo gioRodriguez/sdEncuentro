@@ -15,24 +15,28 @@
 		}
 
 		return {
-			replace : true,
+			replace : false,
 			restrict : 'A',
-			compile : function(el, attr) {
+			compile : function(element, attr) {
+			  return {
+			    pre : function(scope, element, attr) {
+			      var topcoatIconText = attr.topcoatIcon;
+		        console.log(topcoatIconText);
 
-				var topcoatIconText = attr.topcoatIcon;
+		        $(element).text(topcoatIconText);
+		        $(element).addClass("icomatic");
 
-				el.text(topcoatIconText);
-				el.addClass("icomatic");
-
-				// If font-face is not supported then the goal is to end up
-				// with html that looks like this:
-				// <span topcoat-icon="next" class="icomatic">
-				// <span class="icomatic-alt">next</span>
-				// </span>
-				if(!fontfaceSupported){
-					el.html('<span class="icomatic-alt">' + topcoatIconText
-							+ '</span>' + fallbacks[topcoatIconText]);
-				}
+		        // If font-face is not supported then the goal is to end up
+		        // with html that looks like this:
+		        // <span topcoat-icon="next" class="icomatic">
+		        // <span class="icomatic-alt">next</span>
+		        // </span>
+		        if(!fontfaceSupported){
+		          $(element).html('<span class="icomatic-alt">' + topcoatIconText
+		              + '</span>' + fallbacks[topcoatIconText]);
+		        }  
+          }
+			  }				
 			}
 		};
 	};
