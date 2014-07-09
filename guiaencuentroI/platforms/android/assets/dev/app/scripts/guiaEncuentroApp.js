@@ -137,5 +137,4 @@ $(document).ready(
     });
 
 function onDeviceReady() {
-  console.log('device ready');
 }
