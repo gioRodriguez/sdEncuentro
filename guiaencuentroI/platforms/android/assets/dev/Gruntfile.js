@@ -129,7 +129,7 @@ module.exports = function(grunt) {
             dot : true,
             src : [
               '<%= yeoman.dist %>/texts/**/*',
-              
+
               '!<%= yeoman.dist %>/texts/*.gz.js'
             ]
           }
@@ -436,6 +436,10 @@ module.exports = function(grunt) {
       unit : {
         configFile : 'karma.conf.js',
         singleRun : true
+      },
+      e2e : {
+        configFile : 'karma-e2e.conf.js',
+        singleRun : true
       }
     },
     preprocess : {
@@ -569,7 +573,15 @@ module.exports = function(grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('compress-texts', [         
+  grunt.registerTask('e2e-test', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    'connect:test',
+    'karma:e2e'
+  ]);
+
+  grunt.registerTask('compress-texts', [
     'concat:enero',
     'concat:febrero',
     'concat:marzo',
@@ -582,7 +594,7 @@ module.exports = function(grunt) {
     'concat:octubre',
     'concat:noviembre',
     'concat:diciembre',
-    
+
     'compress',
     'clean:texts'
   ]);

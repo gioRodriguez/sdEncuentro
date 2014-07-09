@@ -14,14 +14,17 @@
 	<div data-role="fieldcontain">
 		<label for="illyumDatepicker">{{'selectionDate' | translate}}</label> 
 		<br> 
-		<input illyum-datepicker
-			name="illyumDatepicker"
+		<input 
+			illyum-datepicker
+			id="selectedDate"
 			class="topcoat-text-input" 
 			ng-model="selectedDate"
 			ng-change="persistSelectedDate()" />
 	</div>
 	<br>
-	<button class="topcoat-button--cta"
+	<button
+		id="goReading" 
+		class="topcoat-button--cta"
 		ng-click="goTextReader()">
 		{{'goReading' | translate}}
 	</button>
