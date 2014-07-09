@@ -577,7 +577,7 @@ module.exports = function(grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    'connect:test',
+    'connect:e2eTest',
     'karma:e2e'
   ]);
 
@@ -620,6 +620,7 @@ module.exports = function(grunt) {
 
   // default task(s).
   grunt.registerTask('default', [
+    'test',
     'build'
   ]);
 }
