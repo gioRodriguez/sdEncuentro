@@ -436,10 +436,28 @@ module.exports = function(grunt) {
       unit : {
         configFile : 'karma.conf.js',
         singleRun : true
+      }
+    },
+    protractor_webdriver: {
+      run: {
+        options: {
+          command: 'webdriver-manager start',
+        },
       },
-      e2e : {
-        configFile : 'karma-e2e.conf.js',
-        singleRun : true
+    },
+    protractor : {
+      options: {
+      keepAlive: true, // If false, the grunt process stops when the test fails.
+      noColor: false, // If true, protractor will not use colors in its output.
+      args: {
+        // Arguments passed to the command
+        }
+      },
+      run: {
+        options: {
+          configFile: "protractor.conf.js", // Target-specific config file
+          args: {} // Target-specific arguments
+        }
       }
     },
     preprocess : {
@@ -577,8 +595,9 @@ module.exports = function(grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    'connect:e2eTest',
-    'karma:e2e'
+    'connect:test',
+    'protractor_webdriver',
+    'protractor:run'
   ]);
 
   grunt.registerTask('compress-texts', [
