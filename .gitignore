@@ -3,6 +3,7 @@
 
 *.ear
 
+*.apk
 CordovaLib
 .settings
 .project
