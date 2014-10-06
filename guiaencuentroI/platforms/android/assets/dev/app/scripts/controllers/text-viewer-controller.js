@@ -14,7 +14,8 @@
         $timeout,
         $routeParams,
         userSettingsService,
-        dialogService) {
+        dialogService,
+        scrollService) {
 
       var FONT_SIZES = [
         '0.5rem', // the cero position is not valid
@@ -67,6 +68,9 @@
         textService.getTextByDate($scope.selectedDate).done(function(data) {
           usSpinnerService.stop('readSpin');
           $scope.text = data;
+          $timeout(function(){
+            scrollService.applyScroll();
+          });          
         }).fail(
             function(data) {
               usSpinnerService.stop('readSpin');
@@ -191,6 +195,7 @@
     '$routeParams',
     'userSettingsService',
     'dialogService',
+    'scrollService',
     textViewerController
   ]);
 })();

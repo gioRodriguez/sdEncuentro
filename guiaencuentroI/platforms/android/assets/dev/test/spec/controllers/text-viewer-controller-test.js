@@ -29,6 +29,7 @@ describe(
       var userSettingsService;
       var httpBackend;
       var dialogService;
+      var scrollService;
 
       beforeEach(function() {
         navigationService = jasmine.createSpyObj('navigationService', [
@@ -71,6 +72,8 @@ describe(
           return true;
         };
 
+        scrollService = jasmine.createSpyObj('scrollService', ['applyScroll']);
+        
         $timeout = function(func) {
           func();
         }
@@ -114,7 +117,8 @@ describe(
           usSpinnerService : usSpinnerService,
           $timeout : $timeout,
           $routeParams : $routeParams,
-          dialogService : dialogService
+          dialogService : dialogService,
+          scrollService: scrollService
         });
       });
 
@@ -419,6 +423,7 @@ describe(
         expect(scope.selectedDate).toBe('2012-febrero-4');
         expect(textService.getTextByDate).toHaveBeenCalledWith('2012-febrero-4');
         expect(scope.text).toBe(CONSTANTS.textForTodayHTML);
+        expect(scrollService.applyScroll).toHaveBeenCalled();
       });
 
       it('must show error dialog when the loaded text is invalid', function() {

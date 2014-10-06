@@ -19,7 +19,6 @@
 
 package com.sd.encuentrocatorce;
 
-import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
 
 import android.os.Bundle;
@@ -28,9 +27,8 @@ public class GuiaEncuentro extends CordovaActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.init();
 		
 		// Set by <content src="index.html" /> in config.xml
-		super.loadUrl(Config.getStartUrl(), 2000);
+    loadUrl(launchUrl, 2000);
 	}
 }

@@ -16,32 +16,45 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 public class GetTextPlugin extends CordovaPlugin {
+	
 	@Override
-	public boolean execute(String action, JSONArray args,
-			CallbackContext callbackContext) throws JSONException {
+	public boolean execute(String action, final JSONArray args,
+			final CallbackContext callbackContext) throws JSONException {
 		if(args == null || args.length() == 0){
 			Log.e("TextsPlugin", "Null date");
 			return false;
 		}
 		
-		//2014-Febrero-01
-		String dateSelected = args.getString(0);
-		String date[] = dateSelected.split("-");
-		String month = date[1].toLowerCase();
-		int day = Integer.parseInt(date[2]);
-		String file = String.format(Locale.ENGLISH, "www/texts/%s.gz.js", month);
-		String content = loadFile(file);
-		
-		String [] texts = content.split("\n");
-		String text = "Lo sentimos texto no encontrado";
-		for (int line = 0; line < texts.length; line++) {
-			if(texts[line].contains(String.format("<h2>%d de", day))){
-				text = texts[line];
-				break;
+		cordova.getThreadPool().execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					//2014-Febrero-01
+					String dateSelected = args.getString(0);
+					String date[] = dateSelected.split("-");
+					String month = date[1].toLowerCase(Locale.ENGLISH);
+					int day = Integer.parseInt(date[2]);
+					String file = String.format(Locale.ENGLISH, "www/texts/%s.gz.js", month);
+					String content = loadFile(file);
+					
+					String [] texts = content.split("\n");
+					String text = "Lo sentimos texto no encontrado";
+					for (int line = 0; line < texts.length; line++) {
+						if(texts[line].contains(String.format("<h2>%d de", day))){
+							text = texts[line];
+							break;
+						}
+					}
+					
+					callbackContext.success(text);
+				} catch (Exception e) {
+					Log.e("GetTextPlugin", e.getMessage(), e);
+					callbackContext.error("lectura no localizada");
+				}
 			}
-		}
+		});
 		
-		callbackContext.success(text);
 		return true;
 	}
 

@@ -332,7 +332,7 @@ module.exports = function(grunt) {
               'texts/**/*',
               'images/{,*/}*.{webp}',
               'font/*',
-              'plugins/**/*.min.js',
+              'plugins/**/*.js',
               'cordova_plugins.js',
               'styles/icomatic.*'
             ]
