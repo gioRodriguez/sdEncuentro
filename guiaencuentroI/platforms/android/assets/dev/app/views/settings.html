@@ -1,8 +1,7 @@
 <header>
 	<div class="topcoat-navigation-bar">
 		<div class="topcoat-navigation-bar__item center full">
-			<h1 class="topcoat-navigation-bar__title">{{ 'settingsTitle' |
-				translate }}</h1>
+			<h1 class="topcoat-navigation-bar__title">{{ 'settingsTitle' | translate }}</h1>
 		</div>
 	</div>
 </header>
@@ -11,24 +10,28 @@
 
 	<article style="display: none;">
 		<label class="topcoat-radio-button"> {{'spanish' | translate}}
-			<input type="radio" name="topcoat" ng-model="preferredLanguage"
-			ng-change="changePreferredLanguage()" value="es">
+			<input type="radio" name="topcoat" 
+				data-ng-model="settingsCtrl.preferredLanguage"
+				data-ng-change="settingsCtrl.changePreferredLanguage()" 
+				value="es">
 			<div class="topcoat-radio-button__checkmark"></div> <br>
-		</label> <label class="topcoat-radio-button"> {{'english' |
-			translate}} <input type="radio" name="topcoat"
-			ng-model="preferredLanguage" ng-change="changePreferredLanguage()"
-			value="en">
+		
+		</label> <label class="topcoat-radio-button"> {{'english' | translate}} 
+			<input type="radio" name="topcoat"
+				data-ng-model="settingsCtrl.preferredLanguage" 
+				data-ng-change="settingsCtrl.changePreferredLanguage()"
+				value="en">
 			<div class="topcoat-radio-button__checkmark"></div>
 		</label>
 	</article>
 
-	<article id="accounts" ng-init="init()">
+	<article id="accounts" ng-init="settingsCtrl.init()">
 		<div class="topcoat-list">
 			<h3 class="topcoat-list__header">{{ 'accounts' | translate }}</h3>
 			<ul class="topcoat-list__container">
 				<li class="topcoat-list__item">
 					<button class="topcoat-icon-button--quiet"
-						ng-click="removeFacebookAccount()">
+						ng-click="settingsCtrl.removeFacebookAccount()">
 						<span topcoat-icon="facebook" class='icomatic icons'></span> <span
 							style="padding-left: 1rem;">{{ 'deleteFacebookAccount' |
 							translate }}</span>
@@ -45,7 +48,7 @@
 				<li class="topcoat-list__item">
 					<label>{{'continueReadSetting' | translate}}</label>
 					<label class="topcoat-checkbox" style="float: right;">
-					  <input type="checkbox" ng-change="turnOnTurnOffContinueReading()" ng-model="isContinueReadingActive">
+					  <input type="checkbox" ng-change="settingsCtrl.turnOnTurnOffContinueReading()" ng-model="settingsCtrl.isContinueReadingActive">
 					  <div class="topcoat-checkbox__checkmark"></div>					  
 					</label>
 				</li>
@@ -57,11 +60,11 @@
 		<div class="topcoat-list">
 			<h3 class="topcoat-list__header">{{'about' | translate}}</h3>
 			<ul class="topcoat-list__container">
-				<li class="topcoat-list__item" ng-click="showSaraiMessage()">{{'poweredBy'
-					| translate}} <b>Illyum</b>
+				<li class="topcoat-list__item" 
+					data-ng-click="settingsCtrl.showSaraiMessage()">{{'poweredBy'| translate}} <b>Illyum</b>
 				</li>
-				<li ng-hide="hideSaraiMessage" class="topcoat-list__item">{{'toSarai'
-					| translate}}</li>
+				<li class="topcoat-list__item"
+					data-ng-hide="settingsCtrl.hideSaraiMessage">{{'toSarai'| translate}}</li>
 			</ul>
 		</div>
 	</article>

@@ -33,7 +33,7 @@
               });
               $routeProvider.when("/settings", {
                 templateUrl : "views/settings.html",
-                controller : "SettingsController"
+                controller : "SettingsController as settingsCtrl"
               });
               $routeProvider.otherwise({
                 redirectTo : '/'

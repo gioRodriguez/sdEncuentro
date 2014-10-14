@@ -45,10 +45,6 @@
         return HomeModelFacty.formInfo[HomeFormTranslatorFcty.fieldsTable[fieldName]].$invalid;
       }
       
-      HomeModelFacty.exitApp = function(){
-        cordovaServices.exitApp();
-      }
-      
       return HomeModelFacty;
     }
   ]);  

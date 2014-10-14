@@ -1,92 +1,42 @@
 (function() {
   var settingsController =
-    function(
-        $scope,
-        navigationService,
-        $translate,
-        cordovaServices,
-        facebookService,
-        userSettingsService,
-        dialogService) {
+    function (
+        SettingsModelFacty
+    ) {
 
-      var CONSTANTS = {
-        clickToShowSaraiMessage : 3
+      var vm = this;
+      
+      vm.hideSaraiMessage = true;
+      vm.preferredLanguage =  SettingsModelFacty.getUserPreferredLanguage();
+      vm.isContinueReadingActive = SettingsModelFacty.isContinueReadingActive();
+      
+      vm.changePreferredLanguage = function() {
+        SettingsModelFacty.setUserPreferredLanguage(vm.preferredLanguage);
       };
 
-      var clicksToShowSaraiMessageCount = 0;
-
-      $scope.back = function() {
-        navigationService.back()
+      vm.exit = function() {
+        SettingsModelFacty.exitApp();
       };
 
-      $scope.preferredLanguage = $translate.uses();
-      $scope.changePreferredLanguage =
-        function() {
-
-          // change the translate used language
-          $translate.uses($scope.preferredLanguage);
-
-          // persist user preferred language
-          userSettingsService.savePreferredLanguage($scope.preferredLanguage);
-        };
-
-      $scope.exit = function() {
-        cordovaServices.exitApp();
+      vm.removeFacebookAccount = function() {
+        SettingsModelFacty.removeFacebookAccount();
       };
 
-      $scope.removeFacebookAccount =
-        function() {
-          facebookService.hasActiveAccount().then(
-              function() {
-                facebookService.logout().then(
-                    function() {
-                      dialogService.showInfo('accountAlertMsg');
-                    });
-              },
-              function(error) {
-                if (error &&
-                  error.isNetworkException) {
-                  dialogService.showError('notNetworkDesc');
-                } else {
-                  dialogService.showInfo('notAccountAlertMsg');
-                }
-              });
-        };
-
-      $scope.turnOnTurnOffContinueReading = function() {
-        if($scope.isContinueReadingActive){
-          userSettingsService.turnOnContinueReading();
-        } else {
-          userSettingsService.turnOffContinueReading();
-        }
+      vm.turnOnTurnOffContinueReading = function() {
+        SettingsModelFacty.turnOnTurnOffContinueReading();
       };
-
-      $scope.hideSaraiMessage = true;
-      $scope.showSaraiMessage = function() {
-        clicksToShowSaraiMessageCount++;
-
-        if (clicksToShowSaraiMessageCount >= CONSTANTS.clickToShowSaraiMessage) {
-          $scope.hideSaraiMessage = false;
-        } else {
-          $scope.hideSaraiMessage = true;
-        }
+      
+      vm.showSaraiMessage = function() {
+        vm.hideSaraiMessage = SettingsModelFacty.isSaraiMessageVisible();
       }
 
-      $scope.init = function() {
-        clicksToShowSaraiMessageCount = 0;
-
-        $scope.isContinueReadingActive = userSettingsService.isContinueReadingEnabled();
+      vm.init = function() {
+       SettingsModelFacty.init();
       };
     };
 
   angular.module('guiaEncuentroApp').controller("SettingsController", [
-    "$scope",
-    "navigationService",
-    '$translate',
-    'cordovaServices',
-    'facebookService',
-    'userSettingsService',
-    'dialogService',
+    'SettingsModelFacty',
     settingsController
   ]);
 })();

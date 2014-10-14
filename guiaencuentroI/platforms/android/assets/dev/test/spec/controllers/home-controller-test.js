@@ -17,7 +17,6 @@ describe('homeController', function() {
     HomeModelFacty = jasmine.createSpyObj('HomeModelFacty', [
       'getSelectedDate',
       'setSelectedDate',
-      'exitApp',
       'goToSettingsPage',
       'goToTextViewerPage',
       'setFormInfo'
@@ -44,11 +43,6 @@ describe('homeController', function() {
   it('must persist selected', function() {
     homeController.setSelectedDate();
     expect(HomeModelFacty.setSelectedDate).toHaveBeenCalledWith(CURRENT_DATE);
-  });
-
-  it('must call cordova exit app on exit', function() {
-    homeController.exit();
-    expect(HomeModelFacty.exitApp).toHaveBeenCalled();
   });
 
   it('must can go to settings page', function() {
