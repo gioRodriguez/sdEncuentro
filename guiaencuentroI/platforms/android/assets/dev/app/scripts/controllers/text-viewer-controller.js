@@ -116,6 +116,7 @@
       }
 
       function plusMinFont(isPlus) {
+        console.log('plusMinFont called disableMinFontSize: ' + $scope.disableMinFontSize);
         scrollService.prepareResize();
 
         if (isPlus &&

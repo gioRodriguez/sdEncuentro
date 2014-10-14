@@ -2,11 +2,10 @@
 	<button
 		id="{{icon}}" 
 		class="topcoat-icon-button--large--quiet"
-		ng-click="doClick()" 
-		ng-disabled="disabled">
+		data-ng-disabled="ngDisabled">
 		<div 
-			topcoat-icon="{{icon}}"
+			data-topcoat-icon="{{icon}}"
 			class="icomatic icons ng-class:{iconsHighContrast: constratEnabled}"></div>
 	</button>
-	<span ng-transclude></span>
+	<span data-ng-transclude></span>
 </div>

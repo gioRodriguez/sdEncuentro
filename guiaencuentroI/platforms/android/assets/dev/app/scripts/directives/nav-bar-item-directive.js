@@ -8,10 +8,9 @@
       transclude : true,
       require : '^illyumNavBar',
       scope : {
-        doClick : '&',
-        disabled : '=isDisabled',
         constratEnabled : '=isConstratEnabled',
-        icon : '@icon'       
+        icon : '@icon',
+        ngDisabled: '=ngDisabled'
       },
       templateUrl : 'views/templates/navItemTemplate.html',
       link : function(scope, element, attrs, illyumNavBarController) {

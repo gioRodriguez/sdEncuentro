@@ -6,10 +6,11 @@
     return {
       restrict : 'EA',
       require : '?ngModel',
+      scope: false,
       link : function(scope, element, attrs, ngModel) {
         var dateSelector = $(element).scroller({
           preset : 'date',
-          dateOrder : 'ddMyy',
+          dateOrder : 'ddMM',
           theme : 'ios',
           dateFormat : 'yyyy-MMMM-dd',
           lang : 'es',
@@ -19,7 +20,7 @@
             });
           },
           onBeforeShow : function(ints) {
-            ints.setDate(Date.parse(scope.selectedDate));
+            ints.setDate(Date.parse(ngModel.$viewValue));
           }
         });
       }

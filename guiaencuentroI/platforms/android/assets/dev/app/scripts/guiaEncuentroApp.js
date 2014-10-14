@@ -25,7 +25,7 @@
             function($routeProvider, $translateProvider) {
               $routeProvider.when('/', {
                 templateUrl : 'views/home.html',
-                controller : 'HomeController'
+                controller : 'HomeController as homeCtrl'
               });
               $routeProvider.when('/textViewer/:selectedDateParam', {
                 templateUrl : 'views/text-viewer.html',

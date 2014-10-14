@@ -10,36 +10,36 @@
 	</div>
 </div>
 
-<footer data-ng-show="isShowFooter" data-ng-mouseover="showFooter()" data-ng-click="showFooter()">
+<footer data-ng-show="isShowFooter" data-ng-mouseover="showFooter()" data-ng-click="showFooter()" class="text-viewer-footer">
 	<illyum-nav-bar
 		is-constrat-enabled="constratEnabled"
 		items-size="left quarter">
 
 		<illyum-nav-bar-item 
 			icon="minus"
-			do-click="minFontSize()" 
-			is-disabled="disableMinFontSize"
+			data-ng-click="minFontSize()" 
+			data-ng-disabled="disableMinFontSize"
 			is-constrat-enabled="constratEnabled">
 		</illyum-nav-bar-item>
 		
 		<illyum-nav-bar-item 
 			icon="plus"
-			do-click="plusFontSize()" 
-			is-disabled="disablePlusFontSize"
+			data-ng-click="plusFontSize()" 
+			data-ng-disabled="disablePlusFontSize"
 			is-constrat-enabled="constratEnabled">
 		</illyum-nav-bar-item>
 
 		<illyum-nav-bar-item 
 			icon="facebook"
-			do-click="facebookPublish()" 
-			is-disabled="disableFacebook"
+			data-ng-click="facebookPublish()" 
+			data-ng-disabled="disableFacebook"
 			is-constrat-enabled="constratEnabled">
 			<span us-spinner spinner-key="publishSpin"></span>
 		</illyum-nav-bar-item>
 
 		<illyum-nav-bar-item 
 			icon="text"
-			do-click="setContrast()"
+			data-ng-click="setContrast()"
 			is-constrat-enabled="constratEnabled">
 		</illyum-nav-bar-item>
 	</illyum-nav-bar>

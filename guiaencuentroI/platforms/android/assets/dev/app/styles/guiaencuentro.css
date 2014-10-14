@@ -104,8 +104,8 @@ footer {
 	width: 16.6666%;
 }
 
-.ng-hide-add,
-.ng-hide-remove {
+.text-viewer-footer.ng-hide-add,
+.text-viewer-footer.ng-hide-remove {
   -webkit-transition:0.5s linear all;
   transition:0.5s linear all;
 
@@ -114,7 +114,7 @@ footer {
   opacity:1;
 }
 
-.ng-hide {
+.text-viewer-footer.ng-hide {
   opacity:0;
 }
 

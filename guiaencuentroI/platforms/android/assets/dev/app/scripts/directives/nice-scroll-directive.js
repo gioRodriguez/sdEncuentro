@@ -49,11 +49,13 @@
           scope.$on('resize', function() {
             $(element).getNiceScroll().resize();
 
-            var newHeight = $(element).getNiceScroll()[0].getContentSize().h;
-            var newY = (newHeight * oldY) /
-              oldHeight;
+            if($(element).getNiceScroll()[0]){
+              var newHeight = $(element).getNiceScroll()[0].getContentSize().h;
+              var newY = (newHeight * oldY) /
+                oldHeight;
 
-            $(element).getNiceScroll().doScrollPos(0, newY);
+              $(element).getNiceScroll().doScrollPos(0, newY);
+            }
           });
                     
         }

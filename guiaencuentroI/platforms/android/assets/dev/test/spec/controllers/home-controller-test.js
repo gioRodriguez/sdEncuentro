@@ -9,54 +9,55 @@ describe('homeController', function() {
   beforeEach(module('guiaEncuentroApp'));
 
   var homeController;
-  var scope;
-  var cordovaServices;
-  var navigationService;
-  var userSettingsService;
+  var HomeModelFacty;
 
   // initialize the controller and a mock scope
-  beforeEach(inject(function($controller, $rootScope) {
-
-    userSettingsService = jasmine.createSpyObj('userSettingsService', [
-      'getSelectedDate',
-      'saveSelectedDate'
-    ]);
-    userSettingsService.getSelectedDate = function() {
-    };
-    spyOn(userSettingsService, 'getSelectedDate').andReturn(CURRENT_DATE);
+  beforeEach(inject(function($controller) {
     
-    cordovaServices = jasmine.createSpyObj('cordovaServices', [
-      'exitApp'
+    HomeModelFacty = jasmine.createSpyObj('HomeModelFacty', [
+      'getSelectedDate',
+      'setSelectedDate',
+      'exitApp',
+      'goToSettingsPage',
+      'goToTextViewerPage',
+      'setFormInfo'
     ]);
-    navigationService = jasmine.createSpyObj('navigationService', [
-      'slidePage'
-    ]);
+    HomeModelFacty.getSelectedDate = function() {
+    };
+    spyOn(HomeModelFacty, 'getSelectedDate').andReturn(CURRENT_DATE);
+    HomeModelFacty.setFormInfo = function() {
+    };
+    spyOn(HomeModelFacty, 'setFormInfo').andReturn(HomeModelFacty);
 
-    scope = $rootScope.$new();
+
     homeController = $controller('HomeController', {
-      $scope : scope,
-      cordovaServices : cordovaServices,
-      navigationService : navigationService,
-      userSettingsService : userSettingsService
+      HomeModelFacty: HomeModelFacty
     });
+    
+    homeController.homeForm = {};
   }));
 
   it('must have the current date as selected date', function() {
-    expect(scope.selectedDate).toBe(CURRENT_DATE);
+    expect(homeController.selectedDate).toBe(CURRENT_DATE);
   });
 
   it('must persist selected', function() {
-    scope.persistSelectedDate();
-    expect(userSettingsService.saveSelectedDate).toHaveBeenCalledWith(CURRENT_DATE);
+    homeController.setSelectedDate();
+    expect(HomeModelFacty.setSelectedDate).toHaveBeenCalledWith(CURRENT_DATE);
   });
 
   it('must call cordova exit app on exit', function() {
-    scope.exit();
-    expect(cordovaServices.exitApp).toHaveBeenCalled();
+    homeController.exit();
+    expect(HomeModelFacty.exitApp).toHaveBeenCalled();
   });
 
-  it('must call nav service slidePage on slidePage', function() {
-    scope.slidePage();
-    expect(navigationService.slidePage).toHaveBeenCalled();
+  it('must can go to settings page', function() {
+    homeController.goToSettingsPage();
+    expect(HomeModelFacty.goToSettingsPage).toHaveBeenCalled();
+  });
+  
+  it('must can go to text viewer page with selected date', function() {
+    homeController.goToTextViewerPage();
+    expect(HomeModelFacty.goToTextViewerPage).toHaveBeenCalledWith(CURRENT_DATE);
   });
 });

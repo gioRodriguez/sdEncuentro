@@ -3,39 +3,73 @@
  */
 (function() {
   var homeController =
-    function(
-        $scope,
-        navigationService,
-        cordovaServices,
-        userSettingsService) {
-      function init() {
-        $scope.selectedDate = userSettingsService.getSelectedDate();
-      };
-
-      $scope.slidePage = function(path, type) {
-        navigationService.slidePage(path, type);
+    function (
+        HomeModelFacty,
+        HomeFormTranslatorFcty        
+    ) {
+      var vm = this;
+      
+      vm.selectedDate = HomeModelFacty.getSelectedDate();
+      
+      vm.goToSettingsPage = function(path, type) {
+        HomeModelFacty.goToSettingsPage();
       };
       
-      $scope.goTextReader = function() {
-        navigationService.slidePage('/textViewer/' + $scope.selectedDate);
+      vm.goToTextViewerPage = function() {
+        HomeModelFacty
+          .setFormInfo(HomeFormTranslatorFcty.translate(vm.homeForm))
+          .goToTextViewerPage(vm.selectedDate);
       };
 
-      $scope.persistSelectedDate = function() {
-        userSettingsService.saveSelectedDate($scope.selectedDate);
-      };
-
-      $scope.exit = function() {
-        cordovaServices.exitApp();
+      vm.setSelectedDate = function() {
+        HomeModelFacty.setSelectedDate(vm.selectedDate);
       };
       
-      init();
+      vm.showError = function(fieldName){
+        return HomeModelFacty
+          .setFormInfo(HomeFormTranslatorFcty.translate(vm.homeForm))
+          .showError(fieldName);
+      } 
+
+      vm.exit = function() {
+        HomeModelFacty.exitApp();
+      };
     };
 
   angular.module('guiaEncuentroApp').controller('HomeController', [
-    '$scope',
-    'navigationService',
-    'cordovaServices',
-    'userSettingsService',
+    'HomeModelFacty',
+    'HomeFormTranslatorFcty',
     homeController
   ]);
+  
+  angular.module('guiaEncuentroApp').factory('HomeFormTranslatorFcty', [
+    function HomeFormTranslatorFcty(
+    )
+    {
+      HomeFormTranslatorFcty.fieldsTable = {
+        selectedDateName: 'selectedDate'
+      };
+      
+      HomeFormTranslatorFcty.infoForm;
+      
+      HomeFormTranslatorFcty.translate = function(homeForm){
+        if(HomeFormTranslatorFcty.infoForm){
+          return HomeFormTranslatorFcty.infoForm;
+        }
+        
+        var infoForm = {
+          valid: homeForm.$valid,
+          invalid: homeForm.$invalid
+        };
+        
+        Object.keys(HomeFormTranslatorFcty.fieldsTable).forEach(function(key){
+          infoForm[HomeFormTranslatorFcty.fieldsTable[key]] = homeForm[key]
+        });      
+        
+        HomeFormTranslatorFcty.infoForm = infoForm;        
+        return infoForm;
+      }
+    
+    return HomeFormTranslatorFcty
+  }]);
 })();
