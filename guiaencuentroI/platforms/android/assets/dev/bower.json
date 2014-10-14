@@ -18,11 +18,11 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "1.2.10",
+    "angular": "~1.2.26",
     "angular-mobile-nav": "*",
-    "angular-route": "1.2.10",
-    "angular-sanitize": "1.2.10",
-    "angular-touch": "1.2.10",
+    "angular-route": "~1.2.26",
+    "angular-sanitize": "~1.2.26",
+    "angular-touch": "~1.2.26",
     "angular-translate": "~1.1.1",
     "codebird": "~2.4.3",
     "datejs": "*",
@@ -35,10 +35,11 @@
     "angular-spinner": "~0.4.0",
     "topcoat-icons": "~0.2.0",
     "modernizr": "~2.8.2",
-    "jquery-nicescroll": "*"
+    "jquery-nicescroll": "*",
+    "angular-animate": "~1.2.26"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.10",
-    "angular-scenario": "1.2.10"
+    "angular-mocks": "~1.2.26",
+    "angular-scenario": "~1.2.26"
   }
 }

@@ -33,15 +33,44 @@
       var MIN_FONT_SIZE = 1;
       var MAX_FONT_SIZE = FONT_SIZES.length;
       var indexPreferredFontSize;
+      
+      $scope.showFooter = true;
 
+      function hideFooterSlowly(){
+        $timeout(function(){
+          hideFooter();
+        }, 3000);
+      }
+      
+      function hideFooter(){
+        $scope.isShowFooter = false;
+      }
+      
+      $scope.showFooter = function (){
+        $scope.isShowFooter = true;
+      }
+      
+      $scope.showHideFooter = function (){
+        $scope.isShowFooter ? hideFooter() : $scope.showFooter();
+      }
+      
       function init() {
         $timeout(function() {
           loadUserPreferredFontSize();
           loadHighConstrast();
           loadSelectedText();
+          hideFooter();
         });
 
         $scope.disableFacebook = false;
+        $scope.isShowFooter = true;
+      }
+      
+      $scope.onScroll = function(){
+        $scope.$apply(function(){
+          $scope.showFooter();
+          hideFooterSlowly();
+        });        
       }
 
       function loadHighConstrast() {
@@ -87,7 +116,7 @@
       }
 
       function plusMinFont(isPlus) {
-        $scope.$broadcast('resize:prepare');
+        scrollService.prepareResize();
 
         if (isPlus &&
           !$scope.disablePlusFontSize) {
@@ -102,7 +131,7 @@
         $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
 
         $timeout(function() {
-          $scope.$broadcast('resize');
+          scrollService.resize();
         });
       }
 

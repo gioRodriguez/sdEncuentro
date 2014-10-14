@@ -10,22 +10,7 @@
   
 
       return {
-        scope: {
-          scrollId : '@'
-        },
         link : function(scope, element, attrs) {
-          /*$timeout(function() {
-            $(element).niceScroll();
-
-            goToPreiousReadPosition();
-
-            // save the position each time that the user do a scroll
-            // for retrieved it when the user come back
-            $(element).getNiceScroll()[0].scrollend(function() {
-              userSettingsService.saveTextPosition(scope.selectedDate, $(element)
-                  .getNiceScroll()[0].getScrollTop());
-            });
-          });*/
 
           function goToPreiousReadPosition() {
             var readPosition = userSettingsService.getTextPosition();
@@ -39,6 +24,12 @@
           
           scope.$on('scroll:apply', function(){
             $(element).niceScroll();
+            
+            $(element).getNiceScroll()[0].scrollstart(function() {
+              if(scope.onScroll){
+                scope.onScroll();
+              }
+            });
 
             goToPreiousReadPosition();
 
@@ -78,8 +69,14 @@
   
   angular.module('guiaEncuentroApp').factory('scrollService', ['$rootScope', function($rootScope){
     return {
-      applyScroll : function(scrollId){
+      applyScroll: function(scrollId){
         $rootScope.$broadcast('scroll:apply', [scrollId]);
+      },
+      prepareResize: function(){
+        $rootScope.$broadcast('resize:prepare');
+      },
+      resize: function(){
+        $rootScope.$broadcast('resize');
       }
     };
   }]);

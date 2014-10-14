@@ -5,7 +5,7 @@
 
 footer {
 	position: fixed;
-	bottom: -0.5rem;
+	bottom: 0;
 	width: 100%;
 	left: 0px;
 	right: 0px;
@@ -25,24 +25,24 @@ footer {
 }
 
 .textViewer {
-	height: 85%;
+	height: 100%;
 	padding-right: 1rem;
 }
 
 .textViewerFooter {
-	height: 15%
+/* 	height: 15% */
 }
 
 /* Landscape layout (with min-width) */
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-	.textViewer {
-		height: 80%;
-		padding-right: 1rem;
-	}
+/* 	.textViewer { */
+/* 		height: 80%; */
+/* 		padding-right: 1rem; */
+/* 	} */
 	
-	.textViewerFooter {
-		height: 20%
-	}
+/* 	.textViewerFooter { */
+/* 		height: 20% */
+/* 	} */
 }
 
 .readContent {
@@ -73,7 +73,7 @@ footer {
 }
 
 .readBoby {
-	text-align: justify;
+	text-align: left;
 }
 
 .readBoby p {
@@ -103,3 +103,18 @@ footer {
 .six {
 	width: 16.6666%;
 }
+
+.ng-hide-add,
+.ng-hide-remove {
+  -webkit-transition:0.5s linear all;
+  transition:0.5s linear all;
+
+  /* remember to add this */
+  display:block!important;
+  opacity:1;
+}
+
+.ng-hide {
+  opacity:0;
+}
+

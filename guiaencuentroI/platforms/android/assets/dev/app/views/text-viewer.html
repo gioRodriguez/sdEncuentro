@@ -1,6 +1,6 @@
 
 <div class="content ng-class:{highContrast: constratEnabled}" style="height: 100%; padding-right: 0rem;">
-	<div
+	<div data-ng-click="showHideFooter()"
 		class="readContent ng-class:{highContrast: constratEnabled}">
 		<span us-spinner spinner-key="readSpin" spinner-start-active="1"></span>
 		<div nice-scroll class="textViewer">
@@ -10,7 +10,7 @@
 	</div>
 </div>
 
-<footer>
+<footer data-ng-show="isShowFooter" data-ng-mouseover="showFooter()" data-ng-click="showFooter()">
 	<illyum-nav-bar
 		is-constrat-enabled="constratEnabled"
 		items-size="left quarter">

@@ -11,11 +11,12 @@
   angular
       .module('guiaEncuentroApp', [
         'ngRoute',
+        'ngAnimate',
         'ngTouch',
         'ajoslin.mobile-navigate',
         'pascalprecht.translate',
         'ngSanitize',
-        'angularSpinner'
+        'angularSpinner'        
       ])
       .config(
           [
