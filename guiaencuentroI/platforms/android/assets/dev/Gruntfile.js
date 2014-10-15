@@ -441,7 +441,7 @@ module.exports = function(grunt) {
     protractor_webdriver: {
       run: {
         options: {
-          command: 'webdriver-manager start',
+          command: 'webdriver-manager start --unexpectedAlertBehaviour dismiss',
         },
       },
     },

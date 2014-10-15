@@ -14,10 +14,6 @@
         SettingsModelFacty.setUserPreferredLanguage(vm.preferredLanguage);
       };
 
-      vm.exit = function() {
-        SettingsModelFacty.exitApp();
-      };
-
       vm.removeFacebookAccount = function() {
         SettingsModelFacty.removeFacebookAccount();
       };

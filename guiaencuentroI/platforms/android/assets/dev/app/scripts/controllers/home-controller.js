@@ -29,11 +29,7 @@
         return HomeModelFacty
           .setFormInfo(HomeFormTranslatorFcty.translate(vm.homeForm))
           .showError(fieldName);
-      } 
-
-      vm.exit = function() {
-        HomeModelFacty.exitApp();
-      };
+      }
     };
 
   angular.module('guiaEncuentroApp').controller('HomeController', [

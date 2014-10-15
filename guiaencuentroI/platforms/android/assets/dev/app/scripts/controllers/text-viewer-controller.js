@@ -15,202 +15,97 @@
         $routeParams,
         userSettingsService,
         dialogService,
-        scrollService) {
+        scrollService,
+        TextViewerModelFacty) {
 
-      var FONT_SIZES = [
-        '0.5rem', // the cero position is not valid
-        '0.5rem',
-        '1rem',
-        '1.5rem',
-        '2rem',
-        '2.5rem',
-        '3rem',
-        '3.5rem',
-        '4rem',
-        '4.5rem',
-        '5rem'
-      ];
-      var MIN_FONT_SIZE = 1;
-      var MAX_FONT_SIZE = FONT_SIZES.length;
-      var indexPreferredFontSize;
-      
-      $scope.showFooter = true;
-
-      function hideFooterSlowly(){
-        $timeout(function(){
-          hideFooter();
-        }, 3000);
-      }
-      
-      function hideFooter(){
-        $scope.isShowFooter = false;
-      }
+      $scope.isShowFooter = function(){
+        return TextViewerModelFacty.isFooterVisible();
+      };
       
       $scope.showFooter = function (){
-        $scope.isShowFooter = true;
+        TextViewerModelFacty.showFooter();
       }
       
       $scope.showHideFooter = function (){
-        $scope.isShowFooter ? hideFooter() : $scope.showFooter();
+        TextViewerModelFacty.showHideFooter();
       }
       
       function init() {
         $timeout(function() {
-          loadUserPreferredFontSize();
-          loadHighConstrast();
-          loadSelectedText();
-          hideFooter();
+          $scope.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
+          
+          $scope.constratEnabled = TextViewerModelFacty.isHigthConstrastEnabled();
+          
+          usSpinnerService.stop('readSpin');
+          $scope.selectedDate = $routeParams.selectedDateParam;
+          TextViewerModelFacty.getTextByDate($routeParams.selectedDateParam)
+          .then(function(){
+            $scope.text = TextViewerModelFacty.text;
+            
+            usSpinnerService.stop('readSpin');
+            $timeout(function(){
+              scrollService.applyScroll();
+            });
+          });
+          
+          
+          TextViewerModelFacty.init();
         });
 
         $scope.disableFacebook = false;
-        $scope.isShowFooter = true;
       }
       
       $scope.onScroll = function(){
         $scope.$apply(function(){
-          $scope.showFooter();
-          hideFooterSlowly();
+          TextViewerModelFacty.showFooter();
+          TextViewerModelFacty.hideFooterSlowly();
         });        
       }
-
-      function loadHighConstrast() {
-        $scope.constratEnabled = userSettingsService.isHighConstrastEnabled();
+      
+      $scope.isHigthConstrastEnabled = function(){
+        return TextViewerModelFacty.isHigthConstrastEnabled();
       }
 
       $scope.setContrast = function() {
-        if ($scope.constratEnabled) {
-          $scope.constratEnabled = false;
-          userSettingsService.turnOffHighConstrast();
-        } else {
-          $scope.constratEnabled = true;
-          userSettingsService.turnOnHighConstrast();
-        }
+        TextViewerModelFacty.turnOnTurnOffHigthConstrast();
       }
-
-      function loadUserPreferredFontSize() {
-        indexPreferredFontSize = userSettingsService.getPreferedFontSize();
-        $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
-      }
-
-      function loadSelectedText() {
-        $scope.selectedDate = $routeParams.selectedDateParam;
-        textService.getTextByDate($scope.selectedDate).done(function(data) {
-          usSpinnerService.stop('readSpin');
-          $scope.text = data;
-          $timeout(function(){
-            scrollService.applyScroll();
-          });          
-        }).fail(
-            function(data) {
-              usSpinnerService.stop('readSpin');
-              dialogService.showError('textAskedFailDesc');
-            });
-      }
-
-      $scope.back = function(path, type) {
-        navigationService.back();
-      };
 
       $scope.plusFontSize = function() {
-        plusMinFont(true);
-      }
-
-      function plusMinFont(isPlus) {
-        console.log('plusMinFont called disableMinFontSize: ' + $scope.disableMinFontSize);
-        scrollService.prepareResize();
-
-        if (isPlus &&
-          !$scope.disablePlusFontSize) {
-          indexPreferredFontSize++;
-        }
-
-        if (!isPlus &&
-          !$scope.disableMinFontSize) {
-          indexPreferredFontSize--;
-        }
-
-        $scope.userPreferredFontSize = FONT_SIZES[indexPreferredFontSize];
-
-        $timeout(function() {
-          scrollService.resize();
-        });
+        var result = TextViewerModelFacty.plusMinFont(true);
+        
+        $scope.userPreferredFontSize = result.fontSize;
+        $scope.disableMinFontSize = result.disableMinFontSize;
+        $scope.disablePlusFontSize = result.disablePlusFontSize;
       }
 
       $scope.minFontSize = function() {
-        plusMinFont(false);
+        var result = TextViewerModelFacty.plusMinFont(false);
+        
+        $scope.userPreferredFontSize = result.fontSize;
+        $scope.disableMinFontSize = result.disableMinFontSize;
+        $scope.disablePlusFontSize = result.disablePlusFontSize;
       }
 
-      $scope.facebookPublish =
-        function() {
-          var text = getTextForPublish();
-          if (!text) {
-            return;
-          }
+      $scope.facebookPublish = function() {
+        $scope.disableFacebook = true;
+        usSpinnerService.spin('publishSpin');
 
-          $scope.disableFacebook = true;
-          usSpinnerService.spin('publishSpin');
-
-          var publication = {
-            message : text,
-            link : $translate('publicationLink'),
-            picture : $translate('publicationPicture'),
-            name : $translate('publicationAppName'),
-            caption : $translate('publicationAppCaption')
-          };
-
-          facebookService.publish(publication).then(
-              function() {
-                enableFacebook();
-                dialogService.showInfo('publishFacebook');
-              },
-              function(error) {
-                enableFacebook();
-                if (error.isNetworkException) {
-                  dialogService.showError('notNetworkDesc');
-                } else {
-                  dialogService.showError('publishFail');
-                }
-              });
-        };
-
-      function enableFacebook() {
-        usSpinnerService.stop('publishSpin');
-        $timeout(function() {
-          $scope.disableFacebook = false;
-        });
-      }
-
-      function getTextForPublish() {
-        if ($scope.text) {
-          textToPublish = getReadBodyText($scope.text);
-          return String(textToPublish).replace(/<[^>]+>/gm, '#s').replace(/(#s)+/gm, ' ')
-              .substring(0, 600) +
-            '...';
-        }
-        return null;
-      }
-
-      function getReadBodyText(text) {
-        if (text.indexOf("readBoby")) {
-          return text.split("readBoby'>")[1];
-        }
-
-        return text;
-      }
-
-      $scope.exit = function() {
-        cordovaServices.exitApp();
+        TextViewerModelFacty.facebookPublish()
+          .then(function(){
+            usSpinnerService.stop('publishSpin');
+            $timeout(function() {
+              $scope.disableFacebook = false;
+            });
+          })
+          .then(null, function(){
+            usSpinnerService.stop('publishSpin');
+            $timeout(function() {
+              $scope.disableFacebook = false;
+            });
+          });
       };
 
       init();
-
-      $scope.$watch('userPreferredFontSize', function() {
-        if (indexPreferredFontSize) {
-          userSettingsService.savePreferedFontSize(indexPreferredFontSize);
-          $scope.disablePlusFontSize = indexPreferredFontSize + 1 >= MAX_FONT_SIZE;
-          $scope.disableMinFontSize = indexPreferredFontSize - 1 < MIN_FONT_SIZE;
-        }
-      });
     };
 
   angular.module('guiaEncuentroApp').controller('TextViewerController', [
@@ -226,6 +121,7 @@
     'userSettingsService',
     'dialogService',
     'scrollService',
+    'TextViewerModelFacty',
     textViewerController
   ]);
 })();
