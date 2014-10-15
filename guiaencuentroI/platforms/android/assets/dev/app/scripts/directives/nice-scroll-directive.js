@@ -10,6 +10,10 @@
   
 
       return {
+        scope: {
+          selectedDate: '=',
+          onScroll: '='
+        },
         link : function(scope, element, attrs) {
 
           function goToPreiousReadPosition() {

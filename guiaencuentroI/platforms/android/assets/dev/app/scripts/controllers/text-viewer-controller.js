@@ -5,16 +5,9 @@
   var textViewerController =
     function(
         $scope,
-        navigationService,
-        textService,
-        cordovaServices,
-        $translate,
-        facebookService,
         usSpinnerService,
         $timeout,
         $routeParams,
-        userSettingsService,
-        dialogService,
         scrollService,
         TextViewerModelFacty) {
 
@@ -32,16 +25,14 @@
         TextViewerModelFacty.showHideFooter();
       }
       
-      function init() {
+      vm.init = function() {
         $timeout(function() {
-          usSpinnerService.stop('readSpin');
-          
           TextViewerModelFacty.init($routeParams.selectedDateParam)
             .then(function(){
               vm.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
               vm.selectedDate = TextViewerModelFacty.getSelectedDate();
               vm.text = TextViewerModelFacty.getText();
-              
+
               usSpinnerService.stop('readSpin');
               $timeout(function(){
                 scrollService.applyScroll();
@@ -56,6 +47,7 @@
         $scope.$apply(function(){
           TextViewerModelFacty.showFooter();
           TextViewerModelFacty.hideFooterSlowly();
+          console.log(TextViewerModelFacty.isFooterVisible());
         });        
       }
       
@@ -115,22 +107,13 @@
             });
           });
       };
-
-      init();
     };
 
   angular.module('guiaEncuentroApp').controller('TextViewerController', [
     '$scope',
-    'navigationService',
-    'textService',
-    'cordovaServices',
-    '$translate',
-    'facebookService',
     'usSpinnerService',
     '$timeout',
     '$routeParams',
-    'userSettingsService',
-    'dialogService',
     'scrollService',
     'TextViewerModelFacty',
     textViewerController

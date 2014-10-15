@@ -21,7 +21,6 @@
 			  return {
 			    pre : function(scope, element, attr) {
 			      var topcoatIconText = attr.topcoatIcon;
-		        console.log(topcoatIconText);
 
 		        $(element).text(topcoatIconText);
 		        $(element).addClass("icomatic");

@@ -34,7 +34,6 @@
       ];
       var MIN_FONT_SIZE = 1;
       var MAX_FONT_SIZE = FONT_SIZES.length;
-      var indexPreferredFontSize;
       var _isFooterVisible = false;
       
       var _userPreferredFontSize;
@@ -54,8 +53,8 @@
         _isHigthConstrastEnabled = TextViewerModelFacty.isHigthConstrastEnabled();
         _selectedDate = selectedDate;
         
-        TextViewerModelFacty.getTextByDate(_selectedDate)
-        .then(function(text){
+        getTextByDate(_selectedDate)
+          .then(function(text){
           _text = text;
           
           defer.resolve();
@@ -72,7 +71,7 @@
         return _selectedDate;
       }
       
-      TextViewerModelFacty.isFooterVisible = function(){
+      function isFooterVisible (){
         return _isFooterVisible;
       };
       
@@ -91,7 +90,7 @@
       }
       
       TextViewerModelFacty.showHideFooter = function (){
-        TextViewerModelFacty.isFooterVisible() ? hideFooter() : TextViewerModelFacty.showFooter();
+       isFooterVisible() ? hideFooter() : TextViewerModelFacty.showFooter();
       }           
       
       TextViewerModelFacty.isHigthConstrastEnabled = function(){
@@ -115,8 +114,8 @@
       }
       
       TextViewerModelFacty.getUserPreferredFontSize = function(){
-        indexPreferredFontSize = userSettingsService.getPreferedFontSize();
-        return FONT_SIZES[indexPreferredFontSize];
+        _userPreferredFontSize = userSettingsService.getPreferedFontSize();
+        return FONT_SIZES[_userPreferredFontSize];
       }
       
       TextViewerModelFacty.setUserPreferredFontSize = function(indexPreferredFontSize){
@@ -124,11 +123,15 @@
       }
       
       function isDisableMinFontSize(){
-        return indexPreferredFontSize - 1 < MIN_FONT_SIZE;
+        return _userPreferredFontSize - 1 < MIN_FONT_SIZE;
       }
       
       function isDisablePlusFontSize(){
-        return indexPreferredFontSize + 1 >= MAX_FONT_SIZE;
+        return _userPreferredFontSize + 1 >= MAX_FONT_SIZE;
+      }
+      
+      TextViewerModelFacty.isFooterVisible = function(){
+        return _isFooterVisible;
       }
       
       TextViewerModelFacty.plusMinFont = function(isPlus){
@@ -136,15 +139,15 @@
 
         if (isPlus &&
           !isDisablePlusFontSize()) {
-          indexPreferredFontSize++;
+          _userPreferredFontSize++;
         }
 
         if (!isPlus &&
           !isDisableMinFontSize()) {
-          indexPreferredFontSize--;
+          _userPreferredFontSize--;
         }       
         
-        userSettingsService.savePreferedFontSize(indexPreferredFontSize);
+        userSettingsService.savePreferedFontSize(_userPreferredFontSize);
         
         defer.resolve();         
         return defer.promise;
@@ -158,15 +161,13 @@
         return isDisableMinFontSize();
       }
       
-      TextViewerModelFacty.getTextByDate = function(selectedDate){
+      function getTextByDate (selectedDate){
         var defer = $q.defer();
         
         textService.getTextByDate(selectedDate).done(function(data) {          
-          TextViewerModelFacty.text = data;
-          defer.resolve();                   
+          defer.resolve(data);                   
         }).fail(
-            function(data) {              
-              dialogService.showError('textAskedFailDesc');
+            function(data) {
               defer.resolve();
             });
         

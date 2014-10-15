@@ -16,32 +16,23 @@ describe(
       var textViewerController;
       var rootScope;
       var scope;
-      var textService;
       var controller;
-      var navigationService;
-      var facebookService;
-      var cordovaServices;
-      var $translate;
       var twitterService;
       var usSpinnerService;
       var $timeout;
       var $routeParams;
-      var userSettingsService;
       var httpBackend;
-      var dialogService;
       var scrollService;
       var TextViewerModelFacty;
 
       beforeEach(function() {
         TextViewerModelFacty = jasmine.createSpyObj('TextViewerModelFacty', [
-          'isFooterVisible',
           'init',
           'isHigthConstrastEnabled',
           'turnOnTurnOffHigthConstrast',
           'getUserPreferredFontSize',
           'setUserPreferredFontSize',
           'plusMinFont',
-          'getTextByDate',
           'facebookPublish',
           'getSelectedDate',
           'getText',
@@ -57,13 +48,6 @@ describe(
             return {
               then: function(){}
             };
-          }
-        });
-        TextViewerModelFacty.getTextByDate = function() {
-        };
-        spyOn(TextViewerModelFacty, 'getTextByDate').andReturn({
-          then: function(fn){
-            fn();
           }
         });
         TextViewerModelFacty.init = function() {
@@ -93,46 +77,6 @@ describe(
         TextViewerModelFacty.getUserPreferredFontSize = function() {
         };
         spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('2.5rem');
-        
-        navigationService = jasmine.createSpyObj('navigationService', [
-          'back'
-        ]);
-
-        userSettingsService = jasmine.createSpyObj('userSettingsService', [
-          'isHighConstrastEnabled',
-          'turnOffHighConstrast',
-          'turnOnHighConstrast',
-          'getPreferedFontSize',
-          'savePreferedFontSize'
-        ]);
-        userSettingsService.getPreferedFontSize = function() {
-        };
-        spyOn(userSettingsService, 'getPreferedFontSize').andReturn('5');
-        userSettingsService.isHighConstrastEnabled = function() {
-        };
-        spyOn(userSettingsService, 'isHighConstrastEnabled').andReturn(true);
-
-        textService = jasmine.createSpy('textService');
-        textService.getTextByDate = function() {
-        }
-        spyOn(textService, 'getTextByDate').andReturn({
-          done : function(func) {
-            func(CONSTANTS.textForTodayHTML);
-            return {
-              fail : function() {
-              }
-            };
-          }
-        });
-
-        cordovaServices = jasmine.createSpyObj('cordovaServices', [
-          'alert',
-          'exitApp',
-          'isNetworkAvailable'
-        ]);
-        cordovaServices.isNetworkAvailable = function() {
-          return true;
-        };
 
         scrollService = jasmine.createSpyObj('scrollService', ['applyScroll']);
         
@@ -152,34 +96,17 @@ describe(
         })
 
         httpBackend.expectGET('views/home.html').respond({ hello: 'World' });
-        
-        $translate = function(translateKey) {
-          var messages = {
-            textAskedFailDesc : 'textAskedFailDesc',
-            textAskedFailTitle : 'textAskedFailTitle',
-            publishOk : 'publishOk'
-          }
-          return messages[translateKey] ? messages[translateKey] : 'messageFake';
-        }
 
         usSpinnerService = jasmine.createSpyObj('usSpinnerService', [
           'spin',
           'stop'
         ]);
         
-        dialogService = jasmine.createSpyObj('dialogService', ['showError', 'showInfo']);
-
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          textService : textService,
-          navigationService : navigationService,
-          cordovaServices : cordovaServices,
-          facebookService : facebookService,
-          $translate : $translate,
           usSpinnerService : usSpinnerService,
           $timeout : $timeout,
           $routeParams : $routeParams,
-          dialogService : dialogService,
           scrollService: scrollService,
           TextViewerModelFacty: TextViewerModelFacty
         });
@@ -190,9 +117,7 @@ describe(
         scope = rootScope.$new();
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          textService : textService,
           $timeout : $timeout,
-          userSettingsService : userSettingsService,
           TextViewerModelFacty: TextViewerModelFacty,
           usSpinnerService: usSpinnerService,
           $routeParams: $routeParams,
@@ -200,6 +125,7 @@ describe(
         });
 
         // act
+        textViewerController.init();
         scope.$apply();
 
         // assert
@@ -210,81 +136,12 @@ describe(
         expect(textViewerController.selectedDate).toEqual('2012-Febrero-4');
         expect(textViewerController.disableFacebook).toBeFalsy();
       });
-      
-      it('must show error when there is not network and try to publish offline', function() {
-        // arrange
-        $translate = function(translateKey) {
-          var messages = {
-            notNetworkTitle : 'notNetworkTitle',
-            notNetworkDesc : 'notNetworkDesc',
-            publishOk : 'publishOk'
-          }
-          return messages[translateKey] ? messages[translateKey] : 'messageFake';
-        }
-        facebookService = jasmine.createSpyObj('facebookService', [
-          'publish'
-        ]);
-        facebookService.publish = function() {
-        }
-        var deferred = $.Deferred();
-        spyOn(facebookService, 'publish').andCallFake(function() {
-          return deferred.promise();
-        });
-        deferred.reject(exceptions.notNetworkException());
-
-        usSpinnerService = jasmine.createSpyObj('usSpinnerService', [
-          'spin',
-          'stop'
-        ]);
-
-        textViewerController = controller('TextViewerController', {
-          $scope : scope,
-          textService : textService,
-          navigationService : navigationService,
-          cordovaServices : cordovaServices,
-          facebookService : facebookService,
-          $translate : $translate,
-          usSpinnerService : usSpinnerService,
-          $timeout : $timeout,
-          dialogService : dialogService,
-          TextViewerModelFacty: TextViewerModelFacty
-        });
-
-        // act
-        textViewerController.facebookPublish();
-
-        // assert
-        //expect(dialogService.showError).toHaveBeenCalledWith('notNetworkDesc');
-      });
 
       it('must publish to facebook and disable the button', function() {
         // arrange
         var $timeout = function(func) {
           func();
         }
-        $translate = function(translateKey) {
-          var messages = {
-            publicationLink : 'appLink',
-            publicationPicture : 'appPicture',
-            publicationAppName : 'appName',
-            publicationAppCaption : 'appCaption'
-          }
-          return messages[translateKey] ? messages[translateKey] : 'messageFake';
-        }
-        facebookService = jasmine.createSpyObj('facebookService', [
-          'publish'
-        ]);
-        facebookService.publish = function() {
-        }
-        spyOn(facebookService, 'publish').andReturn({
-          then : function(func) {
-            func('success');
-            return {
-              fail : function() {
-              }
-            };
-          }
-        });
 
         usSpinnerService = jasmine.createSpyObj('usSpinnerService', [
           'spin',
@@ -293,59 +150,23 @@ describe(
 
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          textService : textService,
-          navigationService : navigationService,
-          cordovaServices : cordovaServices,
-          facebookService : facebookService,
-          $translate : $translate,
           usSpinnerService : usSpinnerService,
           $timeout : $timeout,
-          dialogService : dialogService,
           TextViewerModelFacty: TextViewerModelFacty
         });
-
-        var publication = {
-          message : CONSTANTS.textForToday,
-          link : 'appLink',
-          picture : 'appPicture',
-          name : 'appName',
-          caption : 'appCaption'
-        }
 
         // act
         textViewerController.facebookPublish();
 
         // assert
         expect(TextViewerModelFacty.facebookPublish).toHaveBeenCalled();
-        //expect(scope.disableFacebook).toBe(false);
-        //expect(usSpinnerService.spin).toHaveBeenCalledWith('publishSpin');
-        //expect(usSpinnerService.stop).toHaveBeenCalledWith('publishSpin');
-        //expect(dialogService.showInfo).toHaveBeenCalledWith('publishFacebook');
       });
 
       it('must cancell publish to facebook when there are not selected text', function() {
         // arrange
-        textService = jasmine.createSpy('textService');
-        textService.getTextByDate = function() {
-        };
-        spyOn(textService, 'getTextByDate').andReturn({
-          done : function(func) {
-            func(undefined);
-            return {
-              fail : function() {
-              }
-            };
-          }
-        });
-        facebookService = jasmine.createSpyObj('facebookService', [
-          'publish'
-        ]);
-
         scope = rootScope.$new();
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          textService : textService,
-          facebookService : facebookService,
           usSpinnerService: usSpinnerService,
           $timeout: $timeout,
           TextViewerModelFacty: TextViewerModelFacty
@@ -370,10 +191,6 @@ describe(
               func();
             }
             var fontSize = 9;
-            userSettingsService.getPreferedFontSize = function() {
-            };
-            spyOn(userSettingsService, 'getPreferedFontSize').andReturn(fontSize);
-            
             TextViewerModelFacty.getUserPreferredFontSize = function(){}
             spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('5rem');
             
@@ -383,9 +200,7 @@ describe(
             scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
               $scope : scope,
-              textService : textService,
               $timeout : $timeout,
-              userSettingsService : userSettingsService,
               TextViewerModelFacty: TextViewerModelFacty
             });
 
@@ -404,11 +219,6 @@ describe(
           'must apply font min and disable min when the min font size is reached',
           function() {
             // arrange
-            var fontSize = 2;
-            userSettingsService.getPreferedFontSize = function() {
-            };
-            spyOn(userSettingsService, 'getPreferedFontSize').andReturn(fontSize);
-
             TextViewerModelFacty.getUserPreferredFontSize = function(){}
             spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('0.5rem');
             
@@ -421,9 +231,7 @@ describe(
             scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
               $scope : scope,
-              textService : textService,
               $timeout : $timeout,
-              userSettingsService : userSettingsService,
               TextViewerModelFacty: TextViewerModelFacty
             });
 
@@ -441,9 +249,7 @@ describe(
         // arrange
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          textService : textService,
           $timeout : $timeout,
-          userSettingsService : userSettingsService,
           TextViewerModelFacty: TextViewerModelFacty
         });
 
@@ -456,10 +262,6 @@ describe(
 
       it('must turn on high constract when the user does', function() {
         // arrange
-        userSettingsService.isHighConstrastEnabled = function() {
-        };
-        spyOn(userSettingsService, 'isHighConstrastEnabled').andReturn(false);
-
         TextViewerModelFacty.isHigthConstrastEnabled = function() {
         };
         spyOn(TextViewerModelFacty, 'isHigthConstrastEnabled').andReturn(false);
@@ -467,9 +269,7 @@ describe(
         scope = rootScope.$new();
         textViewerController = controller('TextViewerController', {
           $scope : scope,
-          textService : textService,
           $timeout : $timeout,
-          userSettingsService : userSettingsService,
           TextViewerModelFacty: TextViewerModelFacty
         });
 
@@ -478,43 +278,5 @@ describe(
 
         // assert
         expect(TextViewerModelFacty.turnOnTurnOffHigthConstrast).toHaveBeenCalled();
-      });
-
-      it('must show error dialog when the loaded text is invalid', function() {
-        // arrange
-        $routeParams = {
-          selectedDateParam : ''
-        };
-        textService = jasmine.createSpy('textService');
-        textService.getTextByDate = function() {
-        };
-        spyOn(textService, 'getTextByDate').andReturn({
-          done : function(func) {
-            return {
-              fail : function(func) {
-                func();
-              }
-            };
-          }
-        });
-
-        scope = rootScope.$new();
-        textViewerController = controller('TextViewerController', {
-          $scope : scope,
-          textService : textService,
-          $translate : $translate,
-          cordovaServices : cordovaServices,
-          $timeout : $timeout,
-          $routeParams : $routeParams,
-          dialogService : dialogService,
-          TextViewerModelFacty: TextViewerModelFacty
-        });
-
-        // act
-
-        // assert
-        //expect(scope.selectedDate).toBe('');
-        //expect(textService.getTextByDate).toHaveBeenCalledWith('');
-        //expect(dialogService.showError).toHaveBeenCalledWith('textAskedFailDesc');
       });
     });

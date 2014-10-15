@@ -1,12 +1,16 @@
 
 <div class="content ng-class:{highContrast: textViewerCtrl.isHigthConstrastEnabled()}" 
+	data-ng-init="textViewerCtrl.init()"
 	style="height: 100%; padding-right: 0rem;">
 	<div data-ng-click="textViewerCtrl.showHideFooter()"
 		class="readContent ng-class:{highContrast: textViewerCtrl.isHigthConstrastEnabled()}">
 		<span data-us-spinner 
 			data-spinner-key="readSpin" 
 			data-spinner-start-active="1"></span>
-		<div data-nice-scroll class="textViewer">
+		<div data-nice-scroll
+			data-selected-date="textViewerCtrl.selectedDate"
+			data-on-scroll="textViewerCtrl.onScroll"
+			 class="textViewer">
 			<div style='font-size: {{textViewerCtrl.userPreferredFontSize}}' 
 				data-ng-bind-html="textViewerCtrl.text"></div>
 		</div>
