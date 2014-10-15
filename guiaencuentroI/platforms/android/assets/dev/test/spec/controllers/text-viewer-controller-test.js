@@ -200,7 +200,7 @@ describe(
         });
 
         // act
-        scope.facebookPublish();
+        textViewerController.facebookPublish();
 
         // assert
         //expect(dialogService.showError).toHaveBeenCalledWith('notNetworkDesc');
@@ -262,7 +262,7 @@ describe(
         }
 
         // act
-        scope.facebookPublish();
+        textViewerController.facebookPublish();
 
         // assert
         expect(TextViewerModelFacty.facebookPublish).toHaveBeenCalled();
@@ -301,14 +301,14 @@ describe(
         });
 
         // act
-        scope.facebookPublish();
+        textViewerController.facebookPublish();
         
         
         // assert
         expect(usSpinnerService.spin).toHaveBeenCalledWith('publishSpin');
         expect(TextViewerModelFacty.facebookPublish).toHaveBeenCalled();
         expect(usSpinnerService.stop).toHaveBeenCalledWith('publishSpin');
-        expect(scope.disableFacebook).toBe(false);
+        expect(textViewerController.disableFacebook).toBe(false);
       });
 
       it(
@@ -342,13 +342,13 @@ describe(
 
             // act
             
-            scope.plusFontSize();            
+            textViewerController.plusFontSize();            
             scope.$apply();
 
             // assert
-            expect(scope.userPreferredFontSize).toBe('5rem');
-            expect(scope.disableMinFontSize).toBeFalsy();
-            expect(scope.disablePlusFontSize).toBeTruthy();
+            expect(textViewerController.userPreferredFontSize).toBe('5rem');
+            expect(textViewerController.disableMinFontSize).toBeFalsy();
+            expect(textViewerController.disablePlusFontSize).toBeTruthy();
           });
 
       it(
@@ -378,13 +378,13 @@ describe(
             });
 
             // act
-            scope.minFontSize();
+            textViewerController.minFontSize();
             scope.$apply();
 
             // assert
-            expect(scope.userPreferredFontSize).toBe('0.5rem');
-            expect(scope.disableMinFontSize).toBeTruthy();
-            expect(scope.disablePlusFontSize).toBeFalsy();
+            expect(textViewerController.userPreferredFontSize).toBe('0.5rem');
+            expect(textViewerController.disableMinFontSize).toBeTruthy();
+            expect(textViewerController.disablePlusFontSize).toBeFalsy();
           });
 
       it('must load user settings', function() {
@@ -402,7 +402,7 @@ describe(
         scope.$apply();
 
         // assert
-        expect(scope.userPreferredFontSize).toBe('2.5rem');
+        expect(textViewerController.userPreferredFontSize).toBe('2.5rem');
         expect(TextViewerModelFacty.isHigthConstrastEnabled).toHaveBeenCalled();
         expect(TextViewerModelFacty.getUserPreferredFontSize).toHaveBeenCalled();
       });
@@ -418,7 +418,7 @@ describe(
         });
 
         // act
-        scope.setContrast();
+        textViewerController.setContrast();
 
         // assert
         expect(TextViewerModelFacty.turnOnTurnOffHigthConstrast).toHaveBeenCalled();
@@ -444,7 +444,7 @@ describe(
         });
 
         // act
-        scope.setContrast();
+        textViewerController.setContrast();
 
         // assert
         expect(TextViewerModelFacty.turnOnTurnOffHigthConstrast).toHaveBeenCalled();
@@ -456,9 +456,9 @@ describe(
         // act
 
         // assert
-        expect(scope.selectedDate).toBe('2012-febrero-4');
+        expect(textViewerController.selectedDate).toBe('2012-febrero-4');
         expect(TextViewerModelFacty.getTextByDate).toHaveBeenCalledWith('2012-febrero-4');
-        expect(scope.text).toBe(CONSTANTS.textForTodayHTML);
+        expect(textViewerController.text).toBe(CONSTANTS.textForTodayHTML);
         expect(scrollService.applyScroll).toHaveBeenCalled();
       });
 

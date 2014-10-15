@@ -29,7 +29,7 @@
               });
               $routeProvider.when('/textViewer/:selectedDateParam', {
                 templateUrl : 'views/text-viewer.html',
-                controller : 'TextViewerController'
+                controller : 'TextViewerController as textViewerCtrl'
               });
               $routeProvider.when("/settings", {
                 templateUrl : "views/settings.html",

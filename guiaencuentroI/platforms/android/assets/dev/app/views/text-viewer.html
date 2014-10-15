@@ -1,46 +1,46 @@
 
-<div class="content ng-class:{highContrast: isHigthConstrastEnabled()}" style="height: 100%; padding-right: 0rem;">
-	<div data-ng-click="showHideFooter()"
-		class="readContent ng-class:{highContrast: isHigthConstrastEnabled()}">
+<div class="content ng-class:{highContrast: textViewerCtrl.isHigthConstrastEnabled()}" style="height: 100%; padding-right: 0rem;">
+	<div data-ng-click="textViewerCtrl.showHideFooter()"
+		class="readContent ng-class:{highContrast: textViewerCtrl.isHigthConstrastEnabled()}">
 		<span us-spinner spinner-key="readSpin" spinner-start-active="1"></span>
 		<div nice-scroll class="textViewer">
-			<div style='font-size: {{userPreferredFontSize}}' ng-bind-html="text"></div>
+			<div style='font-size: {{textViewerCtrl.userPreferredFontSize}}' ng-bind-html="textViewerCtrl.text"></div>
 		</div>
 		<div class="textViewerFooter"></div>
 	</div>
 </div>
 
-<footer data-ng-show="isShowFooter()" data-ng-mouseover="showFooter()" data-ng-click="showFooter()" class="text-viewer-footer">
+<footer data-ng-show="textViewerCtrl.isShowFooter()" data-ng-mouseover="textViewerCtrl.showFooter()" data-ng-click="textViewerCtrl.showFooter()" class="text-viewer-footer">
 	<illyum-nav-bar
-		is-constrat-enabled="isHigthConstrastEnabled()"
+		is-constrat-enabled="textViewerCtrl.isHigthConstrastEnabled()"
 		items-size="left quarter">
 
 		<illyum-nav-bar-item 
 			icon="minus"
-			data-ng-click="minFontSize()" 
-			data-ng-disabled="disableMinFontSize"
-			is-constrat-enabled="constratEnabled">
+			data-ng-click="textViewerCtrl.minFontSize()" 
+			data-ng-disabled="textViewerCtrl.disableMinFontSize"
+			is-constrat-enabled="textViewerCtrl.isHigthConstrastEnabled()">
 		</illyum-nav-bar-item>
 		
 		<illyum-nav-bar-item 
 			icon="plus"
-			data-ng-click="plusFontSize()" 
-			data-ng-disabled="disablePlusFontSize"
-			is-constrat-enabled="isHigthConstrastEnabled()">
+			data-ng-click="textViewerCtrl.plusFontSize()" 
+			data-ng-disabled="textViewerCtrl.disablePlusFontSize"
+			is-constrat-enabled="textViewerCtrl.isHigthConstrastEnabled()">
 		</illyum-nav-bar-item>
 
 		<illyum-nav-bar-item 
 			icon="facebook"
-			data-ng-click="facebookPublish()" 
-			data-ng-disabled="disableFacebook"
-			is-constrat-enabled="isHigthConstrastEnabled()">
+			data-ng-click="textViewerCtrl.facebookPublish()" 
+			data-ng-disabled="textViewerCtrl.disableFacebook"
+			is-constrat-enabled="textViewerCtrl.isHigthConstrastEnabled()">
 			<span us-spinner spinner-key="publishSpin"></span>
 		</illyum-nav-bar-item>
 
 		<illyum-nav-bar-item 
 			icon="text"
-			data-ng-click="setContrast()"
-			is-constrat-enabled="isHigthConstrastEnabled()">
+			data-ng-click="textViewerCtrl.setContrast()"
+			is-constrat-enabled="textViewerCtrl.isHigthConstrastEnabled()">
 		</illyum-nav-bar-item>
 	</illyum-nav-bar>
 </footer>

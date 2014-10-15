@@ -18,29 +18,31 @@
         scrollService,
         TextViewerModelFacty) {
 
-      $scope.isShowFooter = function(){
+      var vm = this;
+      
+      vm.isShowFooter = function(){
         return TextViewerModelFacty.isFooterVisible();
       };
       
-      $scope.showFooter = function (){
+      vm.showFooter = function (){
         TextViewerModelFacty.showFooter();
       }
       
-      $scope.showHideFooter = function (){
+      vm.showHideFooter = function (){
         TextViewerModelFacty.showHideFooter();
       }
       
       function init() {
         $timeout(function() {
-          $scope.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
+          vm.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
           
-          $scope.constratEnabled = TextViewerModelFacty.isHigthConstrastEnabled();
+          vm.constratEnabled = TextViewerModelFacty.isHigthConstrastEnabled();
           
           usSpinnerService.stop('readSpin');
-          $scope.selectedDate = $routeParams.selectedDateParam;
+          vm.selectedDate = $routeParams.selectedDateParam;
           TextViewerModelFacty.getTextByDate($routeParams.selectedDateParam)
           .then(function(){
-            $scope.text = TextViewerModelFacty.text;
+            vm.text = TextViewerModelFacty.text;
             
             usSpinnerService.stop('readSpin');
             $timeout(function(){
@@ -52,55 +54,55 @@
           TextViewerModelFacty.init();
         });
 
-        $scope.disableFacebook = false;
+        vm.disableFacebook = false;
       }
       
-      $scope.onScroll = function(){
+      vm.onScroll = function(){
         $scope.$apply(function(){
           TextViewerModelFacty.showFooter();
           TextViewerModelFacty.hideFooterSlowly();
         });        
       }
       
-      $scope.isHigthConstrastEnabled = function(){
+      vm.isHigthConstrastEnabled = function(){
         return TextViewerModelFacty.isHigthConstrastEnabled();
       }
 
-      $scope.setContrast = function() {
+      vm.setContrast = function() {
         TextViewerModelFacty.turnOnTurnOffHigthConstrast();
       }
 
-      $scope.plusFontSize = function() {
+      vm.plusFontSize = function() {
         var result = TextViewerModelFacty.plusMinFont(true);
         
-        $scope.userPreferredFontSize = result.fontSize;
-        $scope.disableMinFontSize = result.disableMinFontSize;
-        $scope.disablePlusFontSize = result.disablePlusFontSize;
+        vm.userPreferredFontSize = result.fontSize;
+        vm.disableMinFontSize = result.disableMinFontSize;
+        vm.disablePlusFontSize = result.disablePlusFontSize;
       }
 
-      $scope.minFontSize = function() {
+      vm.minFontSize = function() {
         var result = TextViewerModelFacty.plusMinFont(false);
         
-        $scope.userPreferredFontSize = result.fontSize;
-        $scope.disableMinFontSize = result.disableMinFontSize;
-        $scope.disablePlusFontSize = result.disablePlusFontSize;
+        vm.userPreferredFontSize = result.fontSize;
+        vm.disableMinFontSize = result.disableMinFontSize;
+        vm.disablePlusFontSize = result.disablePlusFontSize;
       }
 
-      $scope.facebookPublish = function() {
-        $scope.disableFacebook = true;
+      vm.facebookPublish = function() {
+        vm.disableFacebook = true;
         usSpinnerService.spin('publishSpin');
 
         TextViewerModelFacty.facebookPublish()
           .then(function(){
             usSpinnerService.stop('publishSpin');
             $timeout(function() {
-              $scope.disableFacebook = false;
+              vm.disableFacebook = false;
             });
           })
           .then(null, function(){
             usSpinnerService.stop('publishSpin');
             $timeout(function() {
-              $scope.disableFacebook = false;
+              vm.disableFacebook = false;
             });
           });
       };
