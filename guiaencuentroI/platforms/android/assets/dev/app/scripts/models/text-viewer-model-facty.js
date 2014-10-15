@@ -40,9 +40,6 @@
       var _isHigthConstrastEnabled;
       var _text;
       var _selectedDate;
-      var _fontSize;
-      var _disableMin;
-      var _disablePlus;
       
       TextViewerModelFacty.init = function(selectedDate){
         var defer = $q.defer();
@@ -61,19 +58,19 @@
         });
         
         return defer.promise;
-      }
+      };
       
       TextViewerModelFacty.getText = function(){
         return _text;
-      }
+      };
       
       TextViewerModelFacty.getSelectedDate = function(){
         return _selectedDate;
-      }
+      };
       
       function isFooterVisible (){
         return _isFooterVisible;
-      };
+      }
       
       function hideFooter(){        
         _isFooterVisible = false;
@@ -83,19 +80,19 @@
         $timeout(function(){
           hideFooter();
         }, 3000);
-      }
+      };
  
       TextViewerModelFacty.showFooter = function (){
         _isFooterVisible = true;
-      }
+      };
       
       TextViewerModelFacty.showHideFooter = function (){
        isFooterVisible() ? hideFooter() : TextViewerModelFacty.showFooter();
-      }           
+      };      
       
       TextViewerModelFacty.isHigthConstrastEnabled = function(){
         return userSettingsService.isHighConstrastEnabled();
-      }
+      };
       
       function turnOffHighConstrast (){
         userSettingsService.turnOffHighConstrast();
@@ -111,12 +108,12 @@
         } else {
           turnOnHighConstrast();
         }
-      }
+      };
       
       TextViewerModelFacty.getUserPreferredFontSize = function(){
         _userPreferredFontSize = userSettingsService.getPreferedFontSize();
         return FONT_SIZES[_userPreferredFontSize];
-      }
+      };
       
       TextViewerModelFacty.setUserPreferredFontSize = function(indexPreferredFontSize){
         userSettingsService.savePreferedFontSize(indexPreferredFontSize);
@@ -132,7 +129,7 @@
       
       TextViewerModelFacty.isFooterVisible = function(){
         return _isFooterVisible;
-      }
+      };
       
       TextViewerModelFacty.plusMinFont = function(isPlus){
         var defer = $q.defer();
@@ -151,15 +148,15 @@
         
         defer.resolve();         
         return defer.promise;
-      }
+      };
       
       TextViewerModelFacty.isDisablePlusFontSize = function(){
         return isDisablePlusFontSize();
-      }
+      };
       
       TextViewerModelFacty.isDisableMinFontSize = function(){
         return isDisableMinFontSize();
-      }
+      };
       
       function getTextByDate (selectedDate){
         var defer = $q.defer();
@@ -167,7 +164,7 @@
         textService.getTextByDate(selectedDate).done(function(data) {          
           defer.resolve(data);                   
         }).fail(
-            function(data) {
+            function() {
               defer.resolve();
             });
         
@@ -183,10 +180,10 @@
         }
         return null;
       }
-
+      
       function getReadBodyText() {
-        if (_text.indexOf("readBoby")) {
-          return _text.split("readBoby'>")[1];
+        if (_text.indexOf('readBoby')) {
+          return _text.split('readBoby\'>\'')[1];
         }
 
         return TextViewerModelFacty.text;
@@ -223,7 +220,7 @@
             });
         
         return defer.promise;
-      }
+      };
       
       return TextViewerModelFacty;
     }

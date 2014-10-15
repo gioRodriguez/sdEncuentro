@@ -18,20 +18,20 @@
       
       HomeModelFacty.getSelectedDate = function(){
         return userSettingsService.getSelectedDate();
-      }           
+      };        
       
       HomeModelFacty.setFormInfo = function(homeFormInfo){
         HomeModelFacty.formInfo = homeFormInfo;
         return HomeModelFacty;
-      }
+      };
       
       HomeModelFacty.setSelectedDate = function(selectedDate){
         userSettingsService.saveSelectedDate(selectedDate);
-      }
+      };
       
       HomeModelFacty.goToSettingsPage = function(){
         navigationService.slidePage('/settings');
-      }
+      };
       
       HomeModelFacty.goToTextViewerPage = function(selectedDate){
         if(HomeModelFacty.formInfo.valid){
@@ -39,11 +39,11 @@
         } else {
           
         }
-      }
+      };
       
       HomeModelFacty.showError = function(fieldName){
         return HomeModelFacty.formInfo[HomeFormTranslatorFcty.fieldsTable[fieldName]].$invalid;
-      }
+      };
       
       return HomeModelFacty;
     }

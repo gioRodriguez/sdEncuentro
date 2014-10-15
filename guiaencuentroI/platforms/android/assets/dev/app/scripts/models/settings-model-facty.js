@@ -19,14 +19,14 @@
       
       SettingsModelFacty.getUserPreferredLanguage = function(){
         return $translate.uses();
-      }
+      };
       
       SettingsModelFacty.setUserPreferredLanguage = function(preferredLanguage){
         // change the translate used language
         $translate.uses(preferredLanguage);
 
         userSettingsService.savePreferredLanguage(preferredLanguage);
-      }
+      };
       
       SettingsModelFacty.removeFacebookAccount = function(){
         facebookService.hasActiveAccount().then(
@@ -44,11 +44,11 @@
                 dialogService.showInfo('notAccountAlertMsg');
               }
             });
-      }
+      };
       
       SettingsModelFacty.isContinueReadingActive = function(){
         return userSettingsService.isContinueReadingEnabled();
-      }
+      };
       
       SettingsModelFacty.turnOnTurnOffContinueReading = function(){
         if(!userSettingsService.isContinueReadingEnabled()){
@@ -56,7 +56,7 @@
         } else {
           userSettingsService.turnOffContinueReading();
         }
-      }
+      };
       
       SettingsModelFacty.isSaraiMessageVisible = function(){
         clicksToShowSaraiMessageCount++;
@@ -66,11 +66,11 @@
         } else {
           return true;
         }
-      }
+      };
       
       SettingsModelFacty.init = function(){
         clicksToShowSaraiMessageCount = 0;
-      }
+      };
 
       return SettingsModelFacty;
     }

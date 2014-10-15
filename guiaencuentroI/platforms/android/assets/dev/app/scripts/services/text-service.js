@@ -2,10 +2,8 @@
  * services for interact with the data layer
  */
 (function() {
-  var CONSTANTS = {
-    monthPosition : 1,
-    dayPosition : 2
-  };
+  'use strict';
+  
   var cachedText = null;
 
   var textService = function(localStorageService) {
@@ -32,7 +30,7 @@
           });
         }
       } else {
-        textDeferred.reject(exceptions.invalidAskedDateException());
+        textDeferred.reject();
       }
 
       return textDeferred.promise();
@@ -63,9 +61,8 @@
         'text' : data
       };
       
-      localStorageService.set('text', cachedText);      
+      localStorageService.set('text', cachedText);
     }
-
     return textServiceFactory;
   };
 

@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+  
   var userSettingsService = function(localStorageService) {
     var CONSTANTS = {
       selectedDateKey : 'selectedDate',
@@ -37,7 +39,7 @@
     userSettingsFactory.isContinueReadingEnabled = function() {
       var isContinueReadingActive = localStorageService.get('isContinueReadingActive');
       if (isContinueReadingActive) {
-        return isContinueReadingActive.isContinueReadingActive
+        return isContinueReadingActive.isContinueReadingActive;
       }
 
       return true;
