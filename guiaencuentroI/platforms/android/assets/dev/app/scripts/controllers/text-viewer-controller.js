@@ -47,7 +47,6 @@
         $scope.$apply(function(){
           TextViewerModelFacty.showFooter();
           TextViewerModelFacty.hideFooterSlowly();
-          console.log(TextViewerModelFacty.isFooterVisible());
         });        
       }
       
