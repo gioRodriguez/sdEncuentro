@@ -1,16 +1,23 @@
 
-<div class="content ng-class:{highContrast: textViewerCtrl.isHigthConstrastEnabled()}" style="height: 100%; padding-right: 0rem;">
+<div class="content ng-class:{highContrast: textViewerCtrl.isHigthConstrastEnabled()}" 
+	style="height: 100%; padding-right: 0rem;">
 	<div data-ng-click="textViewerCtrl.showHideFooter()"
 		class="readContent ng-class:{highContrast: textViewerCtrl.isHigthConstrastEnabled()}">
-		<span us-spinner spinner-key="readSpin" spinner-start-active="1"></span>
-		<div nice-scroll class="textViewer">
-			<div style='font-size: {{textViewerCtrl.userPreferredFontSize}}' ng-bind-html="textViewerCtrl.text"></div>
+		<span data-us-spinner 
+			data-spinner-key="readSpin" 
+			data-spinner-start-active="1"></span>
+		<div data-nice-scroll class="textViewer">
+			<div style='font-size: {{textViewerCtrl.userPreferredFontSize}}' 
+				data-ng-bind-html="textViewerCtrl.text"></div>
 		</div>
 		<div class="textViewerFooter"></div>
 	</div>
 </div>
 
-<footer data-ng-show="textViewerCtrl.isShowFooter()" data-ng-mouseover="textViewerCtrl.showFooter()" data-ng-click="textViewerCtrl.showFooter()" class="text-viewer-footer">
+<footer data-ng-show="textViewerCtrl.isShowFooter()" 
+	data-ng-mouseover="textViewerCtrl.showFooter()" 
+	data-ng-click="textViewerCtrl.showFooter()" 
+	class="text-viewer-footer">
 	<illyum-nav-bar
 		is-constrat-enabled="textViewerCtrl.isHigthConstrastEnabled()"
 		items-size="left quarter">

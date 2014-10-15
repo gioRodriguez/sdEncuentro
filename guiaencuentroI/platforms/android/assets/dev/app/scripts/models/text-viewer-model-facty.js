@@ -37,6 +37,41 @@
       var indexPreferredFontSize;
       var _isFooterVisible = false;
       
+      var _userPreferredFontSize;
+      var _isHigthConstrastEnabled;
+      var _text;
+      var _selectedDate;
+      var _fontSize;
+      var _disableMin;
+      var _disablePlus;
+      
+      TextViewerModelFacty.init = function(selectedDate){
+        var defer = $q.defer();
+        
+        hideFooter();
+        
+        _userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
+        _isHigthConstrastEnabled = TextViewerModelFacty.isHigthConstrastEnabled();
+        _selectedDate = selectedDate;
+        
+        TextViewerModelFacty.getTextByDate(_selectedDate)
+        .then(function(text){
+          _text = text;
+          
+          defer.resolve();
+        });
+        
+        return defer.promise;
+      }
+      
+      TextViewerModelFacty.getText = function(){
+        return _text;
+      }
+      
+      TextViewerModelFacty.getSelectedDate = function(){
+        return _selectedDate;
+      }
+      
       TextViewerModelFacty.isFooterVisible = function(){
         return _isFooterVisible;
       };
@@ -57,11 +92,7 @@
       
       TextViewerModelFacty.showHideFooter = function (){
         TextViewerModelFacty.isFooterVisible() ? hideFooter() : TextViewerModelFacty.showFooter();
-      }
-      
-      TextViewerModelFacty.init = function(){
-        hideFooter();
-      }
+      }           
       
       TextViewerModelFacty.isHigthConstrastEnabled = function(){
         return userSettingsService.isHighConstrastEnabled();
@@ -101,7 +132,7 @@
       }
       
       TextViewerModelFacty.plusMinFont = function(isPlus){
-        scrollService.prepareResize();
+        var defer = $q.defer();
 
         if (isPlus &&
           !isDisablePlusFontSize()) {
@@ -111,22 +142,21 @@
         if (!isPlus &&
           !isDisableMinFontSize()) {
           indexPreferredFontSize--;
-        }
-        
-        $timeout(function() {
-          scrollService.resize();
-        });
+        }       
         
         userSettingsService.savePreferedFontSize(indexPreferredFontSize);
         
-        return {
-          fontSize: FONT_SIZES[indexPreferredFontSize],
-          disablePlusFontSize: isDisablePlusFontSize(),
-          disableMinFontSize: isDisableMinFontSize()
-        };
+        defer.resolve();         
+        return defer.promise;
       }
       
-      TextViewerModelFacty.text = '';
+      TextViewerModelFacty.isDisablePlusFontSize = function(){
+        return isDisablePlusFontSize();
+      }
+      
+      TextViewerModelFacty.isDisableMinFontSize = function(){
+        return isDisableMinFontSize();
+      }
       
       TextViewerModelFacty.getTextByDate = function(selectedDate){
         var defer = $q.defer();
@@ -144,7 +174,7 @@
       }
       
       function getTextForPublish() {
-        if (TextViewerModelFacty.text) {
+        if (_text) {
           var textToPublish = getReadBodyText();
           return String(textToPublish).replace(/<[^>]+>/gm, '#s').replace(/(#s)+/gm, ' ')
               .substring(0, 600) +
@@ -154,8 +184,8 @@
       }
 
       function getReadBodyText() {
-        if (TextViewerModelFacty.text.indexOf("readBoby")) {
-          return TextViewerModelFacty.text.split("readBoby'>")[1];
+        if (_text.indexOf("readBoby")) {
+          return _text.split("readBoby'>")[1];
         }
 
         return TextViewerModelFacty.text;

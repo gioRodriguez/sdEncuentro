@@ -34,24 +34,19 @@
       
       function init() {
         $timeout(function() {
-          vm.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
-          
-          vm.constratEnabled = TextViewerModelFacty.isHigthConstrastEnabled();
-          
           usSpinnerService.stop('readSpin');
-          vm.selectedDate = $routeParams.selectedDateParam;
-          TextViewerModelFacty.getTextByDate($routeParams.selectedDateParam)
-          .then(function(){
-            vm.text = TextViewerModelFacty.text;
-            
-            usSpinnerService.stop('readSpin');
-            $timeout(function(){
-              scrollService.applyScroll();
+          
+          TextViewerModelFacty.init($routeParams.selectedDateParam)
+            .then(function(){
+              vm.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
+              vm.selectedDate = TextViewerModelFacty.getSelectedDate();
+              vm.text = TextViewerModelFacty.getText();
+              
+              usSpinnerService.stop('readSpin');
+              $timeout(function(){
+                scrollService.applyScroll();
+              });
             });
-          });
-          
-          
-          TextViewerModelFacty.init();
         });
 
         vm.disableFacebook = false;
@@ -73,19 +68,33 @@
       }
 
       vm.plusFontSize = function() {
-        var result = TextViewerModelFacty.plusMinFont(true);
+        scrollService.prepareResize();
         
-        vm.userPreferredFontSize = result.fontSize;
-        vm.disableMinFontSize = result.disableMinFontSize;
-        vm.disablePlusFontSize = result.disablePlusFontSize;
+        TextViewerModelFacty.plusMinFont(true)
+          .then(function(){
+            vm.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
+            vm.disableMinFontSize = TextViewerModelFacty.isDisableMinFontSize();
+            vm.disablePlusFontSize = TextViewerModelFacty.isDisablePlusFontSize();
+            
+            $timeout(function() {
+              scrollService.resize();
+            });
+          });
       }
 
       vm.minFontSize = function() {
-        var result = TextViewerModelFacty.plusMinFont(false);
+        scrollService.prepareResize();
         
-        vm.userPreferredFontSize = result.fontSize;
-        vm.disableMinFontSize = result.disableMinFontSize;
-        vm.disablePlusFontSize = result.disablePlusFontSize;
+        TextViewerModelFacty.plusMinFont(false)
+          .then(function(){
+            vm.userPreferredFontSize = TextViewerModelFacty.getUserPreferredFontSize();
+            vm.disableMinFontSize = TextViewerModelFacty.isDisableMinFontSize();
+            vm.disablePlusFontSize = TextViewerModelFacty.isDisablePlusFontSize();
+            
+            $timeout(function() {
+              scrollService.resize();
+            });
+          });
       }
 
       vm.facebookPublish = function() {

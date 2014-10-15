@@ -42,9 +42,13 @@ describe(
           'setUserPreferredFontSize',
           'plusMinFont',
           'getTextByDate',
-          'facebookPublish'
+          'facebookPublish',
+          'getSelectedDate',
+          'getText',
+          'isDisableMinFontSize',
+          'isDisablePlusFontSize'
         ]);    
-        TextViewerModelFacty.text = CONSTANTS.textForTodayHTML;
+        //TextViewerModelFacty.text = CONSTANTS.textForTodayHTML;
         TextViewerModelFacty.facebookPublish = function() {
         };
         spyOn(TextViewerModelFacty, 'facebookPublish').andReturn({
@@ -62,9 +66,30 @@ describe(
             fn();
           }
         });
+        TextViewerModelFacty.init = function() {
+        };
+        spyOn(TextViewerModelFacty, 'init').andReturn({
+          then: function(fn){
+            fn();
+          }
+        });  
+        
+        TextViewerModelFacty.plusMinFont = function() {
+        };
+        spyOn(TextViewerModelFacty, 'plusMinFont').andReturn({
+          then: function(fn){
+            fn();
+          }
+        });
+        
+        TextViewerModelFacty.getSelectedDate = function() {
+        };
+        spyOn(TextViewerModelFacty, 'getSelectedDate').andReturn('2012-Febrero-4');
+        
         TextViewerModelFacty.isHigthConstrastEnabled = function() {
         };
         spyOn(TextViewerModelFacty, 'isHigthConstrastEnabled').andReturn(true);
+        
         TextViewerModelFacty.getUserPreferredFontSize = function() {
         };
         spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('2.5rem');
@@ -116,7 +141,7 @@ describe(
         }
 
         $routeParams = {
-          selectedDateParam : '2012-febrero-4'
+          selectedDateParam : '2012-Febrero-4'
         };
 
         inject(function($controller, $rootScope, $httpBackend) {
@@ -160,6 +185,32 @@ describe(
         });
       });
 
+      it('must load user settings', function() {
+        // arrange
+        scope = rootScope.$new();
+        textViewerController = controller('TextViewerController', {
+          $scope : scope,
+          textService : textService,
+          $timeout : $timeout,
+          userSettingsService : userSettingsService,
+          TextViewerModelFacty: TextViewerModelFacty,
+          usSpinnerService: usSpinnerService,
+          $routeParams: $routeParams,
+          scrollService: scrollService
+        });
+
+        // act
+        scope.$apply();
+
+        // assert
+        expect(usSpinnerService.stop).toHaveBeenCalled();
+        expect(scrollService.applyScroll).toHaveBeenCalled();
+        
+        expect(textViewerController.userPreferredFontSize).toEqual('2.5rem');
+        expect(textViewerController.selectedDate).toEqual('2012-Febrero-4');
+        expect(textViewerController.disableFacebook).toBeFalsy();
+      });
+      
       it('must show error when there is not network and try to publish offline', function() {
         // arrange
         $translate = function(translateKey) {
@@ -322,14 +373,12 @@ describe(
             userSettingsService.getPreferedFontSize = function() {
             };
             spyOn(userSettingsService, 'getPreferedFontSize').andReturn(fontSize);
-
-            TextViewerModelFacty.plusMinFont = function() {
-            };
-            spyOn(TextViewerModelFacty, 'plusMinFont').andReturn({
-              fontSize: '5rem',
-              disablePlusFontSize: true,
-              disableMinFontSize: false
-            });
+            
+            TextViewerModelFacty.getUserPreferredFontSize = function(){}
+            spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('5rem');
+            
+            TextViewerModelFacty.isDisablePlusFontSize = function(){}
+            spyOn(TextViewerModelFacty, 'isDisablePlusFontSize').andReturn(true);
             
             scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
@@ -359,14 +408,15 @@ describe(
             userSettingsService.getPreferedFontSize = function() {
             };
             spyOn(userSettingsService, 'getPreferedFontSize').andReturn(fontSize);
+
+            TextViewerModelFacty.getUserPreferredFontSize = function(){}
+            spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('0.5rem');
             
-            TextViewerModelFacty.plusMinFont = function() {
-            };
-            spyOn(TextViewerModelFacty, 'plusMinFont').andReturn({
-              fontSize: '0.5rem',
-              disablePlusFontSize: false,
-              disableMinFontSize: true
-            });
+            TextViewerModelFacty.isDisableMinFontSize = function(){}
+            spyOn(TextViewerModelFacty, 'isDisableMinFontSize').andReturn(true);
+            
+            TextViewerModelFacty.isDisablePlusFontSize = function(){}
+            spyOn(TextViewerModelFacty, 'isDisablePlusFontSize').andReturn(false);
             
             scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
@@ -386,26 +436,6 @@ describe(
             expect(textViewerController.disableMinFontSize).toBeTruthy();
             expect(textViewerController.disablePlusFontSize).toBeFalsy();
           });
-
-      it('must load user settings', function() {
-        // arrange
-        scope = rootScope.$new();
-        textViewerController = controller('TextViewerController', {
-          $scope : scope,
-          textService : textService,
-          $timeout : $timeout,
-          userSettingsService : userSettingsService,
-          TextViewerModelFacty: TextViewerModelFacty
-        });
-
-        // act
-        scope.$apply();
-
-        // assert
-        expect(textViewerController.userPreferredFontSize).toBe('2.5rem');
-        expect(TextViewerModelFacty.isHigthConstrastEnabled).toHaveBeenCalled();
-        expect(TextViewerModelFacty.getUserPreferredFontSize).toHaveBeenCalled();
-      });
 
       it('must turn off high constract when the user does', function() {
         // arrange
@@ -448,18 +478,6 @@ describe(
 
         // assert
         expect(TextViewerModelFacty.turnOnTurnOffHigthConstrast).toHaveBeenCalled();
-      });
-
-      it('must load the text by the selected day', function() {
-        // arrange
-
-        // act
-
-        // assert
-        expect(textViewerController.selectedDate).toBe('2012-febrero-4');
-        expect(TextViewerModelFacty.getTextByDate).toHaveBeenCalledWith('2012-febrero-4');
-        expect(textViewerController.text).toBe(CONSTANTS.textForTodayHTML);
-        expect(scrollService.applyScroll).toHaveBeenCalled();
       });
 
       it('must show error dialog when the loaded text is invalid', function() {
