@@ -63,6 +63,7 @@ public class GuiaEncuentroRead implements Formatter{
 				bodyBuilder.append(guiaEncuentroLine.toHtml());
 			}				
 		}		
+		bodyBuilder.append(GuiaEncuentroLine.FINAL_LINE.toHtml());
 		bodyBuilder.append("</div>");
 		return bodyBuilder.toString();
 	}

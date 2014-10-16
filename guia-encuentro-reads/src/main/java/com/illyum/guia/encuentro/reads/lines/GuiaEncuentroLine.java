@@ -9,7 +9,9 @@ public abstract class GuiaEncuentroLine implements NullObject, Formatter {
 
 	private static final int LINES_TO_USE_AS_HEADER = 3;
 
-	private static GuiaEncuentroLine NULL_LINE = new GuiaEncuentroNullLine();
+	private static final GuiaEncuentroLine NULL_LINE = new GuiaEncuentroNullLine();
+	
+	public static final GuiaEncuentroLine FINAL_LINE = new GuiaEncuentroFinalLine();
 
 	private String _lineBody;
 	private int _lineIndex;

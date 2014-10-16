@@ -16,3 +16,6 @@ ant-build
 CordovaLib
 CordovaLib
 readsOutput
+guiaencuentroI/plugins
+.metadata/
+clientdb.xml
