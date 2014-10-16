@@ -38,6 +38,8 @@ module.exports = function(config) {
 				'app/scripts/lib/facebook/facebook-js-sdk.js',
 				'app/scripts/lib/facebook/cdv-plugin-fb-connect.js',
 				
+				'test/utils/*.js',
+				
 				'app/scripts/guiaEncuentroApp.js',
 				'app/scripts/appBootstrap.js',
 				'app/scripts/**/*.js', 

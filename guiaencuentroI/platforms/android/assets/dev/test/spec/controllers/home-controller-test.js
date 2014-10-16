@@ -8,6 +8,8 @@ describe('homeController', function() {
   // load the controller's module
   beforeEach(module('guiaEncuentroApp'));
 
+  var unitUtils = new UnitUtils();
+  
   var homeController;
   var HomeModelFacty;
 
@@ -21,13 +23,8 @@ describe('homeController', function() {
       'goToTextViewerPage',
       'setFormInfo'
     ]);
-    HomeModelFacty.getSelectedDate = function() {
-    };
-    spyOn(HomeModelFacty, 'getSelectedDate').andReturn(CURRENT_DATE);
-    HomeModelFacty.setFormInfo = function() {
-    };
-    spyOn(HomeModelFacty, 'setFormInfo').andReturn(HomeModelFacty);
-
+    unitUtils.mockWithReturnValue(HomeModelFacty, 'getSelectedDate', CURRENT_DATE);
+    unitUtils.mockWithReturnValue(HomeModelFacty, 'setFormInfo', HomeModelFacty);
 
     homeController = $controller('HomeController', {
       HomeModelFacty: HomeModelFacty

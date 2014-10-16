@@ -6,6 +6,8 @@ describe(
     function() {
       'use strict';
 
+      var unitUtils = new UnitUtils();
+      
       var CONSTANTS =
         {
           textForToday : " DESEADO DE TODAS LAS GENTES, PAG. 217-218 Lucas 4:31-44 Reina-Valera 1960 (RVR1960) Un hombre que tenía un espíritu inmundo (Mr. 1.21-28) 31 Descendió Jesús a Capernaum, ciudad de Galilea; y les enseñaba en los días de reposo.[a] 32 Y se admiraban de su doctrina, porque su palabra era con autoridad. 33 Estaba en la sinagoga un hombre que tenía un espíritu de demonio inmundo, el cual exclamó a gran voz, 34 diciendo: Déjanos; ¿qué tienes con nosotros, Jesús nazareno? ¿Has venido para destruirnos? Yo te conozco quién eres, el Santo de Dios. 35 Y Jesús le reprendió, diciendo: Cállate, y sal de él...",
@@ -17,7 +19,6 @@ describe(
       var rootScope;
       var scope;
       var controller;
-      var twitterService;
       var usSpinnerService;
       var $timeout;
       var $routeParams;
@@ -39,50 +40,17 @@ describe(
           'isDisableMinFontSize',
           'isDisablePlusFontSize'
         ]);    
-        //TextViewerModelFacty.text = CONSTANTS.textForTodayHTML;
-        TextViewerModelFacty.facebookPublish = function() {
-        };
-        spyOn(TextViewerModelFacty, 'facebookPublish').andReturn({
-          then: function(fn){
-            fn();
-            return {
-              then: function(){}
-            };
-          }
-        });
-        TextViewerModelFacty.init = function() {
-        };
-        spyOn(TextViewerModelFacty, 'init').andReturn({
-          then: function(fn){
-            fn();
-          }
-        });  
         
-        TextViewerModelFacty.plusMinFont = function() {
-        };
-        spyOn(TextViewerModelFacty, 'plusMinFont').andReturn({
-          then: function(fn){
-            fn();
-          }
-        });
-        
-        TextViewerModelFacty.getSelectedDate = function() {
-        };
-        spyOn(TextViewerModelFacty, 'getSelectedDate').andReturn('2012-Febrero-4');
-        
-        TextViewerModelFacty.isHigthConstrastEnabled = function() {
-        };
-        spyOn(TextViewerModelFacty, 'isHigthConstrastEnabled').andReturn(true);
-        
-        TextViewerModelFacty.getUserPreferredFontSize = function() {
-        };
-        spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('2.5rem');
+        unitUtils.mockWithResolvedPromise(TextViewerModelFacty, 'facebookPublish');
+        unitUtils.mockWithResolvedPromise(TextViewerModelFacty, 'init');
+        unitUtils.mockWithResolvedPromise(TextViewerModelFacty, 'plusMinFont');        
+        unitUtils.mockWithReturnValue(TextViewerModelFacty, 'getSelectedDate', '2012-Febrero-4');
+        unitUtils.mockWithReturnValue(TextViewerModelFacty, 'isHigthConstrastEnabled', true);       
+        unitUtils.mockWithReturnValue(TextViewerModelFacty, 'getUserPreferredFontSize', '2.5rem');
 
         scrollService = jasmine.createSpyObj('scrollService', ['applyScroll']);
         
-        $timeout = function(func) {
-          func();
-        }
+        $timeout = unitUtils.getMockTimeout();
 
         $routeParams = {
           selectedDateParam : '2012-Febrero-4'
@@ -139,10 +107,7 @@ describe(
 
       it('must publish to facebook and disable the button', function() {
         // arrange
-        var $timeout = function(func) {
-          func();
-        }
-
+        var $timeout = unitUtils.getMockTimeout();
         usSpinnerService = jasmine.createSpyObj('usSpinnerService', [
           'spin',
           'stop'
@@ -187,15 +152,9 @@ describe(
           'must apply font plus and disable plus when the max font size is reached',
           function() {
             // arrange
-            var $timeout = function(func) {
-              func();
-            }
-            var fontSize = 9;
-            TextViewerModelFacty.getUserPreferredFontSize = function(){}
-            spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('5rem');
-            
-            TextViewerModelFacty.isDisablePlusFontSize = function(){}
-            spyOn(TextViewerModelFacty, 'isDisablePlusFontSize').andReturn(true);
+            var $timeout = unitUtils.getMockTimeout();
+            unitUtils.mockWithReturnValue(TextViewerModelFacty, 'getUserPreferredFontSize', '5rem');
+            unitUtils.mockWithReturnValue(TextViewerModelFacty, 'isDisablePlusFontSize', true);
             
             scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
@@ -219,14 +178,9 @@ describe(
           'must apply font min and disable min when the min font size is reached',
           function() {
             // arrange
-            TextViewerModelFacty.getUserPreferredFontSize = function(){}
-            spyOn(TextViewerModelFacty, 'getUserPreferredFontSize').andReturn('0.5rem');
-            
-            TextViewerModelFacty.isDisableMinFontSize = function(){}
-            spyOn(TextViewerModelFacty, 'isDisableMinFontSize').andReturn(true);
-            
-            TextViewerModelFacty.isDisablePlusFontSize = function(){}
-            spyOn(TextViewerModelFacty, 'isDisablePlusFontSize').andReturn(false);
+            unitUtils.mockWithReturnValue(TextViewerModelFacty, 'getUserPreferredFontSize', '0.5rem');
+            unitUtils.mockWithReturnValue(TextViewerModelFacty, 'isDisableMinFontSize', true);
+            unitUtils.mockWithReturnValue(TextViewerModelFacty, 'isDisablePlusFontSize', false);
             
             scope = rootScope.$new();
             textViewerController = controller('TextViewerController', {
@@ -262,9 +216,7 @@ describe(
 
       it('must turn on high constract when the user does', function() {
         // arrange
-        TextViewerModelFacty.isHigthConstrastEnabled = function() {
-        };
-        spyOn(TextViewerModelFacty, 'isHigthConstrastEnabled').andReturn(false);
+        unitUtils.mockWithReturnValue(TextViewerModelFacty, 'isHigthConstrastEnabled', false);
         
         scope = rootScope.$new();
         textViewerController = controller('TextViewerController', {
