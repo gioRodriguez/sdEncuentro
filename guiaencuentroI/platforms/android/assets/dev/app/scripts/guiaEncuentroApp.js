@@ -67,7 +67,7 @@
         publicationLink : CONSTANST.appLink,
         publicationPicture : CONSTANST.appPicture,
         publicationAppName : 'Año Bíblico del Plan Encuentro III',
-        publicationAppCaption : 'Esta aplicación es gratuita y te permite leer el año bíblico 2014, que se titula "Cristo, nuestra redención"',
+        publicationAppCaption : 'Te permite leer el año bíblico 2014 "Cristo, nuestra redención"',
         notNetworkDesc : 'Necesitamos acceso a internet para compartir',
         notNetworkTitle : 'Problemas de conectividad',
         textAskedFailDesc : 'Lo sentimos ha ocurrido un error con la fecha seleccionada',

@@ -67,18 +67,14 @@
 
 		function requestUserDoLogin() {
 			var userLogin = $.Deferred();
-			var permisses = {
-				scope : 'email'
-			};
-			FB.login(function(loginResponse) {
-				if (loginResponse.authResponse) {
-					// was a successful login
-					userLogin.resolve();
-				} else {
-					// login failed :(
-					userLogin.reject();
-				}
-			}, permisses);
+
+			window.facebookConnectPlugin.login(['email'], function(){
+			  // was a successful login
+        userLogin.resolve();
+			}, function(){
+			  // login failed :(
+        userLogin.reject();
+			});
 
 			return userLogin.promise();
 		}
@@ -92,26 +88,29 @@
 		 *  caption : caption to show
 		 * }
 		 */
-		function publishToFacebook(publication, publishCallback) {
-			FB.api('/me/feed', 'post', {
-				message : publication.message,
-				link : publication.link,
-				picture : publication.picture,
-				name : publication.name,
-				caption : publication.caption			
-			}, function(response) {
-				publishCallback(response);
-			});
+		function publishToFacebook(publication, publishCallback) {     
+		  window.facebookConnectPlugin.showDialog({ 
+		    method: "feed",
+		    link : publication.link,
+	      picture : publication.picture,
+	      name : publication.name,
+	      caption : publication.caption
+		    }, 
+		    publishCallback, 
+		    publishCallback
+		  );
 		}
 
 		function validUserPreviousLogin() {
 			var hasPreviousLoginActive = $.Deferred();
-			FB.getLoginStatus(function(checkStatus) {
-				if (checkStatus.authResponse) {
-					hasPreviousLoginActive.resolve();
-				} else {
-					hasPreviousLoginActive.reject();
-				}
+			window.facebookConnectPlugin.getLoginStatus(function(checkStatus){
+			  console.log(JSON.stringify(checkStatus));
+			  if (checkStatus.authResponse &&
+			       checkStatus.authResponse.accessToken) {
+          hasPreviousLoginActive.resolve();
+        } else {
+          hasPreviousLoginActive.reject();
+        }
 			});
 
 			return hasPreviousLoginActive.promise();
@@ -122,18 +121,15 @@
 		 */
 		facebookServiceFactory.logout = function() {
 			var logoutDeferred = $.Deferred();
-			FB.logout(function(response) {
+			window.facebookConnectPlugin.logout(function(response) {
 				logoutDeferred.resolve();
+			}, function(err){
+			  logoutDeferred.reject();
 			});
 			return logoutDeferred.promise();
 		};
 		
 		function init() {
-			FB.init({
-				appId : '284021708287063',
-				nativeInterface : CDV.FB,
-				useCachedDialogs : false
-			});
 		}
 
 		return facebookServiceFactory;

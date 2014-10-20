@@ -15,16 +15,6 @@ Plan Encuentro
         Apache Cordova Team
     </author>
     <content src="index.html" />
-    <access origin="m.facebook.com" />
-    <access origin="graph.facebook.com" />
-    <access origin="api.facebook.com" />
-    <access origin="*.facebook.com" />
-    <access origin="*.fbcdn.net" />
-    <access origin="*.akamaihd.net" />
-    <access origin="*.twitter.com" />
-    <feature name="org.apache.cordova.facebook.Connect">
-        <param name="android-package" value="org.apache.cordova.facebook.ConnectPlugin" />
-    </feature>
     <feature name="GetText">
         <param name="android-package" value="com.sdencuentro.guia.plugins.GetTextPlugin" />
     </feature>
@@ -43,4 +33,15 @@ Plan Encuentro
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
+    <feature name="FacebookConnectPlugin">
+        <param name="android-package" value="org.apache.cordova.facebook.ConnectPlugin" />
+    </feature>
+    <access origin="https://m.facebook.com" />
+    <access origin="https://www.facebook.com/connect/ping" />
+    <access origin="https://graph.facebook.com" />
+    <access origin="https://api.facebook.com" />
+    <access origin="https://*.fbcdn.net" />
+    <access origin="https://*.akamaihd.net" />
+    <access origin="http://static.ak.facebook.com" />
+    <access origin="https://s-static.ak.facebook.com" />
 </widget>

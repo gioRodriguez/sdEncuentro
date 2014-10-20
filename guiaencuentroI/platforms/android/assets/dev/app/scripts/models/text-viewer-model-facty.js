@@ -174,7 +174,7 @@
       function getTextForPublish() {
         if (_text) {
           var textToPublish = getReadBodyText();
-          return String(textToPublish).replace(/<[^>]+>/gm, '#s').replace(/(#s)+/gm, ' ')
+          return String(_text).replace(/<[^>]+>/gm, '#s').replace(/(#s)+/gm, ' ')
               .substring(0, 600) +
             '...';
         }
@@ -206,9 +206,11 @@
         };
 
         facebookService.publish(publication).then(
-            function() {
-              dialogService.showInfo('publishFacebook');
-              defer.resolve();
+            function(status) {
+              if(status){
+                dialogService.showInfo('publishFacebook');
+                defer.resolve();
+              }
             },
             function(error) {
               if (error.isNetworkException) {
