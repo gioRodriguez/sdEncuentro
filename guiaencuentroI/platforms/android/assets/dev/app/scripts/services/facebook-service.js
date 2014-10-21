@@ -45,15 +45,15 @@
 			var publishDeferred = $.Deferred();
 			validUserPreviousLogin().then(function() {
 				// the user has a previous login active then
-				publishToFacebook(text, function() {
-					publishDeferred.resolve();
+				publishToFacebook(text, function(status) {
+					publishDeferred.resolve(status);
 				});
 			}, function() {
 				// called if the user has not a previous login or was disabled then
 				requestUserDoLogin().then(function() {
 					// if the user did a successful login then
-					publishToFacebook(text, function() {
-						publishDeferred.resolve();
+					publishToFacebook(text, function(status) {
+					  publishDeferred.resolve(status);						
 					});
 				}, function() {
 					// if the user fail then

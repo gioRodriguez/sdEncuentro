@@ -207,10 +207,12 @@
 
         facebookService.publish(publication).then(
             function(status) {
-              if(status){
-                dialogService.showInfo('publishFacebook');
-                defer.resolve();
+              //console.log('status: ' + JSON.stringify(status));
+              if(status && status.post_id){
+                dialogService.showInfo('publishFacebook');                
               }
+              
+              defer.resolve();
             },
             function(error) {
               if (error.isNetworkException) {
