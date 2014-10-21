@@ -55,9 +55,7 @@
 
             if($(element).getNiceScroll()[0]){
               var newHeight = $(element).getNiceScroll()[0].getContentSize().h;
-              var newY = (newHeight * oldY) /
-                oldHeight;
-
+              var newY = (newHeight * oldY) / oldHeight;
               $(element).getNiceScroll().doScrollPos(0, newY);
             }
           });

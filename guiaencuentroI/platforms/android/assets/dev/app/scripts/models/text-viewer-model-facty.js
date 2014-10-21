@@ -207,7 +207,7 @@
 
         facebookService.publish(publication).then(
             function(status) {
-              //console.log('status: ' + JSON.stringify(status));
+              console.log('status: ' + JSON.stringify(status));
               if(status && status.post_id){
                 dialogService.showInfo('publishFacebook');                
               }
