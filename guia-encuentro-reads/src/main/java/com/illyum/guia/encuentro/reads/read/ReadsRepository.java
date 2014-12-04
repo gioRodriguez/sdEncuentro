@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.illyum.guia.encuentro.reads.exceptions.ReadsNotFounException;
 import com.illyum.guia.encuentro.reads.formatters.HtmlFormatter;
-import com.illyum.guia.encuentro.reads.lines.Line;
+import com.illyum.guia.encuentro.reads.lines.AbstractLine;
 import com.illyum.guia.encuentro.reads.reader.ReadsReader;
 
 public class ReadsRepository implements HtmlFormatter{
@@ -22,7 +22,7 @@ public class ReadsRepository implements HtmlFormatter{
 	public String toHtml() {
 		StringBuilder readBuilder = new StringBuilder();
 		try {
-			List<Line> lines = _guiaEncuentroReader.readLines(_readPath);
+			List<AbstractLine> lines = _guiaEncuentroReader.readLines(_readPath);
 			String header = getHeader(lines);
 			String body = getBody(lines);
 			readBuilder.append(header).append(body);
@@ -33,14 +33,14 @@ public class ReadsRepository implements HtmlFormatter{
 	}
 
 	private String getHeader(
-			List<Line> lines
+			List<AbstractLine> lines
 	) {
 		StringBuilder headerBuilder = new StringBuilder();
 		
 		headerBuilder.append("<div class='readHeader'>");
 		headerBuilder.append("<ul>");
 		
-		for (Line guiaEncuentroLine : lines) {	
+		for (AbstractLine guiaEncuentroLine : lines) {	
 			if(guiaEncuentroLine.isHeader()){
 				headerBuilder.append(guiaEncuentroLine.toHtml());
 			}				
@@ -54,16 +54,16 @@ public class ReadsRepository implements HtmlFormatter{
 	}
 	
 	private String getBody(
-			List<Line> lines
+			List<AbstractLine> lines
 	) {
 		StringBuilder bodyBuilder = new StringBuilder();	
 		bodyBuilder.append("<div class='readBoby'>");
-		for (Line guiaEncuentroLine : lines) {	
+		for (AbstractLine guiaEncuentroLine : lines) {	
 			if(!guiaEncuentroLine.isHeader()){
 				bodyBuilder.append(guiaEncuentroLine.toHtml());
 			}				
 		}		
-		bodyBuilder.append(Line.FINAL_LINE.toHtml());
+		bodyBuilder.append(AbstractLine.FINAL_LINE.toHtml());
 		bodyBuilder.append("</div>");
 		return bodyBuilder.toString();
 	}

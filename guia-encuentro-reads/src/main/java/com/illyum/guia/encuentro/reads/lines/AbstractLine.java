@@ -3,24 +3,24 @@ package com.illyum.guia.encuentro.reads.lines;
 import com.google.common.base.Strings;
 import com.illyum.guia.encuentro.reads.formatters.HtmlFormatter;
 
-public abstract class Line implements NullObject, HtmlFormatter {
+public abstract class AbstractLine implements NullObject, HtmlFormatter {
 
 	private static final int MIN_HEADER_LENGHT = 3;
 
 	private static final int LINES_TO_USE_AS_HEADER = 3;
 
-	private static final Line NULL_LINE = new NullLine();
+	private static final AbstractLine NULL_LINE = new NullLine();
 	
-	public static final Line FINAL_LINE = new FinalLine();
+	public static final AbstractLine FINAL_LINE = new BottomEntry();
 
 	private String _lineBody;
 	private int _lineIndex;
 
-	protected Line(){	
+	protected AbstractLine(){	
 		this("", -1);
 	}
 	
-	protected Line(
+	protected AbstractLine(
 			String lineBody,
 			int lineIndex
 	) {
@@ -45,7 +45,7 @@ public abstract class Line implements NullObject, HtmlFormatter {
 		return false;
 	}
 
-	public static Line createLine(
+	public static AbstractLine createLine(
 			String lineBody,
 			int lineIndex
 	) {
@@ -73,22 +73,22 @@ public abstract class Line implements NullObject, HtmlFormatter {
 		return 0 <= lineIndex && lineIndex < LINES_TO_USE_AS_HEADER;
 	}
 
-	public static Line nullLine() {
+	public static AbstractLine nullLine() {
 		return NULL_LINE;
 	}
 
-	public static Line headerLine(
+	public static AbstractLine headerLine(
 			String lineBody,
 			int lineIndex
 	) {
-		return new HeaderLine(lineBody, lineIndex);
+		return new EntryHeader(lineBody, lineIndex);
 	}
 
-	public static Line bodyLine(
+	public static AbstractLine bodyLine(
 			String lineBody,
 			int lineIndex
 	) {
-		return new BodyLine(lineBody, lineIndex);
+		return new EntryLine(lineBody, lineIndex);
 	}
 	
 	@Override
@@ -96,11 +96,11 @@ public abstract class Line implements NullObject, HtmlFormatter {
 			Object obj
 	) {
 		if(obj == null ||
-				!Line.class.isAssignableFrom(getClass())){
+				!AbstractLine.class.isAssignableFrom(getClass())){
 			return false;
 		}
 		
-		Line other = (Line) obj;
+		AbstractLine other = (AbstractLine) obj;
 		if(isNull() && other.isNull()){
 			return true;
 		}

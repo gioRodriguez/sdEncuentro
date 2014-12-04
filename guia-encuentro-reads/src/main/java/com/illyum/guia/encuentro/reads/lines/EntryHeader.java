@@ -6,7 +6,7 @@ import java.util.Set;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
-public class HeaderLine extends Line {
+public class EntryHeader extends AbstractLine implements Entry {
 	
 	private static final Set<String> NOT_UPPER_WORDS = new HashSet<String>();
 	static {
@@ -14,7 +14,7 @@ public class HeaderLine extends Line {
 		NOT_UPPER_WORDS.add("de");
 	}
 
-	protected HeaderLine(
+	protected EntryHeader(
 			String lineBody,
 			int lineIndex
 	) {
@@ -65,5 +65,23 @@ public class HeaderLine extends Line {
 			headerBuilder.append(" ");
 		}
 		return headerBuilder.toString().trim();
+	}
+
+	public static EntryHeader createLevelOneWithContent(String content) {
+		return new EntryHeader(content, 0);
+	}
+
+	public static EntryHeader createLevelTwoWithContent(String content) {
+		return new EntryHeader(content, 1);
+	}
+	
+	public static EntryHeader createLevelThreeWithContent(String content) {
+		return new EntryHeader(content, 2);
+	}
+
+	@Override
+	public void addEntry(Entry entry) {
+		// TODO Auto-generated method stub
+		
 	}
 }

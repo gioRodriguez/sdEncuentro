@@ -1,6 +1,6 @@
 package com.illyum.guia.encuentro.reads.lines;
 
-public class NullLine extends Line {
+public class NullLine extends AbstractLine {
 	@Override
 	public boolean isNull() {
 		return true;

@@ -8,12 +8,12 @@ import java.util.List;
 
 import com.google.common.base.Charsets;
 import com.illyum.guia.encuentro.reads.exceptions.ReadsNotFounException;
-import com.illyum.guia.encuentro.reads.lines.Line;
+import com.illyum.guia.encuentro.reads.lines.AbstractLine;
 
 public class ReadsReaderFileImpl implements ReadsReader {
 
 	@Override
-	public List<Line> readLines(
+	public List<AbstractLine> readLines(
 			String filePath
 	) throws ReadsNotFounException {		
 		File guiaEncuentroFile = new File(filePath);
@@ -21,7 +21,7 @@ public class ReadsReaderFileImpl implements ReadsReader {
 			throw new ReadsNotFounException();
 		}
 		
-		List<Line> guiEncuetroLine = new ArrayList<Line>();
+		List<AbstractLine> guiEncuetroLine = new ArrayList<AbstractLine>();
 		try {			
 			List<String> guiaEncuentroFileLines = Files.readAllLines(
 					guiaEncuentroFile.toPath(), 
@@ -30,7 +30,7 @@ public class ReadsReaderFileImpl implements ReadsReader {
 			
 			int guiaEncuentroReadLine = 0;
 			for (int currentLine = 0; currentLine < guiaEncuentroFileLines.size(); currentLine++) {
-				Line guiaEncuentroLine = Line.createLine(
+				AbstractLine guiaEncuentroLine = AbstractLine.createLine(
 						guiaEncuentroFileLines.get(currentLine), 
 						guiaEncuentroReadLine
 				);
