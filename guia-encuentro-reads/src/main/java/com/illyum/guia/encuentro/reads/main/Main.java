@@ -6,9 +6,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.illyum.guia.encuentro.reads.read.GuiaEncuentroRead;
-import com.illyum.guia.encuentro.reads.reader.GuiaEncuentroReaderImpl;
-import com.illyum.guia.encuentro.reads.writer.GuiaEncuentroWriter;
+import com.illyum.guia.encuentro.reads.read.ReadsRepository;
+import com.illyum.guia.encuentro.reads.reader.ReadsReaderFileImpl;
+import com.illyum.guia.encuentro.reads.writer.ReadsWriter;
 
 public class Main {
 
@@ -17,7 +17,7 @@ public class Main {
 	) throws IOException {
 		List<String> results = new ArrayList<String>();
 
-		URL folder = Main.class.getClassLoader().getResource("texts");
+		URL folder = Main.class.getClassLoader().getResource("2015");
 		File[] months = new File(folder.getPath()).listFiles();
 
 		for (File month : months) {
@@ -29,11 +29,11 @@ public class Main {
 			}
 		}
 		
-		GuiaEncuentroReaderImpl guiaEncuentroReader = new GuiaEncuentroReaderImpl();
-		GuiaEncuentroRead guiaEncuentroRead = new GuiaEncuentroRead(guiaEncuentroReader);
+		ReadsReaderFileImpl guiaEncuentroReader = new ReadsReaderFileImpl();
+		ReadsRepository guiaEncuentroRead = new ReadsRepository(guiaEncuentroReader);
 		
 		
-		GuiaEncuentroWriter guiaEncuentroWriter = new GuiaEncuentroWriter();
+		ReadsWriter guiaEncuentroWriter = new ReadsWriter();
 		for (String file : results) {
 			System.out.println(file);
 			guiaEncuentroRead.setReadPath(file);
