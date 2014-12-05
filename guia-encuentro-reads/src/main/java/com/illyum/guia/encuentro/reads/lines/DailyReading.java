@@ -13,7 +13,6 @@ public class DailyReading {
 	public String toHtml() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(_header.toHtml());
-		
 		builder.append(_readingBody.toHtml());
 		return builder.toString();
 	}
@@ -32,21 +31,6 @@ public class DailyReading {
 			return new DailyReading(this);
 		}
 
-		public Builder addHeaderLevelOne(String conten) {
-			header.addEntry(EntryHeader.createLevelOneWithContent(conten));
-			return this;
-		}
-		
-		public Builder addHeaderLevelTwo(String conten) {
-			header.addEntry(EntryHeader.createLevelTwoWithContent(conten));
-			return this;
-		}
-		
-		public Builder addHeaderLevelThree(String conten) {
-			header.addEntry(EntryHeader.createLevelThreeWithContent(conten));
-			return this;
-		}
-
 		public Builder addParagraph(Paragraph paragraph) {
 			readingBody.addParagraph(paragraph);
 			return this;
@@ -58,23 +42,23 @@ public class DailyReading {
 			addParagraph(paragraph);
 			return this;
 		}
-
-		public Builder addHeaderByIndex(String textLine, int headerIndex) {
-			if(headerIndex == 0){
-				return addHeaderLevelOne(textLine);
-			}
-			
-			if(headerIndex == 1){
-				return addHeaderLevelTwo(textLine);
-			}
-			
-			if(headerIndex == 2){
-				return addHeaderLevelThree(textLine);
-			}
-			
-			throw new AssertionError("Header level not specified");
+		
+		public Builder addHeaderWithLevel(String textLine, int headerLevel) {
+			header.addEntry(EntryHeader.createWithLevel(textLine, headerLevel));
+			return this;
 		}
 
+		public Builder addHeaderLevelOne(String content) {
+			return addHeaderWithLevel(content, 1);
+		}
+		
+		public Builder addHeaderLevelTwo(String content) {
+			return addHeaderWithLevel(content, 2);
+		}
+		
+		public Builder addHeaderLevelThree(String content) {
+			return addHeaderWithLevel(content, 3);
+		}
 	}
 
 	public static DailyReading empty() {

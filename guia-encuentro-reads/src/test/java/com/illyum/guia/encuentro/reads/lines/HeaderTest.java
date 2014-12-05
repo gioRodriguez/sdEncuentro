@@ -23,8 +23,8 @@ public class HeaderTest {
 		// arrange
 		String expected = "<div class='readHeader'><ul><li><span></span><h1>Header</h1></li><li><span></span><h2>Header</h2></li></ul></div><hr>";
 		Header header = Header.create();
-		header.addEntry(EntryHeader.createLevelOneWithContent("header"));
-		header.addEntry(EntryHeader.createLevelTwoWithContent("header"));
+		header.addEntry(EntryHeader.createWithLevel("header", 1));
+		header.addEntry(EntryHeader.createWithLevel("header", 2));
 		
 		// act
 		String actual = header.toHtml();

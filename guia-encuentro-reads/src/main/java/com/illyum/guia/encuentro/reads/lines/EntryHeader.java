@@ -29,15 +29,15 @@ public class EntryHeader implements Entry {
 	public String toHtml() {
 		return String.format(
 				"<li><span></span><h%d>%s</h%d></li>", 
-				_headerLevel + 1, 
-				toHeader(_headerContent), 
-				_headerLevel + 1
+				_headerLevel, 
+				formatHeader(_headerContent), 
+				_headerLevel
 		).replace("lectura", "Lectura")
 		 .replace("Iii", "III")
 		 .replace("Iv", "IV");
 	}
 
-	private String toHeader(String body){
+	private String formatHeader(String body){
 		if(Strings.isNullOrEmpty(body)){
 			return "";
 		}
@@ -65,16 +65,8 @@ public class EntryHeader implements Entry {
 		}
 		return headerBuilder.toString().trim();
 	}
-
-	public static EntryHeader createLevelOneWithContent(String content) {
-		return new EntryHeader(content, 0);
-	}
-
-	public static EntryHeader createLevelTwoWithContent(String content) {
-		return new EntryHeader(content, 1);
-	}
 	
-	public static EntryHeader createLevelThreeWithContent(String content) {
-		return new EntryHeader(content, 2);
+	public static EntryHeader createWithLevel(String headerContent, int headerLevel){
+		return new EntryHeader(headerContent, headerLevel);
 	}
 }

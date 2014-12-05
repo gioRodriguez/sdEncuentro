@@ -12,7 +12,7 @@ public class EntryHeaderTest {
 		String expected = "<li><span></span><h1>Header</h1></li>";		
 		
 		// act
-		String actual = EntryHeader.createLevelOneWithContent("header").toHtml();
+		String actual = EntryHeader.createWithLevel("header", 1).toHtml();
 		
 		// assert
 		assertEquals(expected, actual);
@@ -24,7 +24,7 @@ public class EntryHeaderTest {
 		String expected = "<li><span></span><h2>Header</h2></li>";		
 		
 		// act
-		String actual = EntryHeader.createLevelTwoWithContent("header").toHtml();
+		String actual = EntryHeader.createWithLevel("header", 2).toHtml();
 		
 		// assert
 		assertEquals(expected, actual);
@@ -36,7 +36,7 @@ public class EntryHeaderTest {
 		String expected = "<li><span></span><h3>Header</h3></li>";		
 		
 		// act
-		String actual = EntryHeader.createLevelThreeWithContent("header").toHtml();
+		String actual = EntryHeader.createWithLevel("header", 3).toHtml();
 		
 		// assert
 		assertEquals(expected, actual);

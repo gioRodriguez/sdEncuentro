@@ -39,7 +39,7 @@ public class ReadsReaderFileImpl implements ReadsReader {
 			for (String textLine : cleanedLines) {
 				
 				if(isHeaderLine(cleanedLines.indexOf(textLine))){
-					dailyReading.addHeaderByIndex(textLine, cleanedLines.indexOf(textLine));
+					dailyReading.addHeaderWithLevel(textLine, cleanedLines.indexOf(textLine) + 1);
 					continue;
 				}
 				
