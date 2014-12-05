@@ -2,6 +2,8 @@ package com.illyum.guia.encuentro.reads.lines;
 
 
 public class DailyReading {
+	private static final DailyReading EMPTY_READING = new DailyReading.Builder().build();
+	
 	private Header _header;
 	private ReadingBody _readingBody;	
 	
@@ -47,21 +49,9 @@ public class DailyReading {
 			header.addEntry(EntryHeader.createWithLevel(textLine, headerLevel));
 			return this;
 		}
-
-		public Builder addHeaderLevelOne(String content) {
-			return addHeaderWithLevel(content, 1);
-		}
-		
-		public Builder addHeaderLevelTwo(String content) {
-			return addHeaderWithLevel(content, 2);
-		}
-		
-		public Builder addHeaderLevelThree(String content) {
-			return addHeaderWithLevel(content, 3);
-		}
 	}
 
 	public static DailyReading empty() {
-		return new DailyReading.Builder().build();
+		return EMPTY_READING;
 	}
 }

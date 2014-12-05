@@ -32,9 +32,9 @@ public class DailyReadingTest {
 				+ "</div><hr>"
 				+ "<div class='readBoby'><p><br><br></p></div>";
 		DailyReading.Builder dayReadingBuilder = new DailyReading.Builder();
-		dayReadingBuilder.addHeaderLevelOne("header");
-		dayReadingBuilder.addHeaderLevelTwo("header 2");
-		dayReadingBuilder.addHeaderLevelThree("header 3");
+		dayReadingBuilder.addHeaderWithLevel("header", 1);
+		dayReadingBuilder.addHeaderWithLevel("header 2", 2);
+		dayReadingBuilder.addHeaderWithLevel("header 3", 3);
 		
 		// act
 		String actual = dayReadingBuilder.build().toHtml();
@@ -56,7 +56,7 @@ public class DailyReadingTest {
 				+ 	"<p class='paragraph'></p>"
 				+ "<p><br><br></p></div>";
 		DailyReading.Builder dayReadingBuilder = new DailyReading.Builder();
-		dayReadingBuilder.addHeaderLevelOne("header");
+		dayReadingBuilder.addHeaderWithLevel("header", 1);
 		Paragraph paragraph = Paragraph.create();
 		dayReadingBuilder.addParagraph(paragraph);
 		
@@ -87,7 +87,7 @@ public class DailyReadingTest {
 				+ "</p>"
 				+ "<p><br><br></p></div>";
 		DailyReading.Builder dayReadingBuilder = new DailyReading.Builder();
-		dayReadingBuilder.addHeaderLevelOne("header");	
+		dayReadingBuilder.addHeaderWithLevel("header", 1);	
 		
 		Paragraph paragraph = Paragraph.create();
 		paragraph.addLine("paragraph line");
