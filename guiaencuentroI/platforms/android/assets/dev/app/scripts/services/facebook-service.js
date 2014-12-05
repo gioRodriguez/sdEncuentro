@@ -13,8 +13,7 @@
 		facebookServiceFactory.hasActiveAccount =  function() {
 			var hasActiveAccountDeferred = $.Deferred();
 			
-			cordovaServices.isNetworkAvailableAsync().then(function() {
-				init();						
+			cordovaServices.isNetworkAvailableAsync().then(function() {						
 				validUserPreviousLogin().then(function() {
 				  hasActiveAccountDeferred.resolve();
         }, function() {
@@ -40,8 +39,6 @@
 		};
 		
 		function publish(text) {
-			init();
-			
 			var publishDeferred = $.Deferred();
 			validUserPreviousLogin().then(function() {
 				// the user has a previous login active then
@@ -104,7 +101,6 @@
 		function validUserPreviousLogin() {
 			var hasPreviousLoginActive = $.Deferred();
 			window.facebookConnectPlugin.getLoginStatus(function(checkStatus){
-			  console.log(JSON.stringify(checkStatus));
 			  if (checkStatus.authResponse &&
 			       checkStatus.authResponse.accessToken) {
           hasPreviousLoginActive.resolve();
@@ -128,9 +124,6 @@
 			});
 			return logoutDeferred.promise();
 		};
-		
-		function init() {
-		}
 
 		return facebookServiceFactory;
 	}

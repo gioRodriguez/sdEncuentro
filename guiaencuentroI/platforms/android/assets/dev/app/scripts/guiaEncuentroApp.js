@@ -43,7 +43,7 @@
       $translateProvider
       .translations('es',
        {
-        homeTitle : 'Plan Encuentro 3',
+        homeTitle : 'Plan Encuentro',
         selectionDate : 'Fecha de lectura deseada:',
         settingsTitle : 'Opciones',
         accounts : 'Cuentas',
@@ -80,7 +80,7 @@
       $translateProvider
       .translations('en',
        {
-        homeTitle : 'Meet Plan 3',
+        homeTitle : 'Meet Plan',
         selectionDate : 'Choise a date:',
         settingsTitle : 'Settings',
         accounts : 'Accounts',

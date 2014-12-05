@@ -3,6 +3,8 @@
   
   var userSettingsService = function(localStorageService) {
     var CONSTANTS = {
+      selectedYearKey : 'selectedYear',
+      
       selectedDateKey : 'selectedDate',
 
       preferredLanguageKey : 'preferredLanguage',
@@ -94,13 +96,31 @@
     /**
      * Selected date
      */
-    userSettingsFactory.getSelectedDate = function() {
+    userSettingsFactory.getSelectedDayAndMonth = function() {
       return localStorageService.get(CONSTANTS.selectedDateKey);
     };
 
-    userSettingsFactory.saveSelectedDate = function(selectedDate) {
+    userSettingsFactory.saveSelectedDayAndMonth = function(selectedDate) {
       localStorageService.set(CONSTANTS.selectedDateKey, selectedDate);
     };
+    
+    /**
+     * Selected year 
+     */
+    userSettingsFactory.getSelectedYear = function(){
+      return localStorageService.get(CONSTANTS.selectedYearKey);
+    }
+    
+    userSettingsFactory.saveSelectedYear = function(selectedYear){
+      return localStorageService.set(CONSTANTS.selectedYearKey, selectedYear);
+    }
+    
+    /**
+     * Selected full date 
+     */
+    userSettingsFactory.getSelectedFullDate = function(){
+      return localStorageService.get(CONSTANTS.selectedYearKey) + '-' + localStorageService.get(CONSTANTS.selectedDateKey);
+    }
 
     return userSettingsFactory;
   };

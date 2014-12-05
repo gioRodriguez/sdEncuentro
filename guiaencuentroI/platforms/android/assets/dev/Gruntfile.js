@@ -15,18 +15,6 @@ module.exports = function(grunt) {
       dist : '../www'
     },
 
-    requirejs : {
-      compile : {
-        options : {
-          almond : true,
-          name : 'main',
-          mainConfigFile : '.tmp/app/main.js',
-          out : '<%= yeoman.dist %>/main.js',
-          preserveLicenseComments : false
-        }
-      }
-    },
-
     // Watches files for changes and runs tasks based on the changed files
     watch : {
       js : {
@@ -128,9 +116,11 @@ module.exports = function(grunt) {
           {
             dot : true,
             src : [
-              '<%= yeoman.dist %>/texts/**/*',
+              '<%= yeoman.dist %>/texts/2015/**/*',
+              '<%= yeoman.dist %>/texts/2014/**/*',
 
-              '!<%= yeoman.dist %>/texts/*.gz.js'
+              '!<%= yeoman.dist %>/texts/2015/*.gz.js',
+              '!<%= yeoman.dist %>/texts/2014/*.gz.js'
             ]
           }
         ]
@@ -477,6 +467,42 @@ module.exports = function(grunt) {
         src : '.tmp/app/scripts/**/*.js'
       }
     },
+    
+    concat : {
+      '2015': {
+        files: {
+          '<%= yeoman.dist %>/texts/2015/enero.txt': ['<%= yeoman.dist %>/texts/2015/enero/*'],
+          '<%= yeoman.dist %>/texts/2015/febrero.txt': ['<%= yeoman.dist %>/texts/2015/febrero/*'],
+          '<%= yeoman.dist %>/texts/2015/marzo.txt': ['<%= yeoman.dist %>/texts/2015/marzo/*'],
+          '<%= yeoman.dist %>/texts/2015/abril.txt': ['<%= yeoman.dist %>/texts/2015/abril/*'],
+          '<%= yeoman.dist %>/texts/2015/mayo.txt': ['<%= yeoman.dist %>/texts/2015/mayo/*'],
+          '<%= yeoman.dist %>/texts/2015/junio.txt': ['<%= yeoman.dist %>/texts/2015/junio/*'],
+          '<%= yeoman.dist %>/texts/2015/julio.txt': ['<%= yeoman.dist %>/texts/2015/julio/*'],
+          '<%= yeoman.dist %>/texts/2015/agosto.txt': ['<%= yeoman.dist %>/texts/2015/agosto/*'],
+          '<%= yeoman.dist %>/texts/2015/septiembre.txt': ['<%= yeoman.dist %>/texts/2015/septiembre/*'],
+          '<%= yeoman.dist %>/texts/2015/octubre.txt': ['<%= yeoman.dist %>/texts/2015/octubre/*'],
+          '<%= yeoman.dist %>/texts/2015/noviembre.txt': ['<%= yeoman.dist %>/texts/2015/noviembre/*'],
+          '<%= yeoman.dist %>/texts/2015/diciembre.txt': ['<%= yeoman.dist %>/texts/2015/diciembre/*']
+        }
+      },
+      '2014': {
+        files: {
+          '<%= yeoman.dist %>/texts/2014/enero.txt': ['<%= yeoman.dist %>/texts/2014/enero/*'],
+          '<%= yeoman.dist %>/texts/2014/febrero.txt': ['<%= yeoman.dist %>/texts/2014/febrero/*'],
+          '<%= yeoman.dist %>/texts/2014/marzo.txt': ['<%= yeoman.dist %>/texts/2014/marzo/*'],
+          '<%= yeoman.dist %>/texts/2014/abril.txt': ['<%= yeoman.dist %>/texts/2014/abril/*'],
+          '<%= yeoman.dist %>/texts/2014/mayo.txt': ['<%= yeoman.dist %>/texts/2014/mayo/*'],
+          '<%= yeoman.dist %>/texts/2014/junio.txt': ['<%= yeoman.dist %>/texts/2014/junio/*'],
+          '<%= yeoman.dist %>/texts/2014/julio.txt': ['<%= yeoman.dist %>/texts/2014/julio/*'],
+          '<%= yeoman.dist %>/texts/2014/agosto.txt': ['<%= yeoman.dist %>/texts/2014/agosto/*'],
+          '<%= yeoman.dist %>/texts/2014/septiembre.txt': ['<%= yeoman.dist %>/texts/2014/septiembre/*'],
+          '<%= yeoman.dist %>/texts/2014/octubre.txt': ['<%= yeoman.dist %>/texts/2014/octubre/*'],
+          '<%= yeoman.dist %>/texts/2014/noviembre.txt': ['<%= yeoman.dist %>/texts/2014/noviembre/*'],
+          '<%= yeoman.dist %>/texts/2014/diciembre.txt': ['<%= yeoman.dist %>/texts/2014/diciembre/*']
+        }
+      }
+    },
+    
     compress : {
       main : {
         options : {
@@ -484,83 +510,10 @@ module.exports = function(grunt) {
         },
         expand : true,
         src : [
-          '<%= yeoman.dist %>/texts/*'
+          '<%= yeoman.dist %>/texts/2014/*',
+          '<%= yeoman.dist %>/texts/2015/*'
         ],
         ext : '.gz.js'
-      }
-    },
-    concat : {
-      enero : {
-        src : [
-          '<%= yeoman.dist %>/texts/enero/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/enero.txt'
-      },
-      febrero : {
-        src : [
-          '<%= yeoman.dist %>/texts/febrero/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/febrero.txt'
-      },
-      marzo : {
-        src : [
-          '<%= yeoman.dist %>/texts/marzo/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/marzo.txt'
-      },
-      abril : {
-        src : [
-          '<%= yeoman.dist %>/texts/abril/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/abril.txt'
-      },
-      mayo : {
-        src : [
-          '<%= yeoman.dist %>/texts/mayo/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/mayo.txt'
-      },
-      junio : {
-        src : [
-          '<%= yeoman.dist %>/texts/junio/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/junio.txt'
-      },
-      julio : {
-        src : [
-          '<%= yeoman.dist %>/texts/julio/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/julio.txt'
-      },
-      agosto : {
-        src : [
-          '<%= yeoman.dist %>/texts/agosto/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/agosto.txt'
-      },
-      septiembre : {
-        src : [
-          '<%= yeoman.dist %>/texts/septiembre/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/septiembre.txt'
-      },
-      octubre : {
-        src : [
-          '<%= yeoman.dist %>/texts/octubre/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/octubre.txt'
-      },
-      noviembre : {
-        src : [
-          '<%= yeoman.dist %>/texts/noviembre/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/noviembre.txt'
-      },
-      diciembre : {
-        src : [
-          '<%= yeoman.dist %>/texts/diciembre/*'
-        ],
-        dest : '<%= yeoman.dist %>/texts/diciembre.txt'
       }
     }
 
@@ -601,20 +554,11 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('compress-texts', [
-    'concat:enero',
-    'concat:febrero',
-    'concat:marzo',
-    'concat:abril',
-    'concat:mayo',
-    'concat:junio',
-    'concat:julio',
-    'concat:agosto',
-    'concat:septiembre',
-    'concat:octubre',
-    'concat:noviembre',
-    'concat:diciembre',
+    'concat:2014',
+    'concat:2015',
 
     'compress',
+    
     'clean:texts'
   ]);
 

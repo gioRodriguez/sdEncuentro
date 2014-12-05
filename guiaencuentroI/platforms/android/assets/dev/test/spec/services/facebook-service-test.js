@@ -1,6 +1,7 @@
 /**
  * facebook service test
  */
+'use strict';
 
 describe('facebookService test', function() {
 
@@ -8,39 +9,28 @@ describe('facebookService test', function() {
 
   var injector;
   var facebookService;
-  var cordovaService;
+  var cordovaServices;
   var isConnectionAvaulableDeferred = $.Deferred();
 
   beforeEach(function() {
-    var CDV = jasmine.createSpyObj('CDV', [
-      'FB'
-    ]);
-    window.CDV = CDV;
-    var FB = jasmine.createSpyObj('FB', [
-      'init',
-      'api',
+    var facebookConnectPlugin = jasmine.createSpyObj('facebookConnectPlugin', [
       'getLoginStatus',
-      'Dom',
-      'Event',
       'login',
-      'logout'
+      'logout',
+      'showDialog'
     ]);
-    FB.Event.fire = function() {
+    facebookConnectPlugin.getLoginStatus = function() {
     };
-    FB.Event.clear = function() {
+    facebookConnectPlugin.login = function() {
     };
-    FB.getLoginStatus = function() {
+    facebookConnectPlugin.logout = function() {
     };
-    FB.login = function() {
+    facebookConnectPlugin.showDialog = function() {
     };
-    FB.logout = function() {
-    };
-    FB.api = function() {
-    };
-    spyOn(FB, 'api').andCallFake(function(url, method, mesage, callback) {
-      callback();
+    spyOn(facebookConnectPlugin, 'showDialog').andCallFake(function(data, cb, cb2) {
+      cb();
     });
-    window.FB = FB;
+    window.facebookConnectPlugin = facebookConnectPlugin;
 
     cordovaServices = jasmine.createSpyObj('cordovaServices', [
       'isNetworkAvailable',
@@ -100,7 +90,7 @@ describe('facebookService test', function() {
 
   it('must do facebook logout', function() {
     // arrange
-    spyOn(FB, 'logout').andCallFake(function(logoutCallback) {
+    spyOn(facebookConnectPlugin, 'logout').andCallFake(function(logoutCallback) {
       logoutCallback();
     });
     var facebookService = injector.get('facebookService');
@@ -109,15 +99,17 @@ describe('facebookService test', function() {
     var logoutPromise = facebookService.logout();
 
     // assert
-    expect(FB.logout).toHaveBeenCalled();
+    expect(facebookConnectPlugin.logout).toHaveBeenCalled();
     expect(logoutPromise.state()).toBe('resolved');
   });
 
   it('must resolve if there is a facebook account valid', function() {
     // arrange
-    spyOn(FB, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
+    spyOn(facebookConnectPlugin, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
       loginStatusCallback({
-        authResponse : true
+        authResponse : {
+          accessToken: true
+        }
       });
     });
     var facebookService = injector.get('facebookService');
@@ -131,7 +123,7 @@ describe('facebookService test', function() {
 
   it('must reject if there is a facebook account valid', function() {
     // arrange
-    spyOn(FB, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
+    spyOn(facebookConnectPlugin, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
       loginStatusCallback({
         authResponse : false
       });
@@ -147,9 +139,11 @@ describe('facebookService test', function() {
 
   it('must directly publish when has a previous login active', function() {
     // arrange
-    spyOn(FB, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
+    spyOn(facebookConnectPlugin, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
       loginStatusCallback({
-        authResponse : true
+        authResponse : {
+          accessToken: true
+        }
       });
     });
     var facebookService = injector.get('facebookService');
@@ -166,25 +160,25 @@ describe('facebookService test', function() {
     var publishPromise = facebookService.publish(publication);
 
     // assert
-    expect(FB.init).toHaveBeenCalled();
-    expect(FB.api).toHaveBeenCalledWith('/me/feed', 'post', {
-      message : 'hello world',
-      link : 'appLink',
-      picture : 'appPicture',
-      name : 'appName',
-      caption : 'appCaption'
-    }, jasmine.any(Function));
+    expect(facebookConnectPlugin.showDialog).toHaveBeenCalledWith({
+        method : 'feed',
+        link : publication.link,
+        picture : publication.picture,
+        name : publication.name,
+        caption : publication.caption
+      },
+      jasmine.any(Function),
+      jasmine.any(Function));
     expect(publishPromise.state()).toBe('resolved');
   });
 
   it('must ask login and publish if the login was successful', function() {
     // arrange
-    spyOn(FB, 'login').andCallFake(function(loginCallback) {
-      loginCallback({
-        authResponse : true
-      });
+    spyOn(facebookConnectPlugin, 'login').andCallFake(function(permisses, loginSuccessCb, loginFailedCb) {
+      loginSuccessCb();
     });
-    spyOn(FB, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
+    
+    spyOn(facebookConnectPlugin, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
       loginStatusCallback({
         authResponse : false
       });
@@ -203,28 +197,25 @@ describe('facebookService test', function() {
     var publishPromise = facebookService.publish(publication);
 
     // assert
-    expect(FB.init).toHaveBeenCalled();
-    expect(FB.login).toHaveBeenCalledWith(jasmine.any(Function), {
-      scope : 'email'
-    });
-    expect(FB.api).toHaveBeenCalledWith('/me/feed', 'post', {
-      message : 'hello world',
-      link : 'appLink',
-      picture : 'appPicture',
-      name : 'appName',
-      caption : 'appCaption'
-    }, jasmine.any(Function));
+    expect(facebookConnectPlugin.login).toHaveBeenCalledWith(['email'], jasmine.any(Function), jasmine.any(Function));
+    expect(facebookConnectPlugin.showDialog).toHaveBeenCalledWith({
+        method : 'feed',
+        link : publication.link,
+        picture : publication.picture,
+        name : publication.name,
+        caption : publication.caption
+      },
+      jasmine.any(Function),
+      jasmine.any(Function));
     expect(publishPromise.state()).toBe('resolved');
   });
 
   it('must reject the the publish if the login was unsuccessful', function() {
     // arrange
-    spyOn(FB, 'login').andCallFake(function(loginCallback) {
-      loginCallback({
-        authResponse : false
-      });
+    spyOn(facebookConnectPlugin, 'login').andCallFake(function(permisses, loginSuccessCb, loginFailedCb) {
+      loginFailedCb();
     });
-    spyOn(FB, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
+    spyOn(facebookConnectPlugin, 'getLoginStatus').andCallFake(function(loginStatusCallback) {
       loginStatusCallback({
         authResponse : false
       });
@@ -235,10 +226,7 @@ describe('facebookService test', function() {
     var publishPromise = facebookService.publish('hello world');
 
     // assert
-    expect(FB.init).toHaveBeenCalled();
-    expect(FB.login).toHaveBeenCalledWith(jasmine.any(Function), {
-      scope : 'email'
-    });
+    expect(facebookConnectPlugin.login).toHaveBeenCalledWith(['email'], jasmine.any(Function), jasmine.any(Function));
     expect(publishPromise.state()).toBe('rejected');
   });
 });

@@ -16,17 +16,25 @@
     ){
       HomeModelFacty.formInfo = {};
       
-      HomeModelFacty.getSelectedDate = function(){
-        return userSettingsService.getSelectedDate();
-      };        
+      HomeModelFacty.getSelectedDayAndMonth = function(){
+        return userSettingsService.getSelectedDayAndMonth();
+      };   
+      
+      HomeModelFacty.getSelectedYear = function(){
+        return userSettingsService.getSelectedYear();
+      };
+      
+      HomeModelFacty.getSelectedFullDate = function() {
+        return userSettingsService.getSelectedFullDate();
+      };
       
       HomeModelFacty.setFormInfo = function(homeFormInfo){
         HomeModelFacty.formInfo = homeFormInfo;
         return HomeModelFacty;
       };
       
-      HomeModelFacty.setSelectedDate = function(selectedDate){
-        userSettingsService.saveSelectedDate(selectedDate);
+      HomeModelFacty.setSelectedDayAndMonth = function(selectedDayAndMonth){
+        userSettingsService.saveSelectedDayAndMonth(selectedDayAndMonth);
       };
       
       HomeModelFacty.goToSettingsPage = function(){

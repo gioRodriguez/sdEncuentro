@@ -4,7 +4,10 @@
 
 describe('homeController', function() {
   'use strict';
-  var CURRENT_DATE = '2/16/2011';
+  var CURRENT_DATE = '2/16';
+  var SELECTED_YEAR = '2015';
+  var SELECTED_FULL_DATE = CURRENT_DATE + SELECTED_YEAR;
+  
   // load the controller's module
   beforeEach(module('guiaEncuentroApp'));
 
@@ -17,13 +20,15 @@ describe('homeController', function() {
   beforeEach(inject(function($controller) {
     
     HomeModelFacty = jasmine.createSpyObj('HomeModelFacty', [
-      'getSelectedDate',
-      'setSelectedDate',
+      'getSelectedDayAndMonth',
+      'setSelectedDayAndMonth',
+      'getSelectedFullDate',
       'goToSettingsPage',
       'goToTextViewerPage',
       'setFormInfo'
     ]);
-    unitUtils.mockWithReturnValue(HomeModelFacty, 'getSelectedDate', CURRENT_DATE);
+    unitUtils.mockWithReturnValue(HomeModelFacty, 'getSelectedDayAndMonth', CURRENT_DATE);
+    unitUtils.mockWithReturnValue(HomeModelFacty, 'getSelectedFullDate', SELECTED_FULL_DATE);
     unitUtils.mockWithReturnValue(HomeModelFacty, 'setFormInfo', HomeModelFacty);
 
     homeController = $controller('HomeController', {
@@ -34,12 +39,12 @@ describe('homeController', function() {
   }));
 
   it('must have the current date as selected date', function() {
-    expect(homeController.selectedDate).toBe(CURRENT_DATE);
+    expect(homeController.selectedDayAndMonth).toBe(CURRENT_DATE);
   });
 
   it('must persist selected', function() {
-    homeController.setSelectedDate();
-    expect(HomeModelFacty.setSelectedDate).toHaveBeenCalledWith(CURRENT_DATE);
+    homeController.setSelectedDayAndMonth();
+    expect(HomeModelFacty.setSelectedDayAndMonth).toHaveBeenCalledWith(CURRENT_DATE);
   });
 
   it('must can go to settings page', function() {
@@ -49,6 +54,6 @@ describe('homeController', function() {
   
   it('must can go to text viewer page with selected date', function() {
     homeController.goToTextViewerPage();
-    expect(HomeModelFacty.goToTextViewerPage).toHaveBeenCalledWith(CURRENT_DATE);
+    expect(HomeModelFacty.goToTextViewerPage).toHaveBeenCalledWith(SELECTED_FULL_DATE);
   });
 });

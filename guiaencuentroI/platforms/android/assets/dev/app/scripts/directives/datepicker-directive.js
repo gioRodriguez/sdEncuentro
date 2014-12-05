@@ -2,7 +2,7 @@
  * mobiscroll directive
  */
 (function() {
-  var illyumDatepicker = function() {
+  var illyumDatepicker = function(userSettingsService) {
     return {
       restrict : 'EA',
       require : '?ngModel',
@@ -12,9 +12,9 @@
           preset : 'date',
           dateOrder : 'ddMM',
           theme : 'ios',
-          dateFormat : 'yyyy-MMMM-dd',
+          dateFormat : 'MMMM-dd',
           lang : 'es',
-          onSelect : function() {
+          onSelect : function() {               
             scope.$apply(function() {
               ngModel.$setViewValue($(element).val());
             });
@@ -28,6 +28,6 @@
   };
 
   angular.module('guiaEncuentroApp').directive('illyumDatepicker', [
-    illyumDatepicker
+    'userSettingsService', illyumDatepicker
   ]);
 })();

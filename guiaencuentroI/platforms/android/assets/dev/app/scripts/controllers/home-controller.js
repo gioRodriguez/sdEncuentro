@@ -9,20 +9,24 @@
     ) {
       var vm = this;
       
-      vm.selectedDate = HomeModelFacty.getSelectedDate();
+      vm.selectedDayAndMonth = HomeModelFacty.getSelectedDayAndMonth();
       
       vm.goToSettingsPage = function(path, type) {
         HomeModelFacty.goToSettingsPage();
       };
       
+      vm.getSelectedFullDate = function(path, type) {
+        return HomeModelFacty.getSelectedFullDate();
+      };
+      
       vm.goToTextViewerPage = function() {
         HomeModelFacty
           .setFormInfo(HomeFormTranslatorFcty.translate(vm.homeForm))
-          .goToTextViewerPage(vm.selectedDate);
+          .goToTextViewerPage(vm.getSelectedFullDate());
       };
 
-      vm.setSelectedDate = function() {
-        HomeModelFacty.setSelectedDate(vm.selectedDate);
+      vm.setSelectedDayAndMonth = function() {
+        HomeModelFacty.setSelectedDayAndMonth(vm.selectedDayAndMonth);
       };
       
       vm.showError = function(fieldName){
