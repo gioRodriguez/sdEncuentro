@@ -1,10 +1,11 @@
 package com.illyum.guia.encuentro.reads.lines;
 
-public class DayReading {
+
+public class DailyReading {
 	private Header _header;
-	private ReadingBody _readingBody;
+	private ReadingBody _readingBody;	
 	
-	private DayReading(Builder builder) {
+	private DailyReading(Builder builder) {
 		_header = builder.header;
 		_readingBody = builder.readingBody;
 	}
@@ -13,7 +14,6 @@ public class DayReading {
 		StringBuilder builder = new StringBuilder();
 		builder.append(_header.toHtml());
 		
-		_readingBody.addEntry(BottomEntry.create());
 		builder.append(_readingBody.toHtml());
 		return builder.toString();
 	}
@@ -28,8 +28,8 @@ public class DayReading {
 			readingBody = ReadingBody.create();
 		}
 		
-		public DayReading build() {
-			return new DayReading(this);
+		public DailyReading build() {
+			return new DailyReading(this);
 		}
 
 		public Builder addHeaderLevelOne(String conten) {
@@ -48,14 +48,36 @@ public class DayReading {
 		}
 
 		public Builder addParagraph(Paragraph paragraph) {
-			readingBody.addEntry(paragraph);
+			readingBody.addParagraph(paragraph);
 			return this;
 		}
 
-		public Builder addLine(String content) {
-			readingBody.addEntry(EntryLine.createWithContent(content));
+		public Builder addLine(String lineContent) {	
+			Paragraph paragraph = Paragraph.create();
+			paragraph.addLine(lineContent);
+			addParagraph(paragraph);
 			return this;
 		}
 
+		public Builder addHeaderByIndex(String textLine, int headerIndex) {
+			if(headerIndex == 0){
+				return addHeaderLevelOne(textLine);
+			}
+			
+			if(headerIndex == 1){
+				return addHeaderLevelTwo(textLine);
+			}
+			
+			if(headerIndex == 2){
+				return addHeaderLevelThree(textLine);
+			}
+			
+			throw new AssertionError("Header level not specified");
+		}
+
+	}
+
+	public static DailyReading empty() {
+		return new DailyReading.Builder().build();
 	}
 }

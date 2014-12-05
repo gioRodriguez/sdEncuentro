@@ -14,9 +14,9 @@ public class Paragraph implements Entry {
 		return new Paragraph();
 	}
 
-	public void addEntry(Entry entry) {
+	/*public void addEntry(Entry entry) {
 		_lines.add(entry);
-	}
+	}*/
 
 	@Override
 	public String toHtml() {

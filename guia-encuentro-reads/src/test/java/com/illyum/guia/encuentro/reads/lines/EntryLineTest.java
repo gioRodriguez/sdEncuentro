@@ -9,7 +9,7 @@ public class EntryLineTest {
 	@Test
 	public void toHtml() throws Exception {
 		// arrange
-		String expected = "<p>line</p>";
+		String expected = "<span>line</span>";
 		
 		// act
 		String actual = EntryLine.createWithContent("line").toHtml();

@@ -9,11 +9,11 @@ public class ParagraphTest {
 	@Test
 	public void toHtml() throws Exception{
 		// arrange
-		String expected = "<p class='paragraph'><p>line one</p><p>line two</p><p>line three</p></p>";
+		String expected = "<p class='paragraph'><span>line one</span><span>line two</span><span>line three</span></p>";
 		Paragraph paragraph = Paragraph.create();
-		paragraph.addEntry(EntryLine.createWithContent("line one"));
-		paragraph.addEntry(EntryLine.createWithContent("line two"));
-		paragraph.addEntry(EntryLine.createWithContent("line three"));
+		paragraph.addLine("line one");
+		paragraph.addLine("line two");
+		paragraph.addLine("line three");
 		
 		// act
 		String actual = paragraph.toHtml();

@@ -9,7 +9,7 @@ public class ReadingBodyTest {
 	@Test
 	public void toHtmlWithEmpty() throws Exception {
 		// arrange
-		String expected = "<div class='readBoby'></div>";
+		String expected = "<div class='readBoby'><p><br><br></p></div>";
 		ReadingBody readingBody = ReadingBody.create();
 		
 		// act
@@ -22,10 +22,10 @@ public class ReadingBodyTest {
 	@Test
 	public void toHtmlWithLines() throws Exception {
 		// arrange
-		String expected = "<div class='readBoby'><p>line one</p><p>line two</p></div>";
+		String expected = "<div class='readBoby'><p class='paragraph'><span>line one</span></p><p class='paragraph'><span>line two</span></p><p><br><br></p></div>";
 		ReadingBody readingBody = ReadingBody.create();
-		readingBody.addEntry(EntryLine.createWithContent("line one"));
-		readingBody.addEntry(EntryLine.createWithContent("line two"));
+		readingBody.addLine("line one");
+		readingBody.addLine("line two");
 		
 		// act
 		String actual = readingBody.toHtml();
@@ -37,10 +37,10 @@ public class ReadingBodyTest {
 	@Test
 	public void toHtmlWithParagraph() throws Exception {
 		// arrange
-		String expected = "<div class='readBoby'><p class='paragraph'></p></div>";
+		String expected = "<div class='readBoby'><p class='paragraph'></p><p><br><br></p></div>";
 		ReadingBody readingBody = ReadingBody.create();
 		Paragraph paragraph = Paragraph.create();
-		readingBody.addEntry(paragraph);
+		readingBody.addParagraph(paragraph);
 		
 		// act
 		String actual = readingBody.toHtml();
@@ -52,12 +52,12 @@ public class ReadingBodyTest {
 	@Test
 	public void toHtmlWithParagraphAndLines() throws Exception {
 		// arrange
-		String expected = "<div class='readBoby'><p class='paragraph'><p>line one</p></p><p>line two</p></div>";
+		String expected = "<div class='readBoby'><p class='paragraph'><span>line one</span></p><p class='paragraph'><span>line two</span></p><p><br><br></p></div>";
 		ReadingBody readingBody = ReadingBody.create();
 		Paragraph paragraph = Paragraph.create();
-		paragraph.addEntry(EntryLine.createWithContent("line one"));
-		readingBody.addEntry(paragraph);
-		readingBody.addEntry(EntryLine.createWithContent("line two"));
+		paragraph.addLine("line one");
+		readingBody.addParagraph(paragraph);
+		readingBody.addLine("line two");
 		
 		// act
 		String actual = readingBody.toHtml();

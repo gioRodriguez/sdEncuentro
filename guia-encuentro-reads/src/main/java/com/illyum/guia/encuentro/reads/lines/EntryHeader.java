@@ -6,33 +6,32 @@ import java.util.Set;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
-public class EntryHeader extends AbstractLine implements Entry {
+public class EntryHeader implements Entry {
 	
 	private static final Set<String> NOT_UPPER_WORDS = new HashSet<String>();
 	static {
 		NOT_UPPER_WORDS.add("del");
 		NOT_UPPER_WORDS.add("de");
 	}
-
-	protected EntryHeader(
-			String lineBody,
-			int lineIndex
-	) {
-		super(lineBody, lineIndex);
-	}
 	
-	@Override
-	public boolean isHeader() {
-		return true;
-	}	
+	private final String _headerContent;
+	private final int _headerLevel;
+	
+	private EntryHeader(
+		String headerContent,
+		int headerLevel
+	) {
+		_headerContent = headerContent;
+		_headerLevel = headerLevel;
+	}
 
 	@Override
 	public String toHtml() {
 		return String.format(
 				"<li><span></span><h%d>%s</h%d></li>", 
-				getLineIndex() + 1, 
-				toHeader(getLineBody()), 
-				getLineIndex() + 1
+				_headerLevel + 1, 
+				toHeader(_headerContent), 
+				_headerLevel + 1
 		).replace("lectura", "Lectura")
 		 .replace("Iii", "III")
 		 .replace("Iv", "IV");
@@ -77,11 +76,5 @@ public class EntryHeader extends AbstractLine implements Entry {
 	
 	public static EntryHeader createLevelThreeWithContent(String content) {
 		return new EntryHeader(content, 2);
-	}
-
-	@Override
-	public void addEntry(Entry entry) {
-		// TODO Auto-generated method stub
-		
 	}
 }

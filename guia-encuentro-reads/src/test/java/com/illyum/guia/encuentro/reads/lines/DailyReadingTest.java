@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class DayReadingTest {
+public class DailyReadingTest {
 
 	@Test
 	public void toHtmlWithoutEntries() throws Exception {
 		// arrange
 		String expected = "<div class='readHeader'><ul></ul></div><hr><div class='readBoby'><p><br><br></p></div>";
-		DayReading.Builder dayReadingBuilder = new DayReading.Builder();
+		DailyReading.Builder dayReadingBuilder = new DailyReading.Builder();
 		
 		// act
 		String actual = dayReadingBuilder.build().toHtml();
@@ -31,7 +31,7 @@ public class DayReadingTest {
 					+ "</ul>"
 				+ "</div><hr>"
 				+ "<div class='readBoby'><p><br><br></p></div>";
-		DayReading.Builder dayReadingBuilder = new DayReading.Builder();
+		DailyReading.Builder dayReadingBuilder = new DailyReading.Builder();
 		dayReadingBuilder.addHeaderLevelOne("header");
 		dayReadingBuilder.addHeaderLevelTwo("header 2");
 		dayReadingBuilder.addHeaderLevelThree("header 3");
@@ -55,7 +55,7 @@ public class DayReadingTest {
 				+ "<div class='readBoby'>"
 				+ 	"<p class='paragraph'></p>"
 				+ "<p><br><br></p></div>";
-		DayReading.Builder dayReadingBuilder = new DayReading.Builder();
+		DailyReading.Builder dayReadingBuilder = new DailyReading.Builder();
 		dayReadingBuilder.addHeaderLevelOne("header");
 		Paragraph paragraph = Paragraph.create();
 		dayReadingBuilder.addParagraph(paragraph);
@@ -78,15 +78,15 @@ public class DayReadingTest {
 				+ "</div><hr>"
 				+ "<div class='readBoby'>"
 				+ "<p class='paragraph'>"
-					+ "<p>paragraph line</p>"
+					+ "<span>paragraph line</span>"
 				+ "</p>"
-				+ "<p>line</p>"
-				+ "<p>line two</p>"
+				+ "<p class='paragraph'><span>line</span></p>"
+				+ "<p class='paragraph'><span>line two</span></p>"
 				+ "<p class='paragraph'>"
-					+ "<p>paragraph line 2</p>"
+					+ "<span>paragraph line 2</span>"
 				+ "</p>"
 				+ "<p><br><br></p></div>";
-		DayReading.Builder dayReadingBuilder = new DayReading.Builder();
+		DailyReading.Builder dayReadingBuilder = new DailyReading.Builder();
 		dayReadingBuilder.addHeaderLevelOne("header");	
 		
 		Paragraph paragraph = Paragraph.create();
@@ -106,4 +106,5 @@ public class DayReadingTest {
 		// assert
 		assertEquals(expected, actual);
 	}
+	
 }

@@ -1,12 +1,8 @@
 package com.illyum.guia.encuentro.reads.lines;
 
-public class NullLine extends AbstractLine {
-	@Override
-	public boolean isNull() {
-		return true;
-	}
+public class NullLine  {
 
-	@Override
+	
 	public String toHtml() {
 		return "";
 	}
